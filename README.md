@@ -1,5 +1,6 @@
-crisis-curation
+Crisis Curation Web App
 ===============
 
-Project: Designing/Developing a Content Curation Web App for Disaster Volunteers
+Designing/Developing a Content Curation Web App for Disaster Volunteers
+
 For more info: http://www.hcde.washington.edu/research/starbird
