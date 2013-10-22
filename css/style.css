@@ -6,35 +6,57 @@ html, html a {
 
 /* - Layout */
 
-html, body { 
-  height:100%; 
-  margin: 0; 
-  padding: 0; 
-  overflow-x: hidden;
-}  
-
 .container {
-  margin: 0; 
   padding: 0;
-  position: relative;
+  position: absolute;
+  overflow: hidden;
+  height: 100%;
   width: 100%;
 }
 
+
 /* - Sidebar */
 
-#sidebar {
+#sidebar { /* left column */
   padding: 0;
   background-color: #f5f5f5;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
   z-index: 100;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .15);
   -moz-box-shadow:0 0 10px rgba(0, 0, 0, .15);
   box-shadow: 0 0 10px rgba(0, 1, 1, .05);
   border-right: 1px solid #dcdddc;
-  min-width: 240px;
+  height: 100%;
+  overflow: hidden;
+}
+
+#sidebar ul li a {
+  border-radius: 0px;
+  color: #444;
+}
+
+.static-wrapper {
+  overflow: hidden;
+}
+
+#tag-list {
+  height: 100%;
+}
+
+#tag-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  border-right-style: none;
+}
+
+
+a#tag-title {
+  border-top-style: none;
 }
 
 #logo {
@@ -54,28 +76,16 @@ html, body {
   width: 100%;
 }
 
-#sidebar ul li a {
-  border-radius: 0px;
-  color: #444;
-}
-
 .list-group {
   margin-bottom: 0;
-  overflow: hidden;
-/*    position: relative;*/
 }
 
 .list-group a {
   text-decoration: none;
 }
 
-#tag-list {
-  overflow-y: auto;
-  height: 568px;
-}
 
 .list-group-item {
-  height: auto;
 }
 
 a.list-group-item {
@@ -94,9 +104,6 @@ a i:hover {
   text-decoration: none;
 }
 
-a#tag-title {
-  border-top-style: none;
-}
 
 .nav-pills > li {
 /*  border-bottom: 1px solid #eee;*/
@@ -114,18 +121,6 @@ a#tag-title {
   border-radius: 0px;
 }
 
-#tag-title {
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #555;
-  position: relative;
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: -1px;
-  background-color: #f5f5f5;
-  border: 1px solid #eee;
-  border-right-style: none;
-}
 
 .text-danger {
   color: #fb6b5b;
@@ -146,12 +141,10 @@ i {
 
 /* -- Stream Structure */
 
-.content {
-  margin: 0px 0px 0px 240px;	
+#content {
   padding: 0;
-  position: absolute;
-  width: 480px;
-  top: 0;
+  overflow: hidden;
+  height: 100%;
 }
 
 li.media.tweet {
@@ -166,7 +159,6 @@ li.media.tweet {
   margin: 0;
   position: relative;
   overflow-y: scroll; 
-  height: 700px;
   border-right: 1px solid #eee;
   margin-top: 76px;
 }
@@ -259,6 +251,10 @@ li.media.tweet.end-result {
   margin-bottom: 0px;
 }
 
+.scrollable {
+  height: 100%;
+  overflow: auto;
+}
 /* - Demo */
 
 .demo {

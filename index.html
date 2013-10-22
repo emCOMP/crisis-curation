@@ -20,295 +20,268 @@
 
   <body>
   <div class="container">
-    <div class="col-xs-2" id="sidebar">    
-      <h1 id="logo">Crisis Curation</h1>
-      <div class="list-group" id="nav-menu">
-        <a href="#" class="list-group-item active"><i class="icon-tasks"></i>Feeds</a>
-        <a href="#" class="list-group-item"><i class="icon-time"></i>History</a>
-      </div>
-      <!-- QN - should we show tag counts -->
-      <div class="list-group">
-         <a id="tag-title"><i class="icon-tags"></i>Tags</a>
-        <div id="tag-list">
-          <a href="#" class="list-group-item"><i class="icon-circle text-danger"></i>Caution or Advice<span class="badge">54</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-info"></i>Infrastructure Damage<span class="badge">9</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-warning"></i>Casualties or Injuries<span class="badge">17</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-success"></i>Requests for Help<span class="badge">44</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-muted"></i>Offers of Help<span class="badge">23</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-primary"></i>False<span class="badge">3</span></a>
-<!--          <a href="#" class="list-group-item"><i class="icon-circle"></i>Others<span class="badge">14</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-danger"></i>Caution or Advice<span class="badge">54</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-info"></i>Infrastructure Damage<span class="badge">9</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-warning"></i>Casualties or Injuries<span class="badge">17</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-success"></i>Requests for Help<span class="badge">44</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-muted"></i>Offers of Help<span class="badge">23</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-primary"></i>False<span class="badge">3</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-text"></i>Others<span class="badge">14</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-success"></i>Requests for Help<span class="badge">44</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-muted"></i>Offers of Help<span class="badge">23</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle text-primary"></i>False<span class="badge">3</span></a>
-          <a href="#" class="list-group-item"><i class="icon-circle"></i>Others<span class="badge">14</span></a>-->
+
+    <div id="sidebar" class="col-md-3">    
+
+      <div class="static-wrapper">
+        <h1 id="logo">Crisis Curation</h1>
+        <div class="list-group" id="nav-menu">
+          <a href="#" class="list-group-item active"><i class="icon-tasks"></i>Feeds</a>
+          <a href="#" class="list-group-item"><i class="icon-time"></i>History</a>
         </div>
-      </div>   
-<!--    <div id="footer">
-      <div class="list-group" id="bottom-list">
-        <a href="#" class="list-group-item"><i class="icon-question-sign"></i> Help</a>
-        <a href="#" class="list-group-item"><i class="icon-cog"></i> Settings</a>
-      </div>-->
-      <!-- list-group -->
-  </div><!-- /col-md-2 -->
-        <div class="col-md-4 content">
-          <div class="tweet-search">  
-            <div class="input-group">
-              <input type="search" class="form-control input-lg" placeholder="Search..." autofocus>
-              <span class="input-group-addon"><a href="#"><i class="icon-search text-muted"></i></span>
-            </div>
+        <a id="tag-title"><i class="icon-tags"></i>Tags</a>
+      </div>
+
+      <!-- QN - should we show tag counts -->
+      <div id="tag-list" class="list-group scrollable">
+        <a href="#" class="list-group-item"><i class="icon-circle text-danger"></i>Caution or Advice<span class="badge">54</span></a>
+        <a href="#" class="list-group-item"><i class="icon-circle text-info"></i>Infrastructure Damage<span class="badge">9</span></a>
+        <a href="#" class="list-group-item"><i class="icon-circle text-warning"></i>Casualties or Injuries<span class="badge">17</span></a>
+        <a href="#" class="list-group-item"><i class="icon-circle text-success"></i>Requests for Help<span class="badge">44</span></a>
+        <a href="#" class="list-group-item"><i class="icon-circle text-muted"></i>Offers of Help<span class="badge">23</span></a>
+        <a href="#" class="list-group-item"><i class="icon-circle text-primary"></i>False<span class="badge">3</span></a>
+      </div>
+
+    </div><!-- sidebar column -->
+
+    <div class="col-md-6" id="content">
+      <div class="tweet-search">  
+        <div class="input-group">
+          <input type="search" class="form-control input-lg" placeholder="Search..." autofocus>
+          <span class="input-group-addon"><a href="#"><i class="icon-search text-muted"></i></span>
+        </div>
+      </div>
+      <div class="tweet-stream scrollable">
+        <ul class="media-list">
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
           </div>
-          <div class="tweet-stream">
-            <ul class="media-list">
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-<!--                  <div class="btn-group">
-                    <button type="button" class="btn btn-danger">Action</button>
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">Separated link</a></li>
-                    </ul>
-                  </div>
-                   </span>
-                </span>-->
-              </div>
-            </li> 
-            <li class="media tweet tagged">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Re-tag (@robot)</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet">
-              <a class="pull-left" href="#">
-                <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
-              </a>
-              <div class="media-body">
-                <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
-                <span class="username text-muted"><small>@jdoe</small></span>
-                <span class="timestamp text-muted pull-right"><small>39s</small></span>
-                <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
-                <span class="help-block">
-                  <span class="pull-left tweet-info">
-                    <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
-                    <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
-                  </span>
-                  <span class="pull-right tweet-actions">
-                   <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
-                   </span>
-                </span>
-              </div>
-            </li>
-            <li class="media tweet end-result">
-              <p class="tweet-text text-center">no more tweet</p>
-            </li>
-          </ul>
+        </li> 
+        <li class="media tweet tagged">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Re-tag (@robot)</small></a>
+               </span>
+            </span>
           </div>
-        </div><!-- /col-md-4 -->
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet">
+          <a class="pull-left" href="#">
+            <img class="media-object img-rounded" src="assets/img/profile-pic.JPG" alt="...">
+          </a>
+          <div class="media-body">
+            <span class="fullname"><a href="#"><strong>John Doe</strong></a></span>
+            <span class="username text-muted"><small>@jdoe</small></span>
+            <span class="timestamp text-muted pull-right"><small>39s</small></span>
+            <p class="tweet-text">When it comes to crafting a social media strategy, these chefs can teach you about more than just cooking: <a href="ow.ly/pXYfM">ow.ly/pXYfM</a></p>
+            <span class="help-block">
+              <span class="pull-left tweet-info">
+                <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
+                <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
+              </span>
+              <span class="pull-right tweet-actions">
+               <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+               </span>
+            </span>
+          </div>
+        </li>
+        <li class="media tweet end-result">
+          <p class="tweet-text text-center">no more tweet</p>
+        </li>
+      </ul>
+      </div>
+    </div> <!-- content column -->
+
+    <div class="col-md-3"></div> <!-- right column -->
         
-        <!-- /col-md-4 -->      
-    </div> <!-- /container -->
-</div>
+
+  </div> <!-- /container -->
     
 <!-- jQuery -->
 <script src="js/jquery-1.10.2.js"></script>
