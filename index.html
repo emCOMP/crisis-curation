@@ -21,7 +21,7 @@
   <body>
   <div class="container">
 
-    <div id="sidebar" class="col-md-3">    
+    <div id="sidebar" class="col-md-2">    
 
       <div class="static-wrapper">
         <h1 id="logo">Crisis Curation</h1>
@@ -29,7 +29,7 @@
           <a href="#" class="list-group-item active"><i class="icon-tasks"></i>Feeds</a>
           <a href="#" class="list-group-item"><i class="icon-time"></i>History</a>
         </div>
-        <a id="tag-title"><i class="icon-tags"></i>Tags</a>
+        <p id="tag-title"><i class="icon-tags"></i>Tags</p>
       </div>
 
       <!-- QN - should we show tag counts -->
@@ -44,7 +44,7 @@
 
     </div><!-- sidebar column -->
 
-    <div class="col-md-6" id="content">
+    <div class="col-md-4" id="content">
       <div class="tweet-search">  
         <div class="input-group">
           <input type="search" class="form-control input-lg" placeholder="Search..." autofocus>
@@ -278,7 +278,7 @@
       </div>
     </div> <!-- content column -->
 
-    <div class="col-md-3"></div> <!-- right column -->
+    <div class="col-md-6"></div> <!-- right column -->
         
 
   </div> <!-- /container -->
@@ -295,7 +295,8 @@
 
 To do:
 
-* fix scrollable div height issues (hard code for now)
+* need to make it responsive
+* tag list still not yet scrollable
 * add dropdown to "tag tweet" with tag list
 * add "move tweet" to tag list in the sidebar (drag and drop)
 * add dynamic badge number for tag list
