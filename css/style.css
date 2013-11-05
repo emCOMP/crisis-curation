@@ -228,8 +228,15 @@ input[type="search"]:focus, input[type="search"]:hover {
 }
 
 li.tweet.tagged {
-  border-left: 5px solid #eb6758;
   background-color: #eee;
+}
+
+.tags {
+  margin-right: 15px;
+}
+
+.tags i {
+  margin-right: 0;
 }
 
 /*.help-block {
@@ -255,19 +262,18 @@ li.media.tweet.end-result {
   height: 100%;
   overflow: auto;
 }
-/* - Demo */
 
-.demo {
-  margin: 0px 0px 0px 720px;
-  padding: 2px 15px 15px 36px;
-  position: absolute;
-  width: 720px;
-  top: 0;
-  position: relative;
-  overflow-y: scroll; 
-  height: 776px;
-  border-right: 1px solid #eee;
+/* dropdown */
+
+.dropdown-menu {
+  z-index: 100;
 }
+
+.dropdown a:hover, .dropdown:focus {
+  text-decoration: none;
+}
+
+
 
 /* Customize container */
 @media (min-width: 768px) {

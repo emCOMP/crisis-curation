@@ -16,6 +16,13 @@
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
     
+    <!-- Javascript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/action.js"></script>    
+    
   </head>
 
   <body>
@@ -70,10 +77,26 @@
                 <a href="#" class="text-muted"><small>63</small> <i class="icon-retweet"></i></a>
                 <a href="#" class="text-muted"><small>3</small> <i class="icon-star"></i></a>
               </span>
-              <span class="pull-right tweet-actions">
+              <div class="dropdown pull-right tweet-actions">
+                <a data-toggle="dropdown" href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <li><a href="#"><i class="icon-circle text-danger"></i>Caution or Advice</a></li>
+                  <li><a href="#"><i class="icon-circle text-info"></i>Infrastructure Damage</a></li>
+                  <li><a href="#"><i class="icon-circle text-warning"></i>Casualties or Injuries</a></li>
+                  <li><a href="#"><i class="icon-circle text-success"></i>Requests for Help</a></li>
+                  <li><a href="#"><i class="icon-circle text-muted"></i>Offers of Help</a></li>
+                  <li><a href="#"><i class="icon-circle text-primary"></i>False</a></li>
+                </ul>
+              </div>
+              <div>
+              <p>potato meat</p>
+                            <p>potato meat</p>
+                                          <p>potato meat</p>
+              </div>
+<!--              <span class="pull-right tweet-actions">
                <a href="#" class="text-muted"><i class="icon-tags"></i><small>Tag tweet</small></a>
                </span>
-               </span>
+               </span>-->
           </div>
         </li> 
         <li class="media tweet tagged">
@@ -91,6 +114,10 @@
                 <a href="#" class="text-muted"><small>1</small> <i class="icon-star"></i></a>
               </span>
               <span class="pull-right tweet-actions">
+                <span class="tags">
+                  <i class="icon-circle text-danger" data-toggle="tooltip" title="Caution or Advice"></i>
+                  <i class="icon-circle text-warning" data-toggle="tooltip" title="Casualities or Injuries"></i>
+                </span>
                <a href="#" class="text-muted"><i class="icon-tags"></i><small>Re-tag (@robot)</small></a>
                </span>
             </span>
@@ -581,13 +608,7 @@
         
 
   </div> <!-- /container -->
-    
-<!-- jQuery -->
-<script src="js/jquery-1.10.2.js"></script>
-<script src="js/bootstrap.js"></script>
-
-<!-- Custom JavaScript -->
-<script src="js/action.js"></script>
+  
     
     
 <!-- -----------------------------------------------------------------
