@@ -115,6 +115,7 @@ a i:hover {
   left: 0;
   margin: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 .active {
@@ -133,6 +134,7 @@ i {
 .badge {
   background: none;
   color: #aaa;
+  position: relative;
 }
 
 
@@ -159,16 +161,14 @@ li.media.tweet {
   margin: 0;
   position: relative;
   overflow-y: scroll; 
-  border-right: 1px solid #eee;
   margin-top: 76px;
+  margin-left: 10px;
 }
 
 /* -- Search Bar */
 
 .tweet-search {
   padding: 15px;
-  border-bottom: 1px solid #eee;
-  border-right: 1px solid #eee;
   position: fixed;
   background-color: #fff;
   width: inherit;
