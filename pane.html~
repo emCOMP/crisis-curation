@@ -1,0 +1,15 @@
+ <div class="col-md-4" id="content" ng-controller="Ctrl">
+      <div class="tweet-search">  
+        <div class="input-group">
+          <input type="search" class="form-control input-lg" placeholder="Search..." autofocus>
+          <span class="input-group-addon"><a href="#"><i class="icon-search text-muted"></i></a></span>
+        </div>
+      </div>
+      <div class="tweet-stream scrollable">
+        <ul class="media-list">
+	  <p>{{tweets.length}}</p>
+	  <tweet ng-repeat="tweet in tweets"></tweet>
+	  
+        </ul>
+      </div>
+    </div> <!-- content column -->
