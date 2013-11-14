@@ -1,1 +1,4 @@
 fb
+
+# Get rid of emacs squiggle files
+*~
