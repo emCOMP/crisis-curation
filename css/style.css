@@ -9,7 +9,8 @@ html, html a {
 .container {
   padding: 0;
   position: absolute;
-  overflow: hidden;
+  /*overflow: hidden;*/
+  overflow-x: scroll;
   height: 100%;
   width: 100%;
 }
@@ -32,6 +33,12 @@ html, html a {
 #sidebar ul li a {
   border-radius: 0px;
   color: #444;
+}
+
+.btn-circle {
+  text-align: center;
+  border-radius: 2em;
+  margin-left: 1em;
 }
 
 .static-wrapper {

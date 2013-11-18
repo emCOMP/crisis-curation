@@ -1,9 +1,11 @@
-   <div id="sidebar" class="col-md-3">    
+   <div id="sidebar" class="col-md-3" ng-controller="leftMenuCtrl">    
 
       <div class="static-wrapper">
         <h1 id="logo">Crisis Curation</h1>
         <div class="list-group" id="nav-menu">
-          <a href="#" class="list-group-item active"><i class="icon-tasks"></i>Feeds</a>
+          <a href="#" class="list-group-item active"><i class="icon-tasks"></i>Feeds 
+            <button ng-click="addColumn()" class="btn-circle">+</button>
+          </a>
           <a href="#" class="list-group-item"><i class="icon-time"></i>History</a>
         </div>
         <p id="tag-title"><i class="icon-tags"></i>Tags</p>
