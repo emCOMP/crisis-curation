@@ -1,7 +1,7 @@
 function getTweets() {
     return [
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'John Doe',
 	    username: '@jdoe',
 	    timeStamp: '39',
@@ -14,7 +14,7 @@ function getTweets() {
 	},
 
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'John Doe',
 	    username: '@jdoe',
 	    timeStamp: '39',
@@ -27,7 +27,7 @@ function getTweets() {
 	},
 
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'John Doe',
 	    username: '@jdoe',
 	    timeStamp: '39',
@@ -40,7 +40,7 @@ function getTweets() {
 	},
 
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'John Doe',
 	    username: '@jdoe',
 	    timeStamp: '39',
@@ -53,7 +53,7 @@ function getTweets() {
 	},
 
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'John Doe',
 	    username: '@jdoe',
 	    timeStamp: '39',
@@ -66,7 +66,7 @@ function getTweets() {
 	},
 
 	{
-	    profilePic: 'file:///home/katlyn/Dropbox/University%20of%20Washington/Year%204%20(2013%20-%202014)/HCDE/crisis-curation/assets/img/profile-pic.JPG',
+	    profilePic: 'assets/img/profile-pic.JPG',
 	    fullName: 'Sally Smith',
 	    username: '@ssmith',
 	    timeStamp: '28',
