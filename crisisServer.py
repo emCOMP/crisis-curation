@@ -1,5 +1,6 @@
 from bottle import run, get, post, request
 from pymongo import MongoClient
+import json
 
 # ---- For clients to send tags to the server ----
 
@@ -54,7 +55,20 @@ def newTagInstance():
 # return the 3 most recent tweets
 @get('/tweets')
 def tweets():
-    return '3 tweets'
+    tweet =  {
+                 "profilePic":"assets/img/profile-pic.JPG",
+                 "fullName":"John Doe",
+                 "username":"@jdoe",
+                 "timeStamp":"39",
+                 "tweetText":"North of the Border in Scotland @SEPAView have 4 Flood Alerts & 3 Flood Warnings!! http://floodline.sepa.org.uk/floodupdates/ #FloodAware #ThinkDontSink",
+                 "reTweets":"63",
+                 "favorites":"3"
+              }
+    jsonObj = {"items": [
+             tweet, tweet, tweet, tweet, tweet
+           ]
+        };
+    return json.dumps(jsonObj)
 
 @get('/tweets/<num:int>')
 def tweets(num):

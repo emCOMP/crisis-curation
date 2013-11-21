@@ -1,8 +1,7 @@
 angular.module('twitterCrisis', [])
 // Controller
-    .controller('paneCtrl', function($scope) {
-		var tweets = getTweets();
-		$scope.tweets = tweets;
+    .controller('paneCtrl', function($scope, $http) {
+		var tweets = getTweets($http, $scope);
     })
 
     .controller('leftMenuCtrl', function($scope, $compile) {
@@ -42,3 +41,18 @@ angular.module('twitterCrisis', [])
     });
 
 
+/*
+
+function getTweets() {
+
+	ajax.new("get", "localhost:8080/tweets", cats);
+
+
+
+}
+
+function cats (data) {
+	$scope.tweets = data;
+}
+
+*/
