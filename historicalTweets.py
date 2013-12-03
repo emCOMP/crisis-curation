@@ -4,12 +4,17 @@ import datetime
 import time
 import dateutil.parser as dparser
 
+HISTORICAL_DB_NAME = 'crisisdb'
+LIVE_DB_NAME = 'current_database'
+TIME_MULTIPLIER = 1
+SLEEP_SECONDS = 5
+
+
 # connect to two databases
 # be sure to run mongod in the terminal before starting
 dbclient = MongoClient('localhost', 27017)
-historicaldb = dbclient.crisisdb #TODO: change this to take string so that we can pass in string for db name 
-#TODO: livedb (change name also possibly pass in name for this?) 
-currentdb = dbclient.current_database
+historicaldb = dbclient[HISTORICAL_DB_NAME] 
+currentdb = dbclient[LIVE_DB_NAME]
 
 # record current time
 previousTime = datetime.datetime.now()
@@ -33,29 +38,27 @@ while True:
 
     # how long has it been since previousTime?
     delta = timeNow - previousTime
-    print 'delta: ' + str(delta)
+    # print 'delta: ' + str(delta)
 
     # replace previousTime with timeNow
     previousTime = timeNow
 
     # run DB query to get all tweets within delta of historicalTime, going forward
-    new_tweets = historicaldb.tweets.find({'createdAt': {"$gte": historicalTime, "$lt": historicalTime+delta}})
+    new_tweets = historicaldb.tweets.find({'createdAt': {"$gte": historicalTime, "$lt": historicalTime+(delta * TIME_MULTIPLIER)}})
     
     # update historicalTime
-    historicalTime += delta
-    print historicalTime 
+    historicalTime += (delta * TIME_MULTIPLIER)
+    # print historicalTime 
 
-    print 'tweets: ' + str(new_tweets)
-    for item in new_tweets:
-        print item
+    # print 'tweets: ' + str(new_tweets)
+    # for item in new_tweets:
+    #     print item
 
     # add t to currentdb
     for tweet in new_tweets: 
         currentdb.tweets.insert(tweet)
-
-    # replace HistoricalTime with HistoricalTime + S
-    historicalTime += delta
+        # print currentdb.tweets.find()
 
     # optional - sleep for a few seconds
-    time.sleep(5) # TODO: make the 5 into a variable
+    time.sleep(SLEEP_SECONDS)
     
