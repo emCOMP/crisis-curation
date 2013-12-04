@@ -2,6 +2,7 @@
 
 from bottle import run, get, post, request
 from pymongo import MongoClient
+import pymongo
 
 # ---- For clients to send tags to the server ----
 
@@ -124,7 +125,8 @@ def tagInstancesSince(tagInstanceID):
 
 dbclient =  MongoClient('localhost', 27017)
 
-db = dbclient.crisisdb
+db = dbclient['current_database']
+# db = dbclient['crisisdb']
 
 tweets = db.tweets
 tags = db.tags
