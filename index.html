@@ -1,0 +1,2436 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="twitterCrisis">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+        <title>Crisis Curation</title>
+
+        <!-- Bootstrap + Font Awesome + Others-->
+        <link href="css/bootstrap.css" rel="stylesheet"> <!-- removed JS Component - dropdowns -->
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/jquery.dropdown.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="css/layout.css">
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+  </head>
+
+  <body>
+    <div class="left-menu">
+        <h4>Crisis Curation</h4>
+        <div class="input-group" id="nav-menu">
+          <span class="input-group-addon"><a href="#"><i class="fa fa-search text-muted"></i></a></span>
+          <input type="search" class="form-control" placeholder="Search" autofocus>
+        </div>
+
+        <div class="dropdown-relative">
+            <p id="tag-title">Tags<a class="fa fa-plus pull-right" rel="popover" data-html="true" href="#" data-content="<form role='form'>
+            <div class='form-group'>
+                <label class='sr-only' for='tag-name'>Tag Name</label>
+                <input type='text' class='form-control' id='tag-name' placeholder='Enter tag name' autofocus>
+            </div>
+            <div class='btn-group color-selector' role='toolbar'>
+                <i class='fa fa-circle fa-lg text-danger'></i>
+                <i class='fa fa-circle fa-lg text-info'></i>
+                <i class='fa fa-circle fa-lg text-warning'></i>
+                <i class='fa fa-circle fa-lg text-success'></i>
+                <i class='fa fa-circle fa-lg text-muted'></i>
+                <i class='fa fa-circle fa-lg text-primary'></i>
+            </div>
+            <button type='submit' class='btn btn-default'>Add</button>
+            </form>"></a></p>
+           <!--  <p id="tag-title">Tags<a class="fa fa-plus pull-right" data-dropdown="#add-tags"></a></p>
+            <div id="add-tags" class="dropdown dropdown-tip">
+                <div class="dropdown-panel">
+                    <form role='form'>
+                        <div class='form-group'>
+                            <label class='sr-only' for='tag-name'>Tag Name</label>
+                            <input type='text' class='form-control' id='tag-name' placeholder='Enter tag name' autofocus>
+                        </div>
+                        <div class='btn-group color-selector' role='toolbar'>
+                            <i class='fa fa-circle fa-lg text-danger'></i>
+                            <i class='fa fa-circle fa-lg text-info'></i>
+                            <i class='fa fa-circle fa-lg text-warning'></i>
+                            <i class='fa fa-circle fa-lg text-success'></i>
+                            <i class='fa fa-circle fa-lg text-muted'></i>
+                            <i class='fa fa-circle fa-lg text-primary'></i>
+                        </div>
+                        <button type='submit' class='btn btn-default'>Add</button>
+                    </form>
+                </div>
+            </div> -->
+        </div>
+        <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+            <li><a href="#"><i class="fa fa-circle text-danger"></i>Caution or Advice<span class="badge pull-right">54</span></a></li>
+            <li><a href="#"><i class="fa fa-circle text-info"></i>Infrastructure Damage<span class="badge pull-right">9</span></a></li>
+            <li><a href="#"><i class="fa fa-circle text-warning"></i>Casualties or Injuries<span class="badge pull-right">17</span></a></li>
+            <li><a href="#"><i class="fa fa-circle text-success"></i>Requests for Help<span class="badge pull-right">44</span></a></li>
+            <li><a href="#"><i class="fa fa-circle text-muted"></i>Offers of Help<span class="badge pull-right">23</span></a></li>
+            <li><a href="#"><i class="fa fa-circle text-primary"></i>False<span class="badge pull-right">3</span></a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="tweet-header">
+                <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+            </div>
+            <div class="tweet-stream">
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="media">
+                    <a class=" profile-pic pull-left" href="#">
+                        <img class="media-object img-circle" src="assets/img/profile-pic.png" alt="...">
+                    </a>
+                    <div class="media-body">
+                        <span class="fullname"><a href="#"><strong>Planet Earth</strong></a></span>
+                        <span class="username text-muted"><small>@planetepics</small></span>
+                        <span class="timestamp text-muted pull-right"><small>12m</small></span>
+                        <p class="tweet-text">
+                        A flood-affected resident stands with her dogs at her flooded house in Thailand. <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+                    </div>
+                    <div class="help-block">
+                        <span class="tweet-info text-muted">
+                            <small>12</small> <i class="fa fa-retweet text-muted"></i>
+                            <small>5</small> <i class="fa fa-star"></i>
+                        </span>
+                        <div class="dropdown-relative pull-right">
+                            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
+                            <div id="tag-tweet" class="dropdown dropdown-tip">
+                                <div class="dropdown-menu">
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="tags pull-right">
+                            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
+                            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="js/jquery-2.0.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.dropdown.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>

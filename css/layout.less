@@ -1,0 +1,77 @@
+// ---------------------------
+//
+// LAYOUT = Structure + Flexbox
+//
+// ---------------------------
+
+// VARIABLES
+// ---------------------------
+
+@left-menu-width:   240px;
+@column-width:      320px;
+
+// STRUCTURE
+// ---------------------------
+
+html, body {
+  overflow: hidden;
+  height: 100%; 
+  width: 100%; 
+  top: 0;
+  bottom: 0; 
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.column {
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+.tweet-stream {
+  overflow-y: scroll;
+  bottom: 0;
+} 
+
+// FLEXBOX
+// --------------------
+
+body {
+  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+  display: -moz-box;      /* OLD: Firefox (buggy) */ 
+  display: -ms-flexbox;   /* MID: IE 10 */
+  display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
+  display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
+}
+
+.left-menu {
+  width: @left-menu-width;
+  min-width: @left-menu-width;
+}
+
+.content {
+  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+  display: -moz-box;      /* OLD: Firefox (buggy) */ 
+  display: -ms-flexbox;   /* MID: IE 10 */
+  display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
+  display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */ 
+}
+
+.column {
+  -webkit-flex: none;
+          flex: none;
+  width: @column-width;
+}

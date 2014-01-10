@@ -1,0 +1,263 @@
+// ----------------------
+//
+// STYLES
+//
+// ----------------------
+
+// Variables
+@logo-font-color:     #333;
+@body-font-color:     #333;
+@muted-font-color:    #999;
+@border: 2px solid #eee;
+@border-radius: 5px 5px;
+
+// General
+
+body {
+  -webkit-font-smoothing: antialiased !important;
+}
+
+// Left Menu Bar
+
+.left-menu {
+  border-right: @border;
+
+  h4 {
+    padding: 4px 15px 14px 13px;
+    border-bottom: @border;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: @logo-font-color;
+  }
+}
+
+#tag-title {
+  margin: 0 0 0 0;
+}
+
+.nav-stacked > li + li {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.nav-pills li a, .nav-pills li a:hover {
+  border-radius: 0;
+  margin-top: 0;
+  color: @body-font-color;
+  border-bottom: @border;
+
+  i {
+    margin-right: 12px;
+  }
+}
+
+.input-group {
+
+  .fa-search {
+    // margin-right: 15px;
+    margin-left: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+input[type="search"] {
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+  padding-right: 10px;
+  padding-left: 0;
+}
+
+input[type="search"]:focus, input[type="search"]:hover {
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.input-group-addon {
+  border: none;
+  border-radius: 0px;
+  background: none;
+}
+
+#tag-title {
+  padding: 5px 0 5px 15px;
+  margin-top: 10px;
+  border-top: @border;
+  border-bottom: @border;
+  font-weight: 700;
+
+  .fa-plus {
+    padding: 3px 15px 0 0;
+  }
+
+  .fa-plus:hover {
+    text-decoration: none;
+  }
+}
+
+// Tweet Header
+
+.tweet-header {
+  border: @border;
+  border-top-left-radius: @border-radius;
+  border-top-right-radius: @border-radius;
+  border-bottom: 0;
+  padding: 5px 5px 10px 5px;
+
+  .fa-home {
+    margin-top: 1px;
+  }
+
+  h4 {
+    margin: 5px 0 0 5px;
+  }
+
+  .fa-caret-down {
+    margin: 2px 5px 0 0;
+  }
+}
+
+// Tweet Stream
+
+.tweet-stream {
+  border: @border;
+  border-bottom-left-radius: @border-radius;
+  border-bottom-right-radius: @border-radius;
+}
+
+.media {
+  padding: 10px;
+  border-bottom: @border;
+  margin-top: 0;
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .media-body {
+
+    .fullname a {
+      color: @body-font-color;
+    }
+  }
+}
+
+.media:last-child {
+  border-bottom: 0;
+}
+
+.help-block {
+  margin: 0 0 0 58px;
+
+  .tweet-info {
+
+    a:hover {
+      text-decoration: none;
+    }
+  }
+
+  .btn {
+    border: 0;
+    letter-spacing: 0.03em;
+    margin-left: 5px;
+    color: @muted-font-color;
+
+    .caret {
+      margin: 0 0 2px 1px;
+    }
+  }
+
+  .btn:hover {
+    color: @body-font-color;
+  }
+}
+
+.dropdown {
+
+  .dropdown-menu {
+    padding: 5px 0;
+
+    input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+      height: 13px;
+      float: left;
+      margin-top: 3px;
+    }
+
+    i {
+      margin-left: 8px;
+    }
+
+    label {
+      font-weight: 400;
+      margin-bottom: 0;
+      padding: 5px 10px 5px 10px;
+    }
+
+    label:hover {
+      background-color: #eee;
+      color: @body-font-color;
+    }
+  }
+}
+
+
+
+// Layout CSS without using Flex
+// -----------------------------
+
+// .left-menu {
+//   display: inline-block;
+//   vertical-align: top;
+//   width: 200px;
+//   height: 100%;
+//   z-index: 1;
+// }
+
+// .content {
+//   display: inline-block;
+//   vertical-align: top;
+//   width: 600px;
+//   height: 100%;
+//   overflow-x: scroll;
+//   overflow-y: hidden;
+//   padding-left: 20px;
+// }
+
+// .column {
+//   display: inline-block;
+//   width: 400px;
+//   min-height: 95%;
+//   max-height: 95%;
+//   overflow-y: hidden;
+//   overflow-x: hidden;
+//   margin-right: 10px;
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+//   position: relative;
+// }
+
+// .tweet-header {
+//   height:50px;
+// }
+
+// .tweet-stream {
+//   position: relative;
+//   min-height: 95%;
+//   overflow-y: scroll;
+//   box-sizing: border-box;
+//   -moz-box-sizing: border-box; /* Firefox */
+//   position: absolute;
+// }
+
+// .tweet {
+
+// }
+
+// .content:after {
+//     content: "";
+//     display: table;
+//     clear: both;
+// }

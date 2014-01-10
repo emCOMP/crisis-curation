@@ -1,0 +1,141 @@
+body {
+  -webkit-font-smoothing: antialiased !important;
+}
+.left-menu {
+  border-right: 2px solid #eeeeee;
+}
+.left-menu h4 {
+  padding: 4px 15px 14px 13px;
+  border-bottom: 2px solid #eeeeee;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #333333;
+}
+#tag-title {
+  margin: 0 0 0 0;
+}
+.nav-stacked > li + li {
+  margin-top: 0;
+  padding-top: 0;
+}
+.nav-pills li a,
+.nav-pills li a:hover {
+  border-radius: 0;
+  margin-top: 0;
+  color: #333333;
+  border-bottom: 2px solid #eeeeee;
+}
+.nav-pills li a i,
+.nav-pills li a:hover i {
+  margin-right: 12px;
+}
+.input-group .fa-search {
+  margin-left: 2px;
+  padding-bottom: 2px;
+}
+input[type="search"] {
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+  padding-right: 10px;
+  padding-left: 0;
+}
+input[type="search"]:focus,
+input[type="search"]:hover {
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+}
+.input-group-addon {
+  border: none;
+  border-radius: 0px;
+  background: none;
+}
+#tag-title {
+  padding: 5px 0 5px 15px;
+  margin-top: 10px;
+  border-top: 2px solid #eeeeee;
+  border-bottom: 2px solid #eeeeee;
+  font-weight: 700;
+}
+#tag-title .fa-plus {
+  padding: 3px 15px 0 0;
+}
+#tag-title .fa-plus:hover {
+  text-decoration: none;
+}
+.tweet-header {
+  border: 2px solid #eeeeee;
+  border-top-left-radius: 5px 5px;
+  border-top-right-radius: 5px 5px;
+  border-bottom: 0;
+  padding: 5px 5px 10px 5px;
+}
+.tweet-header .fa-home {
+  margin-top: 1px;
+}
+.tweet-header h4 {
+  margin: 5px 0 0 5px;
+}
+.tweet-header .fa-caret-down {
+  margin: 2px 5px 0 0;
+}
+.tweet-stream {
+  border: 2px solid #eeeeee;
+  border-bottom-left-radius: 5px 5px;
+  border-bottom-right-radius: 5px 5px;
+}
+.media {
+  padding: 10px;
+  border-bottom: 2px solid #eeeeee;
+  margin-top: 0;
+}
+.media p {
+  margin-bottom: 5px;
+}
+.media .media-body .fullname a {
+  color: #333333;
+}
+.media:last-child {
+  border-bottom: 0;
+}
+.help-block {
+  margin: 0 0 0 58px;
+}
+.help-block .tweet-info a:hover {
+  text-decoration: none;
+}
+.help-block .btn {
+  border: 0;
+  letter-spacing: 0.03em;
+  margin-left: 5px;
+  color: #999999;
+}
+.help-block .btn .caret {
+  margin: 0 0 2px 1px;
+}
+.help-block .btn:hover {
+  color: #333333;
+}
+.dropdown .dropdown-menu {
+  padding: 5px 0;
+}
+.dropdown .dropdown-menu input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+  height: 13px;
+  float: left;
+  margin-top: 3px;
+}
+.dropdown .dropdown-menu i {
+  margin-left: 8px;
+}
+.dropdown .dropdown-menu label {
+  font-weight: 400;
+  margin-bottom: 0;
+  padding: 5px 10px 5px 10px;
+}
+.dropdown .dropdown-menu label:hover {
+  background-color: #eee;
+  color: #333333;
+}
