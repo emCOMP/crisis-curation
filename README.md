@@ -16,9 +16,11 @@ You'll need to start up a bunch of things in many different terminal windows:
 Resetting Historical Tweet Stream
 --------------------------------------
 You'll know you've run out of tweets once you see this one pop up: 
+
 "Ottawa overrules health officials on heroin replacement study - OTTAWA &amp" from wwwHUMORcat
-or
+***or***
 "RT @TornadoTitans: “@yaya_castillo: This pipeline explosion is 50+ miles east between Forgan &amp" from Leonisx
+
 
 At this point, you need to restart the historical tweet stream. This can be accomplished by:
 1. Opening the DB Shell [see above]
