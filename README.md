@@ -3,6 +3,8 @@
 
 Content Curation Web App for Disaster Volunteers
 
+Want to help out? First check out our wiki to set up your workstation.
+
 How to Run Our Code
 ----------------------------
 You'll need to start up a bunch of things in many different terminal windows:
@@ -29,6 +31,3 @@ At this point, you need to restart the historical tweet stream. This can be acco
 3. Type in: `db.tweets.drop()` and press enter.
 4. You should see `true` outputted back to you.
 5. Stop the historical tweet stream [see above] by typing `Ctrl-C` and then starting it up again.
-
-
-Check out our wiki for some helpful information on setting up your workspace, etc.
