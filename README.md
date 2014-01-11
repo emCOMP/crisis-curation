@@ -11,3 +11,6 @@ You'll need to start up a bunch of things in many different terminal windows:
 - **Historical Tweet Stream**: `python historicalTweets.py`
 - **DB Shell**: `mongo`
 - **Database**: `sudo mongod`
+- 
+
+Check out our wiki for some helpful information on setting up your workspace, etc.
