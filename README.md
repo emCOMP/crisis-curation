@@ -23,6 +23,7 @@ You'll know you've run out of tweets once you see this one pop up:
 
 
 At this point, you need to restart the historical tweet stream. This can be accomplished by:
+
 1. Opening the DB Shell [see above]
 2. Type in: `use current_database` and press enter
 3. Type in: `db.tweets.drop()` and press enter.
