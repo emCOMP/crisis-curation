@@ -6,6 +6,7 @@ import pymongo
 import json
 from bson import Binary, Code
 from bson.json_util import dumps
+from bottle import static_file
 
 # ---- For clients to send tags to the server ----
 
@@ -154,7 +155,18 @@ def clientName():
     generated_id = clients.insert(instance_document)
     return '{"generated_id": "' + str(generated_id) + '"}'
 
+# --- Serve static files ---
+@get('/')
+def index():
+	return static_file('index.html', root="")
 
+@get('/<path:re:.*\.html>')
+def get_html(path):
+	return static_file(path, root="")
+
+@get('/<folder:re:(css|js|fonts|assets)>/<filename:path>')
+def get_static(folder, filename):
+	return static_file(filename, root=folder)
 
 # ---- Opening the Database ----
 
