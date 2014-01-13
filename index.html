@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="twitterCrisis">
+<html lang="en" ng-app="twitterCrisis" ng-controller="Ctrl">
     <head>
         <meta charset="utf-8">
         <meta name="description" content="">
@@ -17,9 +17,28 @@
         <link rel="stylesheet" type="text/css" href="css/layout.css">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
 
+        <!-- Angular & JS -->
+        <script type="text/javascript"src="js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript"src="js/bootstrap.min.js"></script>
+        <script type="text/javascript"src="js/jquery.dropdown.js"></script>
+        <script type="text/javascript"src="js/custom.js"></script>
+        <script type="text/javascript"src="js/angular.min.js"></script>
+        <script type="text/javascript"src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.2.0.js"></script>
+        <script type="text/javascript"src="js/tweets.js"></script>
+        <script type="text/javascript" src="js/userInfo.js"></script>
+        <script type="text/javascript"src="js/directives.js"></script>
+        
   </head>
 
   <body>
+<!--     <div modal-show class="modal fade"> 
+        <div id="whiteModalBox">
+            <p>Please enter your name:</p>
+            <form action="http://localhost:8080/clientName" method="post">
+                <input type="text" name="client_name" ng-model="yourName" id="nameInputBox"/>
+            </form>
+        </div>
+    </div> -->
     <div class="left-menu">
         <h4>Crisis Curation</h4>
         <div class="input-group" id="nav-menu">
@@ -74,6 +93,14 @@
         </ul>
     </div>
     <div class="content">
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <column-stream></column-stream>
+        <!--
         <div class="column">
             <div class="tweet-header">
                 <h4><i class="fa fa-home pull-left"></i>Home <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
@@ -2426,11 +2453,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
-
-<script src="js/jquery-2.0.3.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.dropdown.js"></script>
-<script src="js/custom.js"></script>
 </body>
 </html>
