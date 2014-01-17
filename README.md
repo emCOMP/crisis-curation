@@ -11,7 +11,7 @@ You'll need to start up a bunch of things in many different terminal windows:
 - **Bottle Server**: `python crisisServer.py`
 - **Chrome**: Linux: `/opt/google/chrome/google-chrome --disable-web-security` OSX: `open /Applications/Google\ Chrome.app --args --disable-web-security`
 - **Database**: `sudo mongod`
-- **DB Shell**: 'mongo'
+- **DB Shell**: `mongo`
 - **Historical Tweet Stream**: `python historicalTweets.py` Note - this eventually runs out of tweets. See 'Resetting Historical Tweet Stream'.
 
 
