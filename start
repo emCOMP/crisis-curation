@@ -3,7 +3,7 @@
 COLOR='\e[0;32m'
 NC='\e[0m'
 
-source yourDirectories.sh
+folder_mongo_root=`sudo find / -name mongod | sed 's/.\{11\}$//'`
 
 ###### CHECK/EXECUTE MONGOD
 echo -e "${COLOR}Checking for running instance of Mongo DB server.${NC}"
@@ -38,7 +38,8 @@ else	echo -e "${COLOR}Running instance of crisisServer detected.${NC}"
 	echo -e "${COLOR}Killing existing instance and rerunning server${NC}"
 	pgrep -f crisisServer.py | xargs kill
 fi
-nohup python ${folder_crisisServer_root}/crisisServer.py &
+#nohup python ${folder_crisisServer_root}/crisisServer.py &
+nohup python crisisServer.py &
 sleep 1
 echo -e "${COLOR}CrisisServer initiated.${NC}"
 
@@ -52,6 +53,7 @@ else	echo -e "${COLOR}Running instance of historicalTweets.py detected.${NC}"
 	echo -e "${COLOR}Killing existing instance and re-executing${NC}"
 	pgrep -f historicalTweets.py | xargs kill
 fi
-nohup python ${folder_crisisServer_root}/historicalTweets.py &
+nohup python historicalTweets.py &
+#nohup python ${folder_crisisServer_root}/historicalTweets.py &
 sleep 1
 echo -e "${COLOR}Historical Tweets are now being pulled.${NC}"

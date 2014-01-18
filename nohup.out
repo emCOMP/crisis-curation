@@ -1,28 +1,14 @@
-python: can't open file '/home/quicksilver/Documents/crisis-curation/crisisServer.py': [Errno 2] No such file or directory
-python: can't open file '/home/quicksilver/Documents/crisis-curation/historicalTweets.py': [Errno 2] No such file or directory
-Traceback (most recent call last):
-  File ".//crisisServer.py", line 289, in <module>
-    dbclient =  MongoClient('localhost', 27017)
-  File "/usr/local/lib/python2.7/dist-packages/pymongo/mongo_client.py", line 352, in __init__
-    raise ConnectionFailure(str(e))
-pymongo.errors.ConnectionFailure: could not connect to localhost:27017: [Errno 111] Connection refused
-Traceback (most recent call last):
-  File ".//historicalTweets.py", line 23, in <module>
-    dbclient = MongoClient('localhost', 27017)
-  File "/usr/local/lib/python2.7/dist-packages/pymongo/mongo_client.py", line 352, in __init__
-    raise ConnectionFailure(str(e))
-pymongo.errors.ConnectionFailure: could not connect to localhost:27017: [Errno 111] Connection refused
-Traceback (most recent call last):
-  File ".//crisisServer.py", line 289, in <module>
-    dbclient =  MongoClient('localhost', 27017)
-  File "/usr/local/lib/python2.7/dist-packages/pymongo/mongo_client.py", line 352, in __init__
-    raise ConnectionFailure(str(e))
-pymongo.errors.ConnectionFailure: could not connect to localhost:27017: [Errno 111] Connection refused
-Traceback (most recent call last):
-  File ".//historicalTweets.py", line 23, in <module>
-    dbclient = MongoClient('localhost', 27017)
-  File "/usr/local/lib/python2.7/dist-packages/pymongo/mongo_client.py", line 352, in __init__
-    raise ConnectionFailure(str(e))
-pymongo.errors.ConnectionFailure: could not connect to localhost:27017: [Errno 111] Connection refused
-python: can't open file '/home/quicksilver/Documents/crisis-curation/crisisServer.py': [Errno 2] No such file or directory
-python: can't open file '/home/quicksilver/Documents/crisis-curation/historicalTweets.py': [Errno 2] No such file or directory
+Bottle v0.11.6 server starting up (using WSGIRefServer())...
+Listening on http://localhost:8080/
+Hit Ctrl-C to quit.
+
+127.0.0.1 - - [18/Jan/2014 14:44:54] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:44:55] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:44:56] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:44:57] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:44:58] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:44:59] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:45:00] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:45:01] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:45:02] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
+127.0.0.1 - - [18/Jan/2014 14:45:03] "GET /tweets/since/387803342136557600 HTTP/1.1" 200 13
