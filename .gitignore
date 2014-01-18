@@ -3,5 +3,5 @@ fb
 # Get rid of emacs squiggle files
 *~
 
-# Don't clober each other's directory script
-yourDirectories.sh
+# Don't save nohup.out
+nohup.out
