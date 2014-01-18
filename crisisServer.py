@@ -7,6 +7,8 @@ from bottle import run, get, post, request
 from pymongo import MongoClient
 import pymongo
 import json
+import datetime
+import pytz
 from bson import Binary, Code
 from bson.json_util import dumps
 from bottle import static_file
@@ -74,21 +76,20 @@ def clientName_form():
 
 @post('/clientName')
 def clientName():
-    client_name = json.loads(request.body.read())["client_name"]
-    #TODO: Query to see if client is already in DB 
-    #      if so, return the already-generated id
-    #      and don't add again  
-    instance_document = {'Name': client_name}
-    generated_id = clients.insert(instance_document)
-    return '{"generated_id": "' + str(generated_id) + '"}'
+    client_name = json.loads(request.body.read())["client_name"] 
+    instance = {'Name': client_name}
+    peeps = clients.find(instance)
+    if(peeps.count() > 0):
+		return '{"id": ' + str(peeps[0]["_id"]) + '}'
+    else:
+    	return '{"id": "' + str(clients.insert(instance)) + '"}'
 
 # ---- Other interactions with clients ----
 
 @get('/clients')
 def clients():
-    # TODO: Query to get all clients
-    #       put in json list (see tweets above)
-    return '{"clients":[]}'
+    peeps = clients.find()
+    return '{"clients":' + dumps(peeps) + '}'
 
 ## I can't think of anything else necessary. 
 # Maybe look up client by id? Probably not (and also I won't mention similar things for other entities)
@@ -105,7 +106,6 @@ def newTag_form():
     <form action="/newtag" method="post">
       Tag Name: <input name="tag_name" type="text" />
       Color: <input name="color" type="text" />
-      Created At: <input name="created_at" type="text" /> 
       Created By: <input name="created_by" type="text" />
       Tag ID: <input name="tag_id" type="int" />
       <input value="Add tag" type="submit" />
@@ -114,37 +114,33 @@ def newTag_form():
 
 @post('/newtag')
 def newTag():
-    tag_name = request.forms.get("tag_name")
-    tag_color = request.forms.get("color")
-    tagID = request.forms.get("tag_id")
-    created_At = request.forms.get("created_at")
-    created_By = request.forms.get("created_by")
-    tag_document = {'Color': tag_color, #TODO: decide how we are representing color when we save it in the db - i suggest string of hex
-                    'Created_At': datetime.datetime(2013, 10, 9, 4, 50, 54), #TODO: get the real time/date
+   tag_name = request.forms.get("tag_name")
+   tag_color = request.forms.get("color")
+   tagID = request.forms.get("tag_id")
+   created_By = request.forms.get("created_by")
+   tag_document = {'Color': tag_color, #TODO: decide how we are representing color when we save it in the db - i suggest string of hex
+                    'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                     'Created_By': created_By, 
                     'Tag_ID': tagID, 
                     'Tag_Name': tag_name}
     # TODO: check to see if already in db
-    generated_id = tags.insert(tag_document)
-    return '{"generated_id": "' + str(generated_id) + '"}'
+   generated_id = tags.insert(tag_document)
+   return '{"generated_id": "' + str(generated_id) + '"}'
 
 
 # ---- For clients to get Tags from DB ----
 
-@get('/tags') # TODO: this needs to be fixed to return json ... like before should be '{"tags":[]}' with tag jsons separated by commas inside the []
+@get('/tags')
 def tags():
     all_tags = tags.find()
-    ret = ''
-    for t in all_tags: 
-        ret += str(t)
-    return '{"tags":[]}'
+    return '{"tags":' + dumps(all_tags) + '}'
 
 ## might want one to get tags only since the last tag was created (like tweets/since)
 ## but might not need it since we expect there will always be a small number of tags
 
 # ---- Other interactions with tags (but no other tables) ----
 
-@get('/tags/changeColor') # do we want to track when colors were changed? currently not set up to do this. 
+@get('/tags/changeColor')
 def changeTagColor_form():
     return '''
     <form action="/tags/changeColor" method="post">
@@ -180,13 +176,14 @@ def changeTagColor():
 # ---- Interactions with tags and clients (and no other tables) ----
 
 ## get all tags by a certain client
-@get('/tags/byClient/<clientID:int>') #TODO: figure out if this is actually an int or text or what ... 
+@get('/tags/byClient/<clientID:path>') #TODO: figure out if this is actually an int or text or what ... 
 def tagsByClient(clientID):
     # TODO: 
     # run query to get what you need, put it in json format
     # deal with the case where clientID isn't in the db ... not sure what the solution is, but do it predictably
     # and make it obvious so that we can change it later if needed 
-    return '{"tags":[]}'
+    tagsByClient = tags.find({"Created_By": clientID})
+    return '{"tags":' + dumps(tagsByClient) + '}'
 
 # ---- Interactions with tags and tweets (and no other tables)----
 ## I can't think of anything
@@ -206,7 +203,6 @@ def newTagInstance_form():
       Tag ID: <input name="tag_id" type="int" />
       Tweet ID: <input name="tweet_id" type="int" />
       Instance ID: <input name="instance_id" type="int" />
-      Created At: <input name="created_at" type="text" /> 
       Created By: <input name="created_by" type="text" />
       <input value="Add tag instance" type="submit />
     </form>
@@ -214,12 +210,11 @@ def newTagInstance_form():
 
 @post('/newtaginstance')
 def newTagInstance():
-    created_at = request.forms.get("created_at")
     created_by = request.forms.get("created_by")
     tag_id = request.forms.get("tag_id")
     tweet_id = request.forms.get("tweet_id")
     instance_id = request.forms.get("instance_id")
-    instance_document = {'Created_At': datetime.datetime(2013, 10, 9, 4, 52, 1), #TODO: get the real date/time & decide on format
+    instance_document = {'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                          'Created_By': created_by,
                          'Tag_ID': tag_id,
                          'Tag_Instance_ID': instance_id,
