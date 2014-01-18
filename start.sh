@@ -3,9 +3,7 @@
 COLOR='\e[0;32m'
 NC='\e[0m'
 
-folder_mongo_root='/home/quicksilver/mongodb'
-folder_crisisServer_root='/home/quicksilver/Documents/crisis-curation'
-
+source yourDirectories.sh
 
 ###### CHECK/EXECUTE MONGOD
 echo -e "${COLOR}Checking for running instance of Mongo DB server.${NC}"
