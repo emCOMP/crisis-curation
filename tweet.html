@@ -15,30 +15,7 @@
             <small>{{tweet.favorite_count || 'Unknown'}}</small> <i class="fa fa-star"></i>
         </span>
         <div class="dropdown-relative pull-right">
-            <a href="#" type="button" class="btn btn-default btn-xs" data-dropdown="#tag-tweet">Tag tweet <i class="fa fa-caret-down"></i></a>
-            <div id="tag-tweet" class="dropdown dropdown-tip">
-                <div class="dropdown-menu">
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
-                    </label>
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
-                    </label>
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
-                    </label>
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
-                    </label>
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
-                    </label>
-                    <label>
-                        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
-                    </label>
-                </div>
-            </div>
-        </div>
+            <a href="#" type="button" class="btn btn-default btn-xs" popover-template="popup.html" popover-placement="right">Tag tweet <i class="fa fa-caret-down"></i></a>
         <span class="tags pull-right">
             <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
             <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
