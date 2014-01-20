@@ -79,9 +79,9 @@ def clientName_form():
 def clientName():
     client_name = json.loads(request.body.read())["client_name"] 
     instance = {'Name': client_name}
-    peeps = clients.find(instance)
-    if(peeps.count() > 0):
-		return '{"id": ' + str(peeps[0]["_id"]) + '}'
+    client = clients.find(instance)
+    if(client.count() > 0):
+		return '{"id": ' + str(client[0]["_id"]) + '}'
     else:
     	return '{"id": "' + str(clients.insert(instance)) + '"}'
 
@@ -161,7 +161,7 @@ def changeTagColor():
     if(tag):
         tags.update({'_id': objectid.ObjectId(tagID)},
 					{'$set': { 'Color' : new_color }})
-		return 'true'	# TODO not sure what format of response should be			
+        return 'true'	# TODO not sure what format of response should be			
     else:
         return '{"error": { "message": "Tag id does not exist"}}'
 
