@@ -139,31 +139,3 @@ input[type="search"]:hover {
   background-color: #eee;
   color: #333333;
 }
-
-
-
-
-
-#whiteModalBox {
-  width: 250px;
-  height: 150px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5em;
-  border-radius: 1em;
-  padding: 1em;
-  padding-top: 3em;
-  background: white;
-}
-.animate-enter {
-  -webkit-transition: 1s linear all; /* Chrome */
-  transition: 1s linear all;
-  opacity: 0;
-  background: lightgray;
-}
- 
-.animate-enter.animate-enter-active {
-  opacity: 1;
-  background: white;
-}

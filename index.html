@@ -16,14 +16,15 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link href="css/popover.css" rel="stylesheet">
     
-    <script type="text/javascript"src="http://code.angularjs.org/1.2.9/angular.js"></script>
-    <script src="js/ui-bootstrap-tpls-0.10.0.js"></script>
-    <script type="text/javascript"src="js/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript"src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-    <script type="text/javascript"src="js/tweets.js"></script>
+    <script type="text/javascript" src="js/tweets.js"></script>
     <script type="text/javascript" src="js/userInfo.js"></script>
-    <script type="text/javascript"src="js/directives.js"></script>
+    <script type="text/javascript" src="js/tags.js"></script>
+    <script type="text/javascript" src="js/directives.js"></script>
   </head>
 
   <body ng-controller="Ctrl">
@@ -31,11 +32,13 @@
         <h4>Crisis Curation</h4>
         <div class="input-group" id="nav-menu">
           <span class="input-group-addon"><a href="#"><i class="fa fa-search text-muted"></i></a></span>
-          <input type="search" class="form-control" placeholder="Search" autofocus>
+          <form ng-submit="newColumn()">
+            <input ng-model="searchTerm" type="search" class="form-control" placeholder="Search" autofocus>
+          </form>
         </div>
 
         <div class="dropdown-relative">
-            <p id="tag-title">Tags <a class="fa fa-plus pull-right" href="#" popover-template="newTag.html" popover-placement="right"></a></p>
+            <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#" popover-template="newTag.html" popover-placement="right" popover-trigger="click"></a></p>
         </div>
         <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
             <li><a href="#"><i class="fa fa-circle text-danger"></i>Caution or Advice<span class="badge pull-right">54</span></a></li>

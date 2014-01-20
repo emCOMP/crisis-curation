@@ -249,3 +249,11 @@
   border-right-width: 0;
   content: " ";
 }
+
+
+
+
+
+a > .fa-circle {
+  float: left;
+}

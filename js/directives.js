@@ -1,21 +1,31 @@
 angular.module('twitterCrisis', ['ui.bootstrap'])
+
+
+
 // Controller
-    .controller('Ctrl', function($http, $scope, $interval/*,$dialog*/) {
+    .controller('Ctrl', function($http, $scope, $interval, $compile/*,$dialog*/) {
     	getUser($http/*, $dialog*/);
     	$('[rel="popover"]').popover();
 		getTweets($http, $scope);
 		$interval(function(){
 			getTweets($http, $scope);
 		}, 500); 
+        $scope.saveNewTag = function () {
+            saveTag($scope);
+        }
+        $scope.newColumn = function() {
+            alert("searched for: " + $scope.searchTerm);
+            var el = $compile( "<column-stream namething='" + $scope.searchTerm + "'></column-stream>" )( $scope );
+            $(".content").append( el );
+        }
     })
-
 
 // Directives
     .directive("columnStream", function() {
 		return {
+            transclude: true,
 		    restrict: 'EA',
-		    templateUrl: 'column.html', 
-		    replace: true
+		    templateUrl: 'column.html'
 		};
     })
 
