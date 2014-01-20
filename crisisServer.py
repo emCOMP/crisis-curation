@@ -25,40 +25,30 @@ def test():
 
 # ---- For clients to get Tweets ----
 
-@get('/tweets/<num:int>')   # TODO: decide if we should deal differently with the case where there are less than num tweets
+@get('/tweets/<num:int>')
 def tweets(num):
-    if num == 0:
-            return '{"tweets": []}'
-    num_t = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
-    ret = '{"tweets":['
-    c = 0
-    for t in num_t:
-        c += 1
-        json_t = dumps(t)
-        ret += json_t + "," # concatenating and sorting this way: [most recent --> least recent]
-    if (c != 0):
-        ret = ret[:-1]
-    ret += ']}'
-    return ret
+	if(num < 0):
+		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
+	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
+	return '{"tweets": ' + dumps(tweet_instances) +  '}'
 
-@get('/tweets/since/<tweetID:int>') # TODO: deal with the case where there is no tweet with that ID predictably (ex. return false or nothing, but make it definitive)
+@get('/tweets/since/<tweetID:int>')
 def tweetsSince(tweetID):
-    t_since = tweets.find({'uuid' : {'$gt': tweetID}}).sort("uuid", pymongo.DESCENDING)
-    ret = '{"tweets":['
-    c = 0
-    for t in t_since:
-        c += 1
-        json_t = dumps(t)
-        ret += json_t + "," # concatenating and sorting this way: [most recent --> least recent]
-    if (c != 0):
-        ret = ret[:-1]
-    ret += ']}'
-    return ret
+	tweet = tweets.find({"uuid" : float(tweetID)})
+	if(tweet.count() > 0):
+		t_since = tweets.find({'uuid' : {'$gt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		return '{"tweets": ' + dumps(t_since) + '}'
+	else:
+		return '{"error": { "message": "Tweet id does not exist"}}'
 
-@get('/tweets/before/<tweetID:int>') # TODO: deal with the case where there is no tweet with that ID predictably (see above)
+@get('/tweets/before/<tweetID:int>')
 def tweetsBefore(tweetID):
-    # TODO: write this query, add into json list, update return value
-    return '{"tweets":[]}'
+	tweet = tweets.find({"uuid" : tweetID})
+	if(tweet.count() > 0):
+		t_before = tweets.find({'uuid' : {'$lt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		return '{"tweets": ' + dumps(t_before) + '}'
+	else:
+		return '{"error": { "message": "Tweet id does not exist"}}'
 
 ## do we want one to get a specific tweet (i.e., by ID)? 
 
