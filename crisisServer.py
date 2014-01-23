@@ -7,8 +7,11 @@ from bottle import run, get, post, request
 from pymongo import MongoClient
 import pymongo
 import json
+import datetime
+import pytz
 from bson import Binary, Code
 from bson.json_util import dumps
+from bson import objectid
 from bottle import static_file
 
 """
@@ -22,40 +25,30 @@ def test():
 
 # ---- For clients to get Tweets ----
 
-@get('/tweets/<num:int>')   # TODO: decide if we should deal differently with the case where there are less than num tweets
+@get('/tweets/<num:int>')
 def tweets(num):
-    if num == 0:
-            return '{"tweets": []}'
-    num_t = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
-    ret = '{"tweets":['
-    c = 0
-    for t in num_t:
-        c += 1
-        json_t = dumps(t)
-        ret += json_t + "," # concatenating and sorting this way: [most recent --> least recent]
-    if (c != 0):
-        ret = ret[:-1]
-    ret += ']}'
-    return ret
+	if(num < 0):
+		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
+	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
+	return '{"tweets": ' + dumps(tweet_instances) +  '}'
 
-@get('/tweets/since/<tweetID:int>') # TODO: deal with the case where there is no tweet with that ID predictably (ex. return false or nothing, but make it definitive)
+@get('/tweets/since/<tweetID:int>')
 def tweetsSince(tweetID):
-    t_since = tweets.find({'uuid' : {'$gt': tweetID}}).sort("uuid", pymongo.DESCENDING)
-    ret = '{"tweets":['
-    c = 0
-    for t in t_since:
-        c += 1
-        json_t = dumps(t)
-        ret += json_t + "," # concatenating and sorting this way: [most recent --> least recent]
-    if (c != 0):
-        ret = ret[:-1]
-    ret += ']}'
-    return ret
+	tweet = tweets.find({"uuid" : float(tweetID)})
+	if(tweet.count() > 0):
+		t_since = tweets.find({'uuid' : {'$gt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		return '{"tweets": ' + dumps(t_since) + '}'
+	else:
+		return '{"error": { "message": "Tweet id does not exist"}}'
 
-@get('/tweets/before/<tweetID:int>') # TODO: deal with the case where there is no tweet with that ID predictably (see above)
+@get('/tweets/before/<tweetID:int>')
 def tweetsBefore(tweetID):
-    # TODO: write this query, add into json list, update return value
-    return '{"tweets":[]}'
+	tweet = tweets.find({"uuid" : tweetID})
+	if(tweet.count() > 0):
+		t_before = tweets.find({'uuid' : {'$lt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		return '{"tweets": ' + dumps(t_before) + '}'
+	else:
+		return '{"error": { "message": "Tweet id does not exist"}}'
 
 ## do we want one to get a specific tweet (i.e., by ID)? 
 
@@ -74,21 +67,20 @@ def clientName_form():
 
 @post('/clientName')
 def clientName():
-    client_name = json.loads(request.body.read())["client_name"]
-    #TODO: Query to see if client is already in DB 
-    #      if so, return the already-generated id
-    #      and don't add again  
-    instance_document = {'Name': client_name}
-    generated_id = clients.insert(instance_document)
-    return '{"generated_id": "' + str(generated_id) + '"}'
+    client_name = json.loads(request.body.read())["client_name"] 
+    instance = {'Name': client_name}
+    client = clients.find(instance)
+    if(client.count() > 0):
+		return '{"id": ' + str(client[0]["_id"]) + '}'
+    else:
+    	return '{"id": "' + str(clients.insert(instance)) + '"}'
 
 # ---- Other interactions with clients ----
 
 @get('/clients')
 def clients():
-    # TODO: Query to get all clients
-    #       put in json list (see tweets above)
-    return '{"clients":[]}'
+    peeps = clients.find()
+    return '{"clients":' + dumps(peeps) + '}'
 
 ## I can't think of anything else necessary. 
 # Maybe look up client by id? Probably not (and also I won't mention similar things for other entities)
@@ -105,46 +97,43 @@ def newTag_form():
     <form action="/newtag" method="post">
       Tag Name: <input name="tag_name" type="text" />
       Color: <input name="color" type="text" />
-      Created At: <input name="created_at" type="text" /> 
       Created By: <input name="created_by" type="text" />
-      Tag ID: <input name="tag_id" type="int" />
       <input value="Add tag" type="submit" />
     </form>
     '''
 
+# Creates a new tag, returns ID of that tag.
+# If a tag with this name already exists, returns the ID of that tag
 @post('/newtag')
 def newTag():
-    tag_name = request.forms.get("tag_name")
-    tag_color = request.forms.get("color")
-    tagID = request.forms.get("tag_id")
-    created_At = request.forms.get("created_at")
-    created_By = request.forms.get("created_by")
-    tag_document = {'Color': tag_color, #TODO: decide how we are representing color when we save it in the db - i suggest string of hex
-                    'Created_At': datetime.datetime(2013, 10, 9, 4, 50, 54), #TODO: get the real time/date
+   tag_name = request.forms.get("tag_name")
+   tag_color = request.forms.get("color")
+   created_By = request.forms.get("created_by")
+   tag_document = {'Color': tag_color, # Use hex form; e.g."#FF00FF'
+                    'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                     'Created_By': created_By, 
-                    'Tag_ID': tagID, 
                     'Tag_Name': tag_name}
-    # TODO: check to see if already in db
-    generated_id = tags.insert(tag_document)
-    return '{"generated_id": "' + str(generated_id) + '"}'
+   tag = tags.find({'Tag_Name' : tag_name})
+   if(tag.count() > 0):
+      return '{"id": "' + str(tag[0]["_id"]) + '"}'
+   else:
+      generated_id = tags.insert(tag_document)
+      return '{"id": "' + str(generated_id) + '"}'
 
 
 # ---- For clients to get Tags from DB ----
 
-@get('/tags') # TODO: this needs to be fixed to return json ... like before should be '{"tags":[]}' with tag jsons separated by commas inside the []
+@get('/tags')
 def tags():
     all_tags = tags.find()
-    ret = ''
-    for t in all_tags: 
-        ret += str(t)
-    return '{"tags":[]}'
+    return '{"tags":' + dumps(all_tags) + '}'
 
 ## might want one to get tags only since the last tag was created (like tweets/since)
 ## but might not need it since we expect there will always be a small number of tags
 
 # ---- Other interactions with tags (but no other tables) ----
 
-@get('/tags/changeColor') # do we want to track when colors were changed? currently not set up to do this. 
+@get('/tags/changeColor')
 def changeTagColor_form():
     return '''
     <form action="/tags/changeColor" method="post">
@@ -158,9 +147,13 @@ def changeTagColor_form():
 def changeTagColor():
     new_color = request.forms.get("color")
     tagID = request.forms.get("tag_id")
-    # TODO: figure out how to update the db entry. 
-    #       deal with the case where there's no tag with that id (probably return false)
-    return 'true'
+    tag = getInstanceByObjectID(tagID, tags)
+    if(tag):
+        tags.update({'_id': objectid.ObjectId(tagID)},
+					{'$set': { 'Color' : new_color }})
+        return 'true'	# TODO not sure what format of response should be			
+    else:
+        return '{"error": { "message": "Tag id does not exist"}}'
 
 ## hold off on this one - it's not important yet 
 ## we need to first figure out how we're passing time back/forth between frontend and backend and how we're storing it.
@@ -180,13 +173,14 @@ def changeTagColor():
 # ---- Interactions with tags and clients (and no other tables) ----
 
 ## get all tags by a certain client
-@get('/tags/byClient/<clientID:int>') #TODO: figure out if this is actually an int or text or what ... 
+@get('/tags/byClient/<clientID:path>') 
 def tagsByClient(clientID):
-    # TODO: 
-    # run query to get what you need, put it in json format
-    # deal with the case where clientID isn't in the db ... not sure what the solution is, but do it predictably
-    # and make it obvious so that we can change it later if needed 
-    return '{"tags":[]}'
+	client = getInstanceByObjectID(clientID, clients)
+	if(client):
+		tagsByClient = tags.find({"Created_By": clientID})
+		return '{"tags":' + dumps(tagsByClient) + '}'
+	else:
+		return '{"error": { "message": "Client id does not exist"}}'
 
 # ---- Interactions with tags and tweets (and no other tables)----
 ## I can't think of anything
@@ -203,61 +197,55 @@ def tagsByClient(clientID):
 def newTagInstance_form():
     return '''
     <form action="/newtaginstance" method="post">
-      Tag ID: <input name="tag_id" type="int" />
-      Tweet ID: <input name="tweet_id" type="int" />
-      Instance ID: <input name="instance_id" type="int" />
-      Created At: <input name="created_at" type="text" /> 
+      Tag ID: <input name="tag_id" type="text" />
+      Tweet ID: <input name="tweet_id" type="text" />
       Created By: <input name="created_by" type="text" />
-      <input value="Add tag instance" type="submit />
+      <input value="Add tag instance" type="submit" />
     </form>
     '''
 
 @post('/newtaginstance')
 def newTagInstance():
-    created_at = request.forms.get("created_at")
     created_by = request.forms.get("created_by")
     tag_id = request.forms.get("tag_id")
     tweet_id = request.forms.get("tweet_id")
-    instance_id = request.forms.get("instance_id")
-    instance_document = {'Created_At': datetime.datetime(2013, 10, 9, 4, 52, 1), #TODO: get the real date/time & decide on format
+    instance_document = {'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                          'Created_By': created_by,
                          'Tag_ID': tag_id,
-                         'Tag_Instance_ID': instance_id,
                          'Tweet_ID': tweet_id}
-    generated_id = tags.insert(instance_document)
-    return generated_id
+	# TODO deal with case that client, tag, or tweet IDs do not exist
+    generated_id = tag_instances.insert(instance_document)
+    return str(generated_id)
 
 # ---- For clients to get Tag Instances ----
 
-@get('/taginstances')  # TODO: this needs to be fixed to return json ... like before should be '{"tags_instances":[]}' with tag instance jsons separated by commas inside the []
+@get('/taginstances')
 def tagInstances():
-    all_tag_instances = tag_instances.find()
-    ret = ''
-    for t in all_tag_instances: 
-        ret += str(t)
-    # return ret
-    return '{"tag_instances":[]}'
+    all_tags = tag_instances.find()
+    return '{"tags_instances":' + dumps(all_tags) + '}'
 
-@get('/taginstances/since/<tagInstanceID:int>') # TODO: this needs to be fixed to return json ... like before should be '{"tags_instances":[]}' with tag instance jsons separated by commas inside the []
-def tagInstancesSince(tagInstanceID): # TODO: deal with the case where there's no tag with that id (probably return false? ex. {"tag_instances":"false"}???)
-    t_instances_since = tag_instances.find({'Tag_Instance_ID' : {'$gt': tagInstanceID}})
-    ret = ''
-    for t in t_since: 
-        ret += str(t)
-    # return ret
-    return '{"tag_instances":[]}'
+# Return tag instances since the tag instance with given ID
+@get('/taginstances/since/<tagInstanceID:path>')
+def tagInstancesSince(tagInstanceID):
+	tagInstance = getInstanceByObjectID(tagInstanceID, tag_instances)
+	if(tagInstance):
+		tagDate = tagInstance['Created_At']
+		t_instances_since = tag_instances.find({'Created_At' : {'$gt': tagDate}})
+		return '{"tags_instances":' + dumps(t_instances_since) + '}'
+	else:
+		return '{"error": { "message": "Tag instance id does not exist"}}'
 
 # ---- Interactions with tags instances (but no other tables) ----
 
 ## method for getting all tag instances associated with a specific tweet
-@get('/taginstances/tweetID/<tweetID:int>')
+@get('/taginstances/tweetID/<tweetID:path>')
 def tagInstancesByTweetID(tweetID):
-    # TODO: 
-    # run the appropriate query
-    # turn it into json of the right format
-    # return
-    # deal with case where tweetID isn't valid/doesn't exist.
-    return '{"tag_instances":[]}'
+	tweet = getInstanceByObjectID(tweetID, tweets)
+	if(tweet):
+		t_instances_since = tag_instances.find({'Tweet_ID' : tweetID })
+		return '{"tags_instances":' + dumps(t_instances_since) + '}'
+	else:
+		return '{"error": { "message": "Tweet id does not exist"}}'
 
 ## don't do this yet. 
 ## method for getting all tag instances created between time T1 and time T2
@@ -275,27 +263,27 @@ def tagInstancesByTweetID(tweetID):
 # ---- Interactions with tags instances and clients (but no other tables) ----
 
 ## method for getting all tag instances by a certain client
-@get('/taginstances/clientID/<clientID:int>')
+@get('/taginstances/clientID/<clientID:path>')
 def tagInstancesByClientID(clientID):
-    # TODO: 
-    # run the appropriate query
-    # turn it into json of the right format
-    # return
-    # deal with case where clientID isn't valid/doesn't exist.
-    return '{"tag_instances":[]}'
+	client = getInstanceByObjectID(clientID, clients)
+	if(client):
+		t_instances = tag_instances.find({'Created_By' : clientID })
+		return '{"tags_instances":' + dumps(t_instances) + '}'
+	else:
+		return '{"error": { "message": "Client id does not exist"}}'
 
 
 # ---- Interactions with tags instances and tags (but no other tables) ----
 
 ## method for getting all tags instances with a certain tag
-@get('/taginstances/tagID/<tagID:int>')
+@get('/taginstances/tagID/<tagID:path>')
 def tagInstancesByTagID(tagID):
-    # TODO: 
-    # run the appropriate query
-    # turn it into json of the right format
-    # return
-    # deal with case where tagID isn't valid/doesn't exist.
-    return '{"tag_instances":[]}'
+	tag = getInstanceByObjectID(tagID, tags)
+	if(tag):
+		t_instances = tag_instances.find({'Tag_ID' : tagID })
+		return '{"tags_instances":' + dumps(t_instances) + '}'
+	else:
+		return '{"error": { "message": "Tag id does not exist"}}'
 
 # ---- Interactions with more than 2 tables? ----
 
@@ -304,6 +292,21 @@ def tagInstancesByTagID(tagID):
 ## anything else with tag instances? anything else at all? 
 # eventually, we'll add something with tags and/or tag instances to tag twitter users instead of just tweets, 
 # but on the backend we're going to put those in a new table (even if we represent the tags the same way on the frontend) 
+
+###################### HELPER METHODS #####################################
+
+# Returns the instance from collection with the given Object ID
+# Returns None if no such object exists
+def getInstanceByObjectID(id, collection):
+	try:
+		oid = objectid.ObjectId(id)
+	except Exception:
+		return None
+	instance = collection.find({'_id': oid })
+	if(instance.count() > 0):
+		return instance[0]
+	else:
+		return None
 
 ###################### STATIC FILES #####################################
 
