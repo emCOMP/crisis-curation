@@ -11,7 +11,7 @@ angular.module('twitterCrisis', ['ui.bootstrap'])
 			getTweets($http, $scope);
 		}, 500); 
         $scope.saveNewTag = function () {
-            saveTag($scope);
+            saveTag($scope, $http);
         }
         $scope.newColumn = function() {
             alert("searched for: " + $scope.searchTerm);
