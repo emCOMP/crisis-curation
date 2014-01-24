@@ -10,8 +10,9 @@ How to Run Our Code
 You'll need to start up both Chrome and our Server/DB
 - **Chrome**: Linux: `/opt/google/chrome/google-chrome --disable-web-security` OSX: `open /Applications/Google\ Chrome.app --args --disable-web-security`
 - **Server & DB**: `./start`
+To restart use `./stop`
 
-If things aren't working you can do things manually [here]().
+If things aren't working you can do things manually [here](https://github.com/engz/crisis-curation/wiki/Starting-Server-Manually).
 
 Resetting Historical Tweet Stream
 --------------------------------------
