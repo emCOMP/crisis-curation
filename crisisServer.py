@@ -106,9 +106,9 @@ def newTag_form():
 # If a tag with this name already exists, returns the ID of that tag
 @post('/newtag')
 def newTag():
-   tag_name = request.forms.get("tag_name")
-   tag_color = request.forms.get("color")
-   created_By = request.forms.get("created_by")
+   tag_name = json.loads(request.body.read())["tag_name"]
+   tag_color = json.loads(request.body.read())["color"]
+   created_By = json.loads(request.body.read())["created_by"]
    tag_document = {'Color': tag_color, # Use hex form; e.g."#FF00FF'
                     'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                     'Created_By': created_By, 
@@ -145,8 +145,8 @@ def changeTagColor_form():
 
 @post('/tags/changeColor')
 def changeTagColor():
-    new_color = request.forms.get("color")
-    tagID = request.forms.get("tag_id")
+    new_color = json.loads(request.body.read())["color"]
+    tagID = json.loads(request.body.read())["tag_id"]
     tag = getInstanceByObjectID(tagID, tags)
     if(tag):
         tags.update({'_id': objectid.ObjectId(tagID)},
@@ -206,9 +206,9 @@ def newTagInstance_form():
 
 @post('/newtaginstance')
 def newTagInstance():
-    created_by = request.forms.get("created_by")
-    tag_id = request.forms.get("tag_id")
-    tweet_id = request.forms.get("tweet_id")
+    created_by = json.loads(request.body.read())["created_by"]
+    tag_id = json.loads(request.body.read())["tag_id"]
+    tweet_id = json.loads(request.body.read())["tweet_id"]
     instance_document = {'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
                          'Created_By': created_by,
                          'Tag_ID': tag_id,
