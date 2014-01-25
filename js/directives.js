@@ -1,10 +1,8 @@
-angular.module('twitterCrisis', ['ui.bootstrap'])
-
-
+angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 
 // Controller
-    .controller('Ctrl', function($http, $scope, $interval, $compile/*,$dialog*/) {
-    	getUser($http/*, $dialog*/);
+    .controller('Ctrl', function($http, $scope, $interval, $compile, localStorageService/*,$dialog*/) {
+    	getUser($http, localStorageService/*, $dialog*/);
     	$('[rel="popover"]').popover();
 		getTweets($http, $scope);
 		$interval(function(){

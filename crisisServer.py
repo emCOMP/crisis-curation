@@ -71,7 +71,7 @@ def clientName():
     instance = {'Name': client_name}
     client = clients.find(instance)
     if(client.count() > 0):
-		return '{"id": ' + str(client[0]["_id"]) + '}'
+		return '{"id": "' + str(client[0]["_id"]) + '"}'
     else:
     	return '{"id": "' + str(clients.insert(instance)) + '"}'
 
