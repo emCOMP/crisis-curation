@@ -3,8 +3,8 @@
         <img class="media-object img-circle" ng-src="{{'assets/img/profile-pic.png' || tweet.user_profile_image_url}}" alt="..."> 
     </a>
     <div class="media-body">
-        <span class="fullname"><a href="#"><strong>{{tweet.fromUser}}</strong></a></span>
-        <span class="username text-muted"><small>@{{tweet.user_name}}</small></span>
+        <span class="fullname"><a href="http://twitter.com/{{tweet.fromUser}}"><strong>{{tweet.user_name}}</strong></a></span>
+        <span class="username text-muted"><small>@{{tweet.fromUser}}</small></span>
         <span class="timestamp text-muted pull-right"><small>{{tweet.createdAt.$date}}</small></span>
         <p class="tweet-text">
         {{tweet.text}} <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
