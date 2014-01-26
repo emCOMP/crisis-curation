@@ -1,9 +1,22 @@
-function saveTag($scope, $http) {
+////////////// All things tag related
+
+// Get all tags from the database
+function updateTags($scope, $http) {
+	$http.get('http://localhost:8080/tags').success(function(response) {
+	    if (response.tags == null) {
+	    	console.log("Getting tags unsuccessful");
+	    } else {
+	    	console.log(response.tags);
+	    	$scope.CURRENT_TAGS = response.tags;
+	    }
+	});
+}
+
+// Save a tag to the database, and update front end's set of known tags.
+function saveTag($scope, $http, $filter) {
 	$("#newTagButton").click();
 	var newTagName = $("#tag-name").val();
-	var root = $("<li>");
-	var link = $("<a>").attr("href", "#").text(newTagName);
-	var colorClass = 'text-';
+	var colorClass = '';
 	var colorHex = '';
 	if ($scope.newTagColor == "blue") {
 		colorClass += "primary"
@@ -24,26 +37,21 @@ function saveTag($scope, $http) {
 		colorClass += "success";
 		colorHex = "#3c763d"
 	}
-	var circle = $("<i>").addClass("fa").addClass("fa-circle").addClass(colorClass);
-	link.append(circle);
-	var span = $("<span>").addClass("badge").addClass("pull-right");
-	link.append(span);
-	span.text("0");
-	root.append(link);
-	$("#tag-list").append(root);
+	$scope.CURRENT_TAGS.push({'css_class': colorClass, 'tag_name': newTagName, 'instances': 0, '_id': {"$oid": "unknown"}});
 
 	var newTagObj = {
 		"color": colorHex,
 		"created_by": USER,
-		"tag_name": newTagName
+		"tag_name": newTagName, 
+		"css_class": colorClass
 	};
-	console.log("Sending newTagObj", newTagObj);
-	$http.post('http://localhost:8080/newtag', newTagObj).success(function(response)
-		  {
-		    if (response.id == null) {
-		    	alert("Saving new tag unsuccessful");
-		    } else {
-		    	console.log("new tag id: " + response.id);
-		    }
-		  });
+	$http.post('http://localhost:8080/newtag', newTagObj).success(function(response) {
+	    if (response.id == null) {
+	    	console.log("Saving new tag unsuccessful");
+	    } else {
+	    	var obj = $filter('filter')($scope.CURRENT_TAGS, {'tag_name': newTagName}, true)[0];
+	    	obj._id.$oid = response.id;
+
+	    }
+	});
 }

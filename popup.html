@@ -1,26 +1,7 @@
 <div>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-danger"></i> Caution or Advice
-    </label>
-    <br/>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-info"></i> Infrastructure Damage
-    </label>
-    <br/>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-warning"></i> Casualties or Injuries
-    </label>
-    <br/>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-success"></i> Requests for Help
-    </label>
-    <br/>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-muted"></i> Offers of Help
-    </label>
-    <br/>
-    <label>
-        <input type="checkbox"><i class="fa fa-circle text-primary"></i> False
-    </label>
-    <br/>
+    <div ng-repeat="tag in CURRENT_TAGS">
+        <label>
+            <input type="checkbox"><i class="fa fa-circle text-{{tag.css_class}}"></i> {{tag.tag_name}}
+        </label>
+    </div>
 </div>

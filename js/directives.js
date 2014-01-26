@@ -1,15 +1,16 @@
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 
 // Controller
-    .controller('Ctrl', function($http, $scope, $interval, $compile, localStorageService/*,$dialog*/) {
+    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, localStorageService/*,$dialog*/) {
+        $scope.CURRENT_TAGS = [];
     	getUser($http, localStorageService/*, $dialog*/);
     	$('[rel="popover"]').popover();
-		getTweets($http, $scope);
 		$interval(function(){
+            updateTags($scope, $http);
 			getTweets($http, $scope);
 		}, 500); 
         $scope.saveNewTag = function () {
-            saveTag($scope, $http);
+            saveTag($scope, $http, $filter);
         }
         $scope.newColumn = function() {
             alert("searched for: " + $scope.searchTerm);

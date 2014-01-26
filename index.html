@@ -42,12 +42,7 @@
             <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#" popover-template="newTag.html" popover-placement="right" popover-trigger="click"></a></p>
         </div>
         <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-            <li><a href="#"><i class="fa fa-circle text-danger"></i>Caution or Advice<span class="badge pull-right">54</span></a></li>
-            <li><a href="#"><i class="fa fa-circle text-info"></i>Infrastructure Damage<span class="badge pull-right">9</span></a></li>
-            <li><a href="#"><i class="fa fa-circle text-warning"></i>Casualties or Injuries<span class="badge pull-right">17</span></a></li>
-            <li><a href="#"><i class="fa fa-circle text-success"></i>Requests for Help<span class="badge pull-right">44</span></a></li>
-            <li><a href="#"><i class="fa fa-circle text-muted"></i>Offers of Help<span class="badge pull-right">23</span></a></li>
-            <li><a href="#"><i class="fa fa-circle text-primary"></i>False<span class="badge pull-right">3</span></a></li>
+            <li ng-repeat="tag in CURRENT_TAGS"><a href="#"><i class="fa fa-circle text-{{tag.css_class}}"></i>{{tag.tag_name}}<span class="badge pull-right">{{tag.instances}}</span></a></li>
         </ul>
     </div>
     <div class="content">

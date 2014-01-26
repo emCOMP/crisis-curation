@@ -108,12 +108,15 @@ def newTag_form():
 def newTag():
    tag_name = json.loads(request.body.read())["tag_name"]
    tag_color = json.loads(request.body.read())["color"]
-   created_By = json.loads(request.body.read())["created_by"]
-   tag_document = {'Color': tag_color, # Use hex form; e.g."#FF00FF'
-                    'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
-                    'Created_By': created_By, 
-                    'Tag_Name': tag_name}
-   tag = tags.find({'Tag_Name' : tag_name})
+   created_by = json.loads(request.body.read())["created_by"]
+   css_class = json.loads(request.body.read())["css_class"]
+   tag_document = {'color': tag_color, # Use hex form; e.g."#FF00FF'
+                    'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
+                    'created_by': created_by, 
+                    'css_class': css_class,
+                    'tag_name': tag_name,
+                    'instances' : 0}
+   tag = tags.find({'tag_name' : tag_name})
    if(tag.count() > 0):
       return '{"id": "' + str(tag[0]["_id"]) + '"}'
    else:
@@ -126,7 +129,8 @@ def newTag():
 @get('/tags')
 def tags():
     all_tags = tags.find()
-    return '{"tags":' + dumps(all_tags) + '}'
+    return '{"tags":' + dumps(all_tags) + '}'  ## TODO: I need counts of each tag instance for each tag
+                                               ## format is  "instances" : 34   etc.
 
 ## might want one to get tags only since the last tag was created (like tweets/since)
 ## but might not need it since we expect there will always be a small number of tags
