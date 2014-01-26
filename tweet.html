@@ -1,6 +1,6 @@
 <div ng-show="tweet.text" class="media">
     <a class=" profile-pic pull-left" href="#">
-        <img class="media-object img-circle" ng-src="{{'assets/img/profile-pic.png' || tweet.user_profile_image_url}}" alt="..."> 
+        <img class="media-object img-circle" ng-src="{{'assets/img/profile-pic.png' || tweet.user_profile_image_url}}" alt="...">
     </a>
     <div class="media-body">
         <span class="fullname"><a href="http://twitter.com/{{tweet.fromUser}}"><strong>{{tweet.user_name}}</strong></a></span>
@@ -16,9 +16,8 @@
         </span>
         <div class="dropdown-relative pull-right">
             <a href="#" type="button" class="btn btn-default btn-xs" popover-template="popup.html" popover-placement="right">Tag tweet <i class="fa fa-caret-down"></i></a>
-        <span class="tags pull-right">
-            <i class="fa fa-circle text-danger" data-toggle="tooltip" data-original-title="Caution or Advice"></i>
-            <i class="fa fa-circle text-success" data-toggle="tooltip" data-original-title="Requests for Help"></i>
+        <span class="tags pull-right" ng-repeat="tag in tags">
+            <i class="fa fa-circle {{tag.color}}" tooltip="{{tag.name}}"></i>
         </span>
     </div>
 </div>

@@ -11,13 +11,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 		}, 500);
         $scope.saveNewTag = function () {
             saveTag($scope, $http, $filter);
-        }
+        };
         $scope.newColumn = function() {
             alert("searched for: " + $scope.searchTerm);
             var el = $compile( "<column-stream namething='" + $scope.searchTerm + "'></column-stream>" )( $scope );
             $(".content").append( el );
-        }
-    }])
+        };
+        $scope.tags = [
+            { "name":"Caution or Advice" , "color":"text-danger" },
+            { "name":"Requests for Help" , "color":"text-success" }
+        ];
+    })
 
 // Directives
     .directive("columnStream", function() {
