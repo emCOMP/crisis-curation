@@ -5,3 +5,6 @@ fb
 
 # Don't save nohup.out
 nohup.out
+start.sh
+stop.sh
+environment.properties
