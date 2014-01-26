@@ -1,14 +1,14 @@
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 
 // Controller
-    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, localStorageService/*,$dialog*/) {
+    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService/*,$dialog*/) {
         $scope.CURRENT_TAGS = [];
-    	getUser($http, localStorageService/*, $dialog*/);
+    	getUser($http, $modal, localStorageService);
     	$('[rel="popover"]').popover();
 		$interval(function(){
             updateTags($scope, $http);
 			getTweets($http, $scope);
-		}, 500); 
+		}, 500);
         $scope.saveNewTag = function () {
             saveTag($scope, $http, $filter);
         }
@@ -17,7 +17,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
             var el = $compile( "<column-stream namething='" + $scope.searchTerm + "'></column-stream>" )( $scope );
             $(".content").append( el );
         }
-    })
+    }])
 
 // Directives
     .directive("columnStream", function() {
@@ -37,24 +37,24 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
                 scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
                         scope.windowHeight = newValue.h;
             scope.windowWidth = newValue.w;
-            
+
             scope.style = function () {
                     var windowHeight = $(window).height();
                     var headerHeight = $(".tweet-header").height();
-                                return { 
+                                return {
                     'height': (windowHeight - headerHeight - 40) + 'px',
-                    'width': 320 + 'px' 
+                    'width': 320 + 'px'
                 };
                         };
-            
+
                 }, true);
-        
+
                 w.bind('resize', function () {
                         scope.$apply();
                 });
         }
 	})
-   
+
     .directive("tweet", function() {
 		return {
 		    restrict: 'EA',
