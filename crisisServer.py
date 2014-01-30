@@ -27,10 +27,11 @@ def test():
 
 @get('/tweets/<num:int>')
 def tweets(num):
+	time = datetime.datetime.now(pytz.timezone('US/Pacific')); 
 	if(num < 0):
 		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
 	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
-	return '{"tweets": ' + dumps(tweet_instances) +  '}'
+	return '{"tweets": ' + dumps(tweet_instances) +  ', "created_at" :' + dumps(time) + ' }'
 
 @get('/tweets/since/<tweetID:int>')
 def tweetsSince(tweetID):
@@ -213,31 +214,40 @@ def newTagInstance():
     created_by = json.loads(request.body.read())["created_by"]
     tag_id = json.loads(request.body.read())["tag_id"]
     tweet_id = json.loads(request.body.read())["tweet_id"]
-    instance_document = {'Created_At': datetime.datetime.now(pytz.timezone('US/Pacific')),
-                         'Created_By': created_by,
-                         'Tag_ID': tag_id,
-                         'Tweet_ID': tweet_id}
+
+    # check if this tweet already has this tag
+    tag_instance = tag_instances.find({'tag_id': tag_id, 'tweet_id': tweet_id})
+    if(tag_instance.count() > 0):
+        return '{"id": "' + str(tag_instance[0]["_id"]) + '"}'
+	
 	# TODO deal with case that client, tag, or tweet IDs do not exist
+    instance_document = {'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
+                         'created_by': created_by,
+                         'tag_id': tag_id,
+                         'tweet_id': tweet_id}
     generated_id = tag_instances.insert(instance_document)
-    return str(generated_id)
+    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$push' : { 'tags' :  tag_id } });
+    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$push' : { 'tweets' : tweet_id} });
+
+    return '{"id": "' + str(generated_id) + '"}'''
 
 # ---- For clients to get Tag Instances ----
 
 @get('/taginstances')
 def tagInstances():
     all_tags = tag_instances.find()
-    return '{"tags_instances":' + dumps(all_tags) + '}'
+    return '{"tag_instances":' + dumps(all_tags) + '}'
 
-# Return tag instances since the tag instance with given ID
-@get('/taginstances/since/<tagInstanceID:path>')
-def tagInstancesSince(tagInstanceID):
-	tagInstance = getInstanceByObjectID(tagInstanceID, tag_instances)
-	if(tagInstance):
-		tagDate = tagInstance['Created_At']
-		t_instances_since = tag_instances.find({'Created_At' : {'$gt': tagDate}})
-		return '{"tags_instances":' + dumps(t_instances_since) + '}'
-	else:
-		return '{"error": { "message": "Tag instance id does not exist"}}'
+# Return tag instances since the given date
+@get('/taginstances/since')
+def tagInstancesSince():
+	# TODO ecode/decode date
+    # last_update = json.loads(request.body.read())["date"]
+    decoded_date = None
+    tagInstances = tag_instances.find({'created_at' : {'$gt': decoded_date }})
+    if(tagInstances):
+        return '{"tag_instances":' + dumps(tagInstances) + '}'
+
 
 # ---- Interactions with tags instances (but no other tables) ----
 
@@ -247,7 +257,7 @@ def tagInstancesByTweetID(tweetID):
 	tweet = getInstanceByObjectID(tweetID, tweets)
 	if(tweet):
 		t_instances_since = tag_instances.find({'Tweet_ID' : tweetID })
-		return '{"tags_instances":' + dumps(t_instances_since) + '}'
+		return '{"tag_instances":' + dumps(t_instances_since) + '}'
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
