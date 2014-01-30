@@ -2,16 +2,20 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 
 // Controller
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService/*,$dialog*/) {
-        $scope.CURRENT_TAGS = [];
+        $scope.CURRENT_TAGS = {};
     	getUser($http, $modal, localStorageService);
     	$('[rel="popover"]').popover();
 		$interval(function(){
             updateTags($scope, $http);
+		 	updateTagInstances($scope, $http);
 			getTweets($http, $scope);
 		}, 500);
         $scope.saveNewTag = function () {
             saveTag($scope, $http, $filter);
         };
+		$scope.applyTag = function(tag_id, tweet_id) {
+			applyTag(tag_id, tweet_id, $http);
+		};
         $scope.newColumn = function() {
             alert("searched for: " + $scope.searchTerm);
             var el = $compile( "<column-stream namething='" + $scope.searchTerm + "'></column-stream>" )( $scope );
