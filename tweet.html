@@ -30,7 +30,7 @@
 
         <div>
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="CURRENT_TAGS[tag]" ng-repeat="tag in tweet.tags" class="fa fa-circle" style="color: {{CURRENT_TAGS[tag].color}};"></i>
+            <i ng-show="CURRENT_TAGS[tag]" ng-repeat="tag in tweet.tags" tooltip="{{CURRENT_TAGS[tag].tag_name}}" class="fa fa-circle" style="color: {{CURRENT_TAGS[tag].color}};"></i>
         </div>
     </div>
 </div>

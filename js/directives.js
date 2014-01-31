@@ -44,7 +44,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
 
         $scope.deleteTag = function (tag) {
-            deleteTag(tag, $http,  $scope);		
+            deleteTag(tag, $http,  $scope);
         }
 
         $scope.editTagPopover = function (tag) {
@@ -100,7 +100,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 		    templateUrl: 'column.html',
             scope: true,
             link: function (scope, element, attrs) {
-                scope.name = attrs["colname"];        // Inhereting scopes - independent for each col 
+                scope.name = attrs["colname"];        // Inhereting scopes - independent for each col
                 element.on("mouseenter", function() {
                     console.log("most recent tweet: " + RECENT_ID);
                     scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
@@ -152,7 +152,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
       }
     })
 
-    // Template for one single tweet 
+    // Template for one single tweet
     .directive("tweet", function() {
 		return {
 		    restrict: 'EA',
@@ -185,7 +185,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // as limit the number of tweets per column to 75.
     .filter('columnSpecific', function() {
         return function(items, name, scope) {
-            var arrayToReturn = []; 
+            var arrayToReturn = [];
             if (items) {
                 var count = 0;
                 for (var i=0; i<items.length; i++){
