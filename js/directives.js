@@ -13,8 +13,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
         setUpNewTagPopover($compile, $scope);
 
         $scope.saveNewTag = function () {
-            hidepop();
             saveTag($scope, $http, $filter);
+            hidepop();
         };
 		$scope.applyTag = function(tag_id, tweet_id) {
 			applyTag(tag_id, tweet_id, $http);

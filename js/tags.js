@@ -41,7 +41,9 @@ function processTagInstanceUpdates(response, $scope) {
 
 // Save a tag to the database, and update front end's set of known tags.
 function saveTag($scope, $http, $filter) {
-	var newTagName = $("#tag-name").val();
+	var newTagName = $scope.newTagName;
+	$scope.newTagName = "";
+	console.log(newTagName);
 	var colorClass = '';
 	var colorHex = '';
 	if ($scope.newTagColor == "blue") {

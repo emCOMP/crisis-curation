@@ -22,6 +22,7 @@
 						<input type="checkbox"><i class="fa fa-circle text-{{tag.css_class}}"></i> {{tag.tag_name}}
 					</label>
 				</div>
+                <new-tag-popup></new-tag-popup>
 			</div>
         <div>
 			<i ng-repeat="tag in tweet.tags" class="fa fa-circle text-{{CURRENT_TAGS[tag].css_class}}"></i>

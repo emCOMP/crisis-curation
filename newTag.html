@@ -1,7 +1,7 @@
 <form ng-submit="saveNewTag()" role='form'>
     <div class='form-group'>
         <label class='sr-only' for='tag-name'>Tag Name</label>
-        <input type='text' class='form-control' id='tag-name' placeholder='Enter tag name' autofocus>
+        <input type='text' ng-model="newTagName" class='form-control' id='tag-name' placeholder='Enter tag name' autofocus>
     </div>
     <div class='btn-group color-selector' role='toolbar'>
         <label><i class='fa fa-circle fa-lg text-danger'><input ng-model="newTagColor" value="red" type="radio"></i></label>
