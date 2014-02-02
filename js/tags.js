@@ -43,7 +43,6 @@ function processTagInstanceUpdates(response, $scope) {
 function saveTag($scope, $http, $filter) {
 	var newTagName = $scope.newTagName;
 	$scope.newTagName = "";
-	console.log(newTagName);
 	var colorClass = '';
 	var colorHex = '';
 	if ($scope.newTagColor == "blue") {
