@@ -3,11 +3,21 @@
         <h3>Enter name</h3>
     </div>
     <div class="modal-body">
-        <form>
-            <input ng-model="userName" type="text" class="form-control" placeholder="Enter name" autofocus>
+        <form name="form" novalidate class="css-form">
+            <input required ng-model="userName" type="text" class="form-control" placeholder="Enter name" autofocus>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok(userName)">OK</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid || userName === ''" ng-click="ok(userName)">OK</button>
     </div>
 </div>
+
+<style type="text/css">
+      .css-form input.ng-invalid.ng-dirty {
+        border-color: #FA787E;
+      }
+    
+      .css-form input.ng-valid.ng-dirty {
+        border-color: #78FA89;
+      }
+</style>
