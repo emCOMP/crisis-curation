@@ -9,7 +9,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
             updateTags($scope, $http);
 		 	updateTagInstances($scope, $http);
 			getTweets($http, $scope);
-		}, 500);
+		}, 3 * 1000);
         $scope.saveNewTag = function () {
             saveTag($scope, $http, $filter);
         };
