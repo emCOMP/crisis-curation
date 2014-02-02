@@ -41,7 +41,6 @@ function processTagInstanceUpdates(response, $scope) {
 
 // Save a tag to the database, and update front end's set of known tags.
 function saveTag($scope, $http, $filter) {
-	$("#newTagButton").click();
 	var newTagName = $("#tag-name").val();
 	var colorClass = '';
 	var colorHex = '';
@@ -100,4 +99,22 @@ function applyTag(tag, tweet, $http){
 		"tweet_id": tweet._id.$oid
 	};	
 	$http.post('http://localhost:8080/newtaginstance', newTagObj);
+}
+
+function setUpNewTagPopover($compile, $scope) {
+	    var $element = $("#newTagButton");
+        var $closebtn = $('<button type="button" class="close" aria-hidden="true" onclick="hidepop();">&times</button>');
+        var $poptitle = $('<div>New Tag</div>').append($closebtn);
+        var popcontent = function () {
+            return $compile( "<new-tag-popup></new-tag-popup>" )( $scope );
+        };
+        $element.popover({
+            html: true,
+            title: $poptitle,
+            content: popcontent,
+            container: 'body',
+        });
+        window.hidepop = function() {
+            $element.popover( 'hide' );
+        };
 }

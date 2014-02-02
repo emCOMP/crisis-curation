@@ -39,7 +39,7 @@
         </div>
 
         <div class="dropdown-relative">
-            <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#" popover-template="newTag.html" popover-placement="right" popover-trigger="click"></a></p>
+            <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
         </div>
         <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
             <li ng-repeat="tag in CURRENT_TAGS"><a href="#"><i class="fa fa-circle text-{{tag.css_class}}"></i>{{tag.tag_name}}<span class="badge pull-right">{{tag.instances}}</span></a></li>
@@ -48,7 +48,6 @@
     <div class="content">
       <column-stream></column-stream>
       <column-stream></column-stream>
-
     </div>
   </body>
 

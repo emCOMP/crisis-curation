@@ -10,7 +10,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 		 	updateTagInstances($scope, $http);
 			getTweets($http, $scope);
 		}, 3 * 1000);
+        setUpNewTagPopover($compile, $scope);
+
         $scope.saveNewTag = function () {
+            hidepop();
             saveTag($scope, $http, $filter);
         };
 		$scope.applyTag = function(tag_id, tweet_id) {
@@ -25,6 +28,13 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
             { "name":"Caution or Advice" , "color":"text-danger" },
             { "name":"Requests for Help" , "color":"text-success" }
         ];
+    })
+
+    .directive("newTagPopup", function() {
+        return {
+            restrict: 'EA',
+            templateUrl: "newTag.html"
+        }
     })
 
 // Directives
