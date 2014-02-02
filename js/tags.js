@@ -42,22 +42,22 @@ function processTagInstanceUpdates(response, $scope) {
 // Save a tag to the database, and update front end's set of known tags.
 function saveTag($scope, $http, $filter) {
 	var newTagName = $scope.tag.newTagName;
-	$scope.newTagName = "";
+	$scope.tag.newTagName = "";
 	var colorClass = '';
 	var colorHex = '';
-	if ($scope.newTagColor == "blue") {
+	if ($scope.tag.newTagColor == "blue") {
 		colorClass += "primary"
 		colorHex = "#428bca";
-	} else if ($scope.newTagColor == "gray") {
+	} else if ($scope.tag.newTagColor == "gray") {
 		colorHex = "#999999";
 		colorClass += "muted";
-	} else if ($scope.newTagColor == "red") {
+	} else if ($scope.tag.newTagColor == "red") {
 		colorClass += "danger";
 		colorHex = "#a94442";
-	} else if ($scope.newTagColor == "darkblue") {
+	} else if ($scope.tag.newTagColor == "darkblue") {
 		colorClass += "info";
 		colorHex = "#31708f";
-	} else if ($scope.newTagColor == "gold") {
+	} else if ($scope.tag.newTagColor == "gold") {
 		colorClass += "warning";
 		colorHex = "#8a6d3b";
 	} else {  // Green
