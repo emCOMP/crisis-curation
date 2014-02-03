@@ -5,9 +5,7 @@ function updateTags($scope, $http) {
 	$http.get('http://localhost:8080/tags').success(function(response) {
 	    if (response.tags == null) {
 	    	console.log("Getting tags unsuccessful");
-	    } else {
-	    	//console.log(response.tags);
-			// { tagId : { tag } } 
+	    } else { 
 			for(i in response.tags) {
 				var tag = response.tags[i];
 				$scope.CURRENT_TAGS[tag._id.$oid] = tag;
