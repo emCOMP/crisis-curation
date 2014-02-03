@@ -1,8 +1,8 @@
 <div class="column">
     <div class="tweet-header">
-        <h4><i class="fa fa-home pull-left"></i>{{namething || "Home"}} <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
+        <h4><i class="fa fa-home pull-left"></i>{{colname || "Home"}} <small class="text-muted username">@realengz</small><i class="fa fa-caret-down pull-right"></i></h4>
     </div>
     <div class="tweet-stream" ng-style="style()" resize>
-        <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets" ></tweet> 
+        <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:name" ></tweet> 
     </div>
 </div>

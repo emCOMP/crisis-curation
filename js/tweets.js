@@ -8,6 +8,14 @@ function getTweets($http, $scope) {
 		    if (response.tweets.length != 0) {
 		    	//console.log(response.tweets.length);
 			    RECENT_ID = response.tweets[0].uuid;
+			    // Remove this when db sends specific col info
+			    for(var i = 0; i < response.tweets.length; i++) {
+			    	response.tweets[i].colname = ["all"];
+			    	if (Math.random() > 0.5) {
+			    		response.tweets[i].colname.push("search2");
+			    	}
+			    }// End todo
+			    console.log($scope.tweets);
 			    $scope.tweets = response.tweets;
 				LAST_UPDATE = response.created_at
 			 }
@@ -18,10 +26,15 @@ function getTweets($http, $scope) {
 		  {
 		    if (response.tweets.length != 0 && 
 		    	!(response.tweets.length == 1 && response.tweets[0].uuid == RECENT_ID)) {
-
-		    	//console.log(response.tweets.length);
-		    	//console.log(response.tweets);
 			    RECENT_ID = response.tweets[0].uuid;
+			    // Remove this when db sends specific col info
+			    for(var i = 0; i < response.tweets.length; i++) {
+			    	response.tweets[i].colname = ["all"];
+			    	if (Math.random() > 0.5) {
+			    		response.tweets[i].colname.push("search2");
+			    	}
+			    }// End todo
+			    console.log($scope.tweets);
 			    $scope.tweets = response.tweets.concat($scope.tweets);
 			 }
 			 // limit number of tweets in a column

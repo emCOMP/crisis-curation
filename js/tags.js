@@ -34,13 +34,20 @@ function processTagInstanceUpdates(response, $scope) {
 	for(i in response.tag_instances) {
 		var tag_instance = response.tag_instances[i];
 		// TODO: Add tag to tweet's list of tags (or remove, once we implement deletes)
-		if($scope.tweets[tag_instance.tweet_id]) {
+		if($scope.tweets[tag_instance.tweet_id]) { 
+			// I'm changing the datastructure for tweets
+			// now instead of $scope.tweets being a set of all tweets, 
+			// it's going to be a map of columns to tweets for that column
 		}
 	}
 }
 
 // Save a tag to the database, and update front end's set of known tags.
 function saveTag($scope, $http, $filter) {
+	console.log("Inside Tags.js");
+	console.log($scope);
+	console.log($scope.tag);
+
 	var newTagName = $scope.tag.newTagName;
 	$scope.tag.newTagName = "";
 	var colorClass = '';

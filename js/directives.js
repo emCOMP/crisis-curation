@@ -3,6 +3,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 // Controller
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService/*,$dialog*/) {
         $scope.CURRENT_TAGS = {};
+        $scope.CURRENT_COLS = ["all", "searched2"];
     	getUser($http, $modal, localStorageService);
     	$('[rel="popover"]').popover();
 		$interval(function(){
@@ -20,8 +21,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 			applyTag(tag_id, tweet_id, $http);
 		};
         $scope.newColumn = function() {
-            alert("searched for: " + $scope.searchTerm);
-            var el = $compile( "<column-stream namething='" + $scope.searchTerm + "'></column-stream>" )( $scope );
+            $scope.CURRENT_COLS.append($scope.searchTerm);
+            var el = $compile( "<column-stream searchTerm='" + $scope.searchTerm + "'></column-stream>" )( $scope );
             $(".content").append( el );
         };
         $scope.tags = [
@@ -42,7 +43,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 		return {
             transclude: true,
 		    restrict: 'EA',
-		    templateUrl: 'column.html'
+		    templateUrl: 'column.html',
+            // link: function (scope, element, attrs) {
+            //     scope.name = attrs.colname;
+            // }
 		};
     })
 
@@ -90,4 +94,19 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 		return function(items) {
 		    return items.slice().reverse();
 		};
-	});
+	})
+
+    .filter('columnSpecific', function() {
+        return function(items, name) {
+            var arrayToReturn = []; 
+            if (items) {
+                console.log("FILTER NAME: " + name);
+                for (var i=0; i<items.length; i++){
+                    //if (items[i].colname.indexOf(name) != -1) {
+                        arrayToReturn.push(items[i]);
+                    //}
+                }
+            }
+            return arrayToReturn;
+        }
+    });
