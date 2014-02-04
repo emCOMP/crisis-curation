@@ -1,9 +1,11 @@
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 
-// Controller
-    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService/*,$dialog*/) {
+    /////////////////////////////////////////////////
+    // Controller
+    /////////////////////////////////////////////////
+    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService) {
         $scope.CURRENT_TAGS = {};
-        $scope.CURRENT_COLS = ["all", "searched2"];
+        $scope.CURRENT_COLS = ["all", "search2"];
     	getUser($http, $modal, localStorageService);
     	$('[rel="popover"]').popover();
 		$interval(function(){
@@ -21,8 +23,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
 			applyTag(tag_id, tweet_id, $http);
 		};
         $scope.newColumn = function() {
-            $scope.CURRENT_COLS.append($scope.searchTerm);
-            var el = $compile( "<column-stream searchTerm='" + $scope.searchTerm + "'></column-stream>" )( $scope );
+            $scope.CURRENT_COLS.push($scope.searchTerm);
+            var el = $compile( "<column-stream colname='" + $scope.searchTerm + "'></column-stream>" )( $scope );
             $(".content").append( el );
         };
         $scope.tags = [
@@ -31,22 +33,28 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
         ];
     })
 
+
+    //////////////////////////////////////
+    // Directives
+    /////////////////////////////////////
     .directive("newTagPopup", function() {
         return {
             restrict: 'EA',
+            transclude: false,    // Has to have the root scope
+            scope: false,         // so it can have the same set of tags
             templateUrl: "newTag.html"
         }
     })
 
-// Directives
     .directive("columnStream", function() {
 		return {
             transclude: true,
 		    restrict: 'EA',
 		    templateUrl: 'column.html',
-            // link: function (scope, element, attrs) {
-            //     scope.name = attrs.colname;
-            // }
+            scope: true,
+            link: function (scope, element, attrs) {
+                scope.name = attrs["colname"];        // Inhereting scopes - independent for each col 
+            }
 		};
     })
 
@@ -58,16 +66,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
                 };
                 scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
                         scope.windowHeight = newValue.h;
-            scope.windowWidth = newValue.w;
+                        scope.windowWidth = newValue.w;
 
-            scope.style = function () {
-                    var windowHeight = $(window).height();
-                    var headerHeight = $(".tweet-header").height();
-                                return {
-                    'height': (windowHeight - headerHeight - 40) + 'px',
-                    'width': 320 + 'px'
-                };
-                        };
+                        scope.style = function () {
+                                var windowHeight = $(window).height();
+                                var headerHeight = $(".tweet-header").height();
+                                            return {
+                                                'height': (windowHeight - headerHeight - 40) + 'px',
+                                                'width': 320 + 'px'
+                                            };
+                            };
 
                 }, true);
 
@@ -80,16 +88,23 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
     .directive("tweet", function() {
 		return {
 		    restrict: 'EA',
+            transclue: true,
+            scope: true,
 		    replace: true,
 		    templateUrl: 'tweet.html',
 		    link: function(scope, element, attrs) {
 			attrs.$observe('tweet', function(tweet) {
-			    scope.tweet = tweet;
+                if (scope.$parent) {
+			     scope.tweet = scope.$parent.tweet;
+                }
 			});
 		    }
 		};
     })
 
+    ////////////////////////////////////////////
+    // Filters
+    ////////////////////////////////////////////
     .filter('reverse', function() {
 		return function(items) {
 		    return items.slice().reverse();
@@ -100,12 +115,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
         return function(items, name) {
             var arrayToReturn = []; 
             if (items) {
-                console.log("FILTER NAME: " + name);
                 for (var i=0; i<items.length; i++){
-                    //if (items[i].colname.indexOf(name) != -1) {
+                    if (items[i].colname.indexOf(name) != -1) {
                         arrayToReturn.push(items[i]);
-                    //}
+                        if (name === "search2") {
+                            console.log(items[i].fromUser);
+                        }
+                    }
                 }
+                console.log("\n");
             }
             return arrayToReturn;
         }

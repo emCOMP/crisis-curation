@@ -16,16 +16,16 @@
         </span>
         <div class="dropdown-relative pull-right">
             <a href="#" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag tweet <i class="fa fa-caret-down"></i></a>
-			<div ng-show="showTags">
-				<div ng-repeat="tag in CURRENT_TAGS" ng-click="applyTag(tag, tweet); $parent.showTags = !$parent.showTags">
-					<label>
-						<input type="checkbox"><i class="fa fa-circle text-{{tag.css_class}}"></i> {{tag.tag_name}}
-					</label>
-				</div> 
+            <div ng-show="showTags">
+                <div ng-repeat="tag in CURRENT_TAGS" ng-click="applyTag(tag, tweet); $parent.showTags = !$parent.showTags">
+                    <label>
+                        <input type="checkbox"><i class="fa fa-circle text-{{tag.css_class}}"></i> {{tag.tag_name}}
+                    </label>
+                </div> 
                 <new-tag-popup></new-tag-popup>
-			</div>
+            </div>
         <div>
-			<i ng-repeat="tag in tweet.tags" class="fa fa-circle text-{{CURRENT_TAGS[tag].css_class}}"></i>
+            <i ng-repeat="tag in tweet.tags" class="fa fa-circle text-{{CURRENT_TAGS[tag].css_class}}"></i>
         </div>
     </div>
 </div>
