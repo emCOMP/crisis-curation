@@ -1,4 +1,4 @@
-angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
+angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique'])
 
     /////////////////////////////////////////////////
     // Controller
