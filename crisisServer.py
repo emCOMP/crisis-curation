@@ -28,7 +28,7 @@ def test():
 
 @get('/tweets/<num:int>')
 def tweets(num):
-	time = datetime.datetime.now(pytz.timezone('US/Pacific')); 
+	time = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'); 
 	if(num < 0):
 		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
 	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
@@ -219,35 +219,59 @@ def newTagInstance():
     # check if this tweet already has this tag
     tag_instance = tag_instances.find({'tag_id': tag_id, 'tweet_id': tweet_id})
     if(tag_instance.count() > 0):
+        # TODO update timestamp, author
         return '{"id": "' + str(tag_instance[0]["_id"]) + '"}'
 	
 	# TODO deal with case that client, tag, or tweet IDs do not exist
-    instance_document = {'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
+    instance_document = {'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'),
                          'created_by': created_by,
                          'tag_id': tag_id,
-                         'tweet_id': tweet_id}
+                         'tweet_id': tweet_id,
+                         'active': True }
     generated_id = tag_instances.insert(instance_document)
-    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$push' : { 'tags' :  tag_id } });
-    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$push' : { 'tweets' : tweet_id} });
+    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$push' : { 'tags' :  tag_id } })
+    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$push' : { 'tweets' : tweet_id} })
 
     return '{"id": "' + str(generated_id) + '"}'''
+
+
+@post('/deletetaginstance')
+def deleteTagInstance():
+    created_by = json.loads(request.body.read())["created_by"]
+    tag_id = json.loads(request.body.read())["tag_id"]
+    tweet_id = json.loads(request.body.read())["tweet_id"]
+    
+    # Update timestamp so this update will propogate to other systems as they pull for changes
+    tag_instance = tag_instances.find({'tag_id' : tag_id, 'tweet_id': tweet_id});
+    if(tag_instance.count() > 0):
+        tag_instance_id = tag_instance[0]["_id"]
+        tag_instances.update({'_id' : tag_instance_id },
+                             {'$set' : {'created_at' : datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'), 
+                                        'created_by': created_by, 'active': False } })	
+
+    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$pull' : { 'tags' :  tag_id } })
+    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$pull' : { 'tweets' : tweet_id} })
+    # TODO return some indicator of success or failure, process on frontend
 
 # ---- For clients to get Tag Instances ----
 
 @get('/taginstances')
 def tagInstances():
     all_tags = tag_instances.find()
-    return '{"tag_instances":' + dumps(all_tags) + '}'
+    return '{"tag_instances":' + dumps(all_tags) + '}' 
+
 
 # Return tag instances since the given date
-@get('/taginstances/since')
+@post('/taginstances/since')
 def tagInstancesSince():
-	# TODO ecode/decode date
-    # last_update = json.loads(request.body.read())["date"]
-    decoded_date = None
-    tagInstances = tag_instances.find({'created_at' : {'$gt': decoded_date }})
+    last_update = json.loads(request.body.read())["date"]
+    tagInstances = tag_instances.find({'created_at' : {'$gt': last_update }})
+	
+    if(tagInstances.count() > 0):
+        last_update = tagInstances[0]['created_at'];
+
     if(tagInstances):
-        return '{"tag_instances":' + dumps(tagInstances) + '}'
+        return '{"tag_instances":' + dumps(tagInstances) + ', "created_at": "' + last_update + '"}'
 
 
 # ---- Interactions with tags instances (but no other tables) ----

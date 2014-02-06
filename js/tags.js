@@ -18,24 +18,55 @@ function updateTags($scope, $http) {
 function updateTagInstances($scope, $http) {
 	// Seed tag updates by using the tag instance ID of the latest tag made in database
 	if( LAST_UPDATE != null) {
-		var date = {}
-		// TODO dump date 
-		$http.get('http://localhost:8080/taginstances/since', date).success(function(response) {
+		var date = {'date': LAST_UPDATE};
+		$http.post('http://localhost:8080/taginstances/since', date).success(function(response) {
 			processTagInstanceUpdates(response, $scope);	
-			// TODO update LAST_UPDATE
+			LAST_UPDATE = response.created_at;
 		});
 	}
+}
+
+// Returns tweet object with given tweet_id from $scope.tweets
+function getTweet(tweet_id, $scope) {
+	// TODO: It would be nice to eliminate this sequential search by using a tweet map
+	//       (ie, change the format of $scope.tweets to {tweetId : {tweetObject}}
+	//		 Then we can say tweet = $scope.tweets[tag_instance.tweet_id]
+	var tweet = null;	
+	for (i in $scope.tweets) {
+		var t = $scope.tweets[i];
+		if( t._id.$oid == tweet_id) {
+			tweet = t;
+			break;
+		}					
+	}
+	return tweet;
 }
 
 // Update Display with new tag instance data
 function processTagInstanceUpdates(response, $scope) {
 	for(i in response.tag_instances) {
 		var tag_instance = response.tag_instances[i];
-		// TODO: Add tag to tweet's list of tags (or remove, once we implement deletes)
-		if($scope.tweets[tag_instance.tweet_id]) { 
-			// I'm changing the datastructure for tweets
-			// now instead of $scope.tweets being a set of all tweets, 
-			// it's going to be a map of columns to tweets for that column
+		// Add tag to tweet's list of tags (or remove, once we implement deletes)
+		// Format is: $scope.tweets = [ { tags: [tagId1, tagId2..], colname: [] } , ... ]
+
+		tweet = getTweet(tag_instance.tweet_id, $scope);
+		if(tweet) {
+			if(tweet.tags == undefined) {
+				tweet.tags = [];			
+			}
+			var index = tweet.tags.indexOf(tag_instance.tag_id);
+			// Check if tag is active or not.  Add or remove accordingly.
+			if(tag_instance.active) {
+				// Try to add tag.
+				if(index < 0) {
+					tweet.tags.push(tag_instance.tag_id);			
+				}	
+			} else {
+				// Try to remove tag.
+				if(index >= 0) {
+					tweet.tags.splice(index, 1);
+				}
+			}
 		}
 	}
 }
@@ -86,21 +117,30 @@ function saveTag($scope, $http, $filter) {
 	});
 }
 
-// Creates a new tag instance
-function applyTag(tag, tweet, $http){
+// Adds or removes a tag instance
+function applyTag(tag, tweet, checked, $http){
 	if(!tweet.tags){
 		tweet.tags = [];
 	}
-	if(tweet.tags.indexOf(tag._id.$oid) < 0) {
-		tweet.tags.push(tag._id.$oid)
-	}
-	// TODO similar for tag (push tweet id)
 	var newTagObj = {
 		"created_by": USER,
 		"tag_id": tag._id.$oid,
 		"tweet_id": tweet._id.$oid
 	};	
-	$http.post('http://localhost:8080/newtaginstance', newTagObj);
+	if(checked) {
+		// add tag
+		if(tweet.tags.indexOf(tag._id.$oid) < 0) {
+			tweet.tags.push(tag._id.$oid)
+		}
+		$http.post('http://localhost:8080/newtaginstance', newTagObj);
+	} else {
+		// remove tag
+		var tagIndex = tweet.tags.indexOf(tag._id.$oid)
+		if(tagIndex >= 0) {
+			tweet.tags.splice(tagIndex, 1);
+			$http.post('http://localhost:8080/deletetaginstance', newTagObj);
+		}	
+	}
 }
 
 function setUpNewTagPopover($compile, $scope) {
