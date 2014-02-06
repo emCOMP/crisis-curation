@@ -19,8 +19,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
             saveTag($scope, $http, $filter);
             hidepop();
         };
-		$scope.applyTag = function(tag_id, tweet_id) {
-			applyTag(tag_id, tweet_id, $http);
+		$scope.applyTag = function(tag_id, tweet_id, checked) {
+			applyTag(tag_id, tweet_id, checked, $http);
 		};
         $scope.newColumn = function() {
             $scope.CURRENT_COLS.push($scope.searchTerm);
@@ -119,11 +119,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
                     if (items[i].colname.indexOf(name) != -1) {
                         arrayToReturn.push(items[i]);
                         if (name === "search2") {
-                            console.log(items[i].fromUser);
+                           // console.log(items[i].fromUser);
                         }
                     }
                 }
-                console.log("\n");
+               // console.log("\n");
             }
             return arrayToReturn;
         }
