@@ -4,7 +4,7 @@
 function updateTags($scope, $http) {
 	$http.get('http://localhost:8080/tags').success(function(response) {
 	    if (response.tags == null) {
-	    	console.log("Getting tags unsuccessful");
+	    	console.error("Getting tags unsuccessful");
 	    } else { 
 			for(i in response.tags) {
 				var tag = response.tags[i];
@@ -108,7 +108,7 @@ function saveTag($scope, $http, $filter) {
 	};
 	$http.post('http://localhost:8080/newtag', newTagObj).success(function(response) {
 	    if (response.id == null) {
-	    	console.log("Saving new tag unsuccessful");
+	    	console.error("Saving new tag unsuccessful");
 	    } else {
 	    	tag._id.$oid = response.id;
 	    	$scope.CURRENT_TAGS[response.id] = tag;

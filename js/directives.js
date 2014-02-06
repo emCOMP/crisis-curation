@@ -118,12 +118,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule'])
                 for (var i=0; i<items.length; i++){
                     if (items[i].colname.indexOf(name) != -1) {
                         arrayToReturn.push(items[i]);
-                        if (name === "search2") {
-                           // console.log(items[i].fromUser);
-                        }
                     }
                 }
-               // console.log("\n");
             }
             return arrayToReturn;
         }

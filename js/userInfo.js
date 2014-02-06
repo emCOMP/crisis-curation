@@ -21,7 +21,6 @@ function getUser($http, $modal, localStorageService) { // $dialogue
 		    if (response.id == null) {
 		    	alert("Saving user unsuccessful");
 		    } else {
-		    	console.log("1234"+userName);
 		    	USER = response.id;
 		    	localStorageService.add('current_user', response.id);
 		    }

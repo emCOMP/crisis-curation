@@ -14,8 +14,6 @@ function getTweets($http, $scope) {
 			    		response.tweets[i].colname.push("search2");
 			    	}
 			    }// End todo
-			    //console.log("I got some tweets:");
-			    //console.log($scope.tweets);
 			    $scope.tweets = response.tweets;
 				LAST_UPDATE = response.created_at
 			 }
@@ -34,8 +32,6 @@ function getTweets($http, $scope) {
 			    		response.tweets[i].colname.push("search2");
 			    	}
 			    }// End todo
-			    //console.log("I got some tweets:");
-			    //console.log($scope.tweets);
 			    $scope.tweets = response.tweets.concat($scope.tweets);
 			 }
 			 // limit number of tweets in a column
