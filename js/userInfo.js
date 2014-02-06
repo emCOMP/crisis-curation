@@ -1,38 +1,39 @@
+////////////////////////////
+// All things user related
+////////////////////////////
+
 var USER = null;
 
-function getUser($http, $modal, localStorageService) { // $dialogue
+// Get the user's information and save it to both 
+// the browser's cache and the DB
+function getUser($http, $modal, localStorageService) {
 	USER = localStorageService.get('current_user');
 	if (USER !== null) {
 		return;
 	}
 
-	// var name = $dialog.dialog({templateUrl: 'myModalContent.html'}).open();
-	// var name = prompt("Please enter your name:");
 	var modalInstance = $modal.open({
-    templateUrl: 'user-modal.html',
-    controller: ModalInstanceCtrl,
-    keyboard: false,
-    backdrop: 'static'
-  });
-
-  modalInstance.result.then(function (userName) {
-  $http.post('http://localhost:8080/clientName', {"client_name": userName}).success(function(response)
-		  {
-		    if (response.id == null) {
-		    	alert("Saving user unsuccessful");
-		    } else {
-		    	USER = response.id;
-		    	localStorageService.add('current_user', response.id);
-		    }
+		templateUrl: 'user-modal.html',
+		controller: ModalInstanceCtrl,
+		keyboard: false,
+		backdrop: 'static'
 	});
-  }, function () {
-  });
 
+	modalInstance.result.then(function (userName) {
+		$http.post('http://localhost:8080/clientName', {"client_name": userName}).success(function(response) {
+			if (response.id == null) {
+				alert("Saving user unsuccessful");
+			} else {
+				USER = response.id;
+				localStorageService.add('current_user', response.id);
+			}
+		});
+	});
 }
 
+// Make a modal pop up dialog box
 var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-  $scope.ok = function (userName) {
-    $modalInstance.close(userName);
-  };
+	$scope.ok = function (userName) {
+		$modalInstance.close(userName);
+	};
 };

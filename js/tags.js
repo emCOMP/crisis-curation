@@ -1,4 +1,6 @@
-////////////// All things tag related
+////////////////////////////
+// All things tag related
+////////////////////////////
 
 // Get all tags from the database
 function updateTags($scope, $http) {
