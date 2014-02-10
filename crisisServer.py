@@ -28,7 +28,7 @@ def test():
 
 @get('/tweets/<num:int>')
 def tweets(num):
-	time = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'); 
+	time = currentTime(); 
 	if(num < 0):
 		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
 	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
@@ -117,7 +117,8 @@ def newTag():
                     'created_by': created_by, 
                     'css_class': css_class,
                     'tag_name': tag_name,
-                    'instances' : 0}
+                    'instances' : 0,
+                    'tweets': []}
    tag = tags.find({'tag_name' : tag_name})
    if(tag.count() > 0):
       return '{"id": "' + str(tag[0]["_id"]) + '"}'
@@ -125,12 +126,34 @@ def newTag():
       generated_id = tags.insert(tag_document)
       return '{"id": "' + str(generated_id) + '"}'
 
+# Deletes tag with the specified ID
+@post('/deletetag')
+def deleteTag():
+    created_by = json.loads(request.body.read())["created_by"]
+    tag_id = json.loads(request.body.read())["tag_id"]
+	
+    # remove embedded instances of tag in tweets collection
+    tag = tags.find({'_id' : objectid.ObjectId(tag_id)})
+    if(tag.count() > 0):
+        for tweet_id in tag[0]["tweets"]:
+            tweets.update({'_id' : objectid.ObjectId(tweet_id)}, 
+                          {'$pull' : { 'tags' :  tag_id } })
+            # update time so that this change gets propagated
+            tweets.update({'_id' : objectid.ObjectId(tweet_id)}, 
+                          {'$set' : {'created_at' : currentTime(), 'active': False }})
+
+    # inactivate instances of this tag
+    tag_instances.update({'tag_id' : tag_id}, 
+                         {'$set' :{'active': False, 'created_at': currentTime() }})
+
+    # remove tag itself
+    tags.remove({'_id' : objectid.ObjectId(tag_id)})
 
 # ---- For clients to get Tags from DB ----
 
 @get('/tags')
 def tags():
-    all_tags = tags.find()
+    all_tags = tags.find({}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1})
     return '{"tags":' + dumps(all_tags) + '}'  ## TODO: I need counts of each tag instance for each tag
                                                ## format is  "instances" : 34   etc.
 
@@ -223,7 +246,7 @@ def newTagInstance():
         return '{"id": "' + str(tag_instance[0]["_id"]) + '"}'
 	
 	# TODO deal with case that client, tag, or tweet IDs do not exist
-    instance_document = {'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'),
+    instance_document = {'created_at': currentTime(),
                          'created_by': created_by,
                          'tag_id': tag_id,
                          'tweet_id': tweet_id,
@@ -246,7 +269,7 @@ def deleteTagInstance():
     if(tag_instance.count() > 0):
         tag_instance_id = tag_instance[0]["_id"]
         tag_instances.update({'_id' : tag_instance_id },
-                             {'$set' : {'created_at' : datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S'), 
+                             {'$set' : {'created_at' : currentTime(), 
                                         'created_by': created_by, 'active': False } })	
 
     tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$pull' : { 'tags' :  tag_id } })
@@ -258,7 +281,7 @@ def deleteTagInstance():
 @get('/taginstances')
 def tagInstances():
     all_tags = tag_instances.find()
-    return '{"tag_instances":' + dumps(all_tags) + '}' 
+    return '{"tag_instances":' + dumps(all_tags) + '}'
 
 
 # Return tag instances since the given date
@@ -346,6 +369,10 @@ def getInstanceByObjectID(id, collection):
 		return instance[0]
 	else:
 		return None
+
+# Returns current Datetime, as a string
+def currentTime():
+	return datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S')
 
 ###################### STATIC FILES #####################################
 

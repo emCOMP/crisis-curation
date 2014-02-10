@@ -22,8 +22,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
 			getTweets($http, $scope);
 		}, 3 * 1000);
 
-        // Set up new tag popover
+        // Set up new tag popover, tag edit popovers
         setUpNewTagPopover($compile, $scope);
+        setUpTagEditPopovers();
 
         ////////////////////////
         // Functions
@@ -33,6 +34,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         $scope.saveNewTag = function () {
             saveTag($scope, $http, $filter);
             hidepop();
+        };
+
+        $scope.deleteTag = function (tag) {
+            deleteTag(tag, $http,  $scope);		
+        }
+
+        $scope.editTagPopover = function (tag) {
+            closeOtherTagPopovers(tag);
         };
 
         // Apply a tag to a specific tweet

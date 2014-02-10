@@ -5,15 +5,23 @@
 // Get all tags from the database
 function updateTags($scope, $http) {
 	$http.get('http://localhost:8080/tags').success(function(response) {
-	    if (response.tags == null) {
-	    	console.error("Getting tags unsuccessful");
-	    } else { 
-			for(i in response.tags) {
-				var tag = response.tags[i];
-				$scope.CURRENT_TAGS[tag._id.$oid] = tag;
-			}
-	    }
-	});
+       if (response.tags == null) {
+            console.error("Getting tags unsuccessful");
+       } else { 
+            responseTagIds = [];
+            for(i in response.tags) {
+                var tag = response.tags[i];
+                $scope.CURRENT_TAGS[tag._id.$oid] = tag;
+                responseTagIds.push(tag._id.$oid);
+            }
+            // remove any tags from view that no longer exist
+            for(tagId in $scope.CURRENT_TAGS){
+                if(responseTagIds.indexOf(tagId) < 0){
+                     delete($scope.CURRENT_TAGS[tagId]);			
+                }
+            }
+        }
+    });
 }
 
 // Get new tag instance data, so that we can see others' updates
@@ -114,8 +122,8 @@ function saveTag($scope, $http, $filter) {
 	    } else {
 	    	tag._id.$oid = response.id;
 	    	$scope.CURRENT_TAGS[response.id] = tag;
-	    	delete($scope.CURRENT_TAGS[newTagName]);
 	    }
+	    delete($scope.CURRENT_TAGS[newTagName]);
 	});
 }
 
@@ -143,6 +151,41 @@ function applyTag(tag, tweet, checked, $http){
 			$http.post('http://localhost:8080/deletetaginstance', newTagObj);
 		}	
 	}
+	// TODO: if they try to apply a tag that doesn't exist (ie, someone deletes 
+	// it before their tag list updates, and they click apply), they might get
+	// confused.  Maybe display some sort of dialogue (e.g. 'woops! this tag no longer exists')
+}
+
+// Deletes a tag.  This will remove all the tag instances for this tag.
+function deleteTag(tag, $http, $scope){
+	// TODO prompt user to confirm deletion
+	$http.post('http://localhost:8080/deletetag', {"created_by": USER, "tag_id": tag._id.$oid,});
+	// TODO verify deletion success before deleting from view
+	delete($scope.CURRENT_TAGS[tag._id.$oid]);	
+}
+
+// Remove popovers when user clicks outside
+function setUpTagEditPopovers() {
+	$('body').on('click', function (e) {
+	   $('*[popover-template]').each(function () {
+		 //Remove the popover element from the DOM          
+		$(this).siblings('.popover').remove();
+		//Set the state of the popover in the scope to reflect this          
+		angular.element(this).scope().tt_isOpen = false;       
+	    });
+	});
+	// Don't remove tag popovers if click is within tag list
+	$('#tag-list, .popover').on('click', function (e) {
+		e.stopPropagation();
+	});
+}
+
+// Only show one popover at a time
+function closeOtherTagPopovers(tag){
+	$('li[tag-id]').not( "[tag-id='" + tag._id.$oid + "']" ).each(function(){
+		$(this).siblings('.popover').remove();
+		angular.element(this).scope().tt_isOpen = false;
+	});
 }
 
 function setUpNewTagPopover($compile, $scope) {
