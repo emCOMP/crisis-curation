@@ -31,23 +31,23 @@ def tweets(num):
 	time = currentTime(); 
 	if(num < 0):
 		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
-	tweet_instances = tweets.find().sort("uuid", pymongo.DESCENDING).limit(num)
+	tweet_instances = tweets.find().sort("id", pymongo.DESCENDING).limit(num)
 	return '{"tweets": ' + dumps(tweet_instances) +  ', "created_at" :' + dumps(time) + ' }'
 
 @get('/tweets/since/<tweetID:int>')
 def tweetsSince(tweetID):
-	tweet = tweets.find({"uuid" : float(tweetID)})
+	tweet = tweets.find({"id" : float(tweetID)})
 	if(tweet.count() > 0):
-		t_since = tweets.find({'uuid' : {'$gt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		t_since = tweets.find({'id' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING)
 		return '{"tweets": ' + dumps(t_since) + '}'
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
 @get('/tweets/before/<tweetID:int>')
 def tweetsBefore(tweetID):
-	tweet = tweets.find({"uuid" : tweetID})
+	tweet = tweets.find({"id" : tweetID})
 	if(tweet.count() > 0):
-		t_before = tweets.find({'uuid' : {'$lt': tweetID}}).sort("uuid", pymongo.DESCENDING)
+		t_before = tweets.find({'id' : {'$lt': tweetID}}).sort("id", pymongo.DESCENDING)
 		return '{"tweets": ' + dumps(t_before) + '}'
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
