@@ -15,10 +15,18 @@ from bson.json_util import dumps
 from bson import objectid
 from bottle import static_file
 
-LIVE_DB_NAME = 'current_database'
 
-SERVER_HOST = 'localhost'
-SERVER_PORT = 8080
+### get change-able info from config file! 
+### __________________________________________________________ ### 
+import config
+system_configs = config.read_system_configs()
+
+LIVE_DB_NAME = system_configs['current_database']
+SERVER_HOST = system_configs['server_host']
+SERVER_PORT = int(system_configs['server_port'])
+
+### __________________________________________________________ ### 
+
 
 """
 # a test that your server is running, uncomment this if you're having trouble

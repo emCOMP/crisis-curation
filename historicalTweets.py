@@ -5,12 +5,23 @@ import time
 import dateutil.parser as dparser
 import pytz
 
+### get change-able info from config file! 
+### __________________________________________________________ ### 
+import config
+system_configs = config.read_system_configs()
 
-HISTORICAL_DB_NAME = 'football'
-LIVE_DB_NAME = 'current_database'
-TIME_MULTIPLIER = 1000
-SLEEP_SECONDS = 5
+LIVE_DB_NAME = system_configs['current_database']
 
+if system_configs['historical_or_live'] != 'historical':
+    raise Exception('this system uses live not historical data')
+
+historical_configs = config.read_historical_configs()
+
+HISTORICAL_DB_NAME = historical_configs['historical_database']
+TIME_MULTIPLIER = int(historical_configs['time_multiplier'])
+SLEEP_SECONDS = int(historical_configs['sleep'])
+
+### __________________________________________________________ ### 
 
 # connect to two databases
 # be sure to run mongod in the terminal before starting
