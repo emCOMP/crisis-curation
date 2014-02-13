@@ -1,4 +1,6 @@
-angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique'])
+MAX_TWEETS_PER_COLUMN = 25;
+
+angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique', 'colorpicker.module'])
 
     /////////////////////////////////////////////////
     // Controller
@@ -7,6 +9,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = ["all", "search2"];
+        $scope.CURRENT_COLOR = "";
         $scope.tags = [
             { "name":"Caution or Advice" , "color":"text-danger" },
             { "name":"Requests for Help" , "color":"text-success" }
@@ -31,8 +34,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         /////////////////////////
 
         // Save a new tag
-        $scope.saveNewTag = function () {
-            saveTag($scope, $http, $filter);
+        $scope.saveNewTag = function (tagname) {
+            saveTag($scope, $http, $filter, tagname);
+            $scope.tag.newTagName = "";
             hidepop();
         };
 
@@ -180,8 +184,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
                 }
             }
             // limit number of tweets in a column
-            if(arrayToReturn.length > 75) {
-               arrayToReturn.splice(75);
+            if(arrayToReturn.length > MAX_TWEETS_PER_COLUMN) {
+               arrayToReturn.splice(MAX_TWEETS_PER_COLUMN);
             }
             return arrayToReturn;
         }

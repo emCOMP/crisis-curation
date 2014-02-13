@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/layout.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link href="css/popover.css" rel="stylesheet">
+    <link href="css/colorpicker.css" rel="stylesheet">
 
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.10.0.js"></script>
@@ -27,6 +28,7 @@
     <script type="text/javascript" src="js/userInfo.js"></script>
     <script type="text/javascript" src="js/tags.js"></script>
     <script type="text/javascript" src="js/directives.js"></script>
+    <script type="text/javascript" src="js/colorpicker.js"></script>
   </head>
 
   <body ng-controller="Ctrl">
@@ -46,7 +48,7 @@
             <li ng-repeat="tag in CURRENT_TAGS" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
                 popover-template="editTag.html" popover-placement="right">
                 <a href="#"  >
-                    <i class="fa fa-circle text-{{tag.css_class}}"></i>
+                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                     {{tag.tag_name}}
                     <span class="badge pull-right"></span>
                 </a>

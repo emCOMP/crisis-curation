@@ -127,11 +127,9 @@ def newTag():
    tag_name = json.loads(request.body.read())["tag_name"]
    tag_color = json.loads(request.body.read())["color"]
    created_by = json.loads(request.body.read())["created_by"]
-   css_class = json.loads(request.body.read())["css_class"]
    tag_document = {'color': tag_color, # Use hex form; e.g."#FF00FF'
                     'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
                     'created_by': created_by, 
-                    'css_class': css_class,
                     'tag_name': tag_name,
                     'instances' : 0,
                     'tweets': []}

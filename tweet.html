@@ -20,7 +20,7 @@
             <div ng-show="showTags">
                 <div ng-repeat="tag in CURRENT_TAGS" >
                     <label>
-                        <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle text-{{tag.css_class}}"></i> {{tag.tag_name}}
+                        <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div> 
                 <!-- this form is somehow preventing users from applying tags, so I'm commenting it out for now <new-tag-popup></new-tag-popup>-->
@@ -29,7 +29,7 @@
 
         <div>
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="CURRENT_TAGS[tag]" ng-repeat="tag in tweet.tags" class="fa fa-circle text-{{CURRENT_TAGS[tag].css_class}}"></i>
+            <i ng-show="CURRENT_TAGS[tag]" ng-repeat="tag in tweet.tags" class="fa fa-circle" style="color: {{CURRENT_TAGS[tag].color}};"></i>
         </div>
     </div>
 </div>
