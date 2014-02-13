@@ -181,6 +181,8 @@ function setUpNewTagPopover($compile, $scope) {
             container: 'body',
         });
         window.hidepop = function() {
+        	console.log($element.popover());
             $element.popover( 'hide' );
+            $(".popover").remove();
         };
 }
