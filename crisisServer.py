@@ -15,6 +15,8 @@ from bson.json_util import dumps
 from bson import objectid
 from bottle import static_file
 
+LIVE_DB_NAME = 'current_database'
+
 """
 # a test that your server is running, uncomment this if you're having trouble
 @get('/test')
@@ -412,8 +414,7 @@ def get_static(folder, filename):
 
 dbclient =  MongoClient('localhost', 27017)
 
-db = dbclient['current_database']
-# db = dbclient['crisisdb']
+db = dbclient[LIVE_DB_NAME]
 
 tweets = db.tweets
 tags = db.tags
