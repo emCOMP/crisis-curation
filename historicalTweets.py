@@ -5,9 +5,10 @@ import time
 import dateutil.parser as dparser
 import pytz
 
+
 HISTORICAL_DB_NAME = 'football'
 LIVE_DB_NAME = 'current_database'
-TIME_MULTIPLIER = 1
+TIME_MULTIPLIER = 1000
 SLEEP_SECONDS = 5
 
 
@@ -43,8 +44,11 @@ previousTime = datetime.datetime.now()
 # see ipython notebook for how to update these to datetime objects
 # explain next loc
 first_tweet = historicaldb.tweets.find().sort("id", pymongo.ASCENDING).limit(1)[0]
+last_tweet = historicaldb.tweets.find().sort("id", pymongo.DESCENDING).limit(1)[0]
 starting_time = first_tweet['unix_time']
+ending_time = last_tweet['unix_time']
 historicalTime = starting_time
+print historicalTime
 
 # infinite loop
 # there may/is probably a better/safer way to have an infinite loop running 
@@ -56,7 +60,7 @@ while True:
 
     # how long has it been since previousTime?
     delta = (timeNow - previousTime).total_seconds()
-    # print 'delta: ' + str(delta)
+    print 'delta: ' + str(delta)
 
     # replace previousTime with timeNow
     previousTime = timeNow
@@ -75,8 +79,11 @@ while True:
     # add t to currentdb
     for tweet in new_tweets: 
         currentdb.tweets.insert(tweet)
+        print "1 tweet inserted: " + tweet['created_at']
         # print currentdb.tweets.find()
 
     # optional - sleep for a few seconds
+    if (historicalTime > ending_time ):
+	exit()
     time.sleep(SLEEP_SECONDS)
     
