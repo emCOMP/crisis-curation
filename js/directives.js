@@ -20,7 +20,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
             updateTags($scope, $http);
 		 	updateTagInstances($scope, $http);
 			getTweets($http, $scope);
-		}, 3 * 1000);
+		}, 1 * 1000);
 
         // Set up new tag popover, tag edit popovers
         setUpNewTagPopover($compile, $scope);
@@ -114,6 +114,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
                 });
         }
 	})
+
+    // Directive to handle missing profile pictures
+    .directive('errSrc', function() {
+      return {
+        link: function(scope, element, attrs) {
+          element.bind('error', function() {
+            element.attr('src', attrs.errSrc);
+          });
+        }
+      }
+    })
 
     // Template for one single tweet 
     .directive("tweet", function() {

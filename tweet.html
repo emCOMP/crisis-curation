@@ -1,18 +1,18 @@
 <div ng-show="tweet.text" class="media">
     <a class=" profile-pic pull-left" href="#">
-        <img class="media-object img-circle" ng-src="{{'assets/img/profile-pic.png' || tweet.user_profile_image_url}}" alt="..."> 
+        <img class="media-object" ng-src="{{ tweet.user.profile_image_url_https }}" err-src="assets/img/profile-pic.png" alt="Profiles Picture"> 
     </a>
     <div class="media-body">
-        <span class="fullname"><a href="http://twitter.com/{{tweet.fromUser}}"><strong>{{tweet.user_name}}</strong></a></span>
-        <span class="username text-muted"><small>@{{tweet.fromUser}}</small></span>
-        <span class="timestamp text-muted pull-right"><small>{{tweet.createdAt.$date}}</small></span>
+        <span class="fullname"><a href="http://twitter.com/{{tweet.name}}"><strong>{{tweet.user.name}}</strong></a></span>
+        <span class="username text-muted"><small>@{{tweet.user.screen_name}}</small></span>
+        <span class="timestamp text-muted pull-right"><small>{{tweet.created_at.split("+")[0]}}</small></span>
         <p class="tweet-text">
-        {{tweet.text}} <a href="http://pic.twitter.com/aYyx6QAfw9">pic.twitter.com/aYyx6QAfw9</a></p>
+        {{tweet.text}}</p>
     </div>
     <div class="help-block">
         <span class="tweet-info text-muted">
-            <small>{{tweet.retweet_count || 'Unknown'}}</small> <i class="fa fa-retweet text-muted"></i>
-            <small>{{tweet.favorite_count || 'Unknown'}}</small> <i class="fa fa-star"></i>
+            <small>{{tweet.retweet_count}}</small> <i class="fa fa-retweet text-muted"></i>
+            <small>{{tweet.favorite_count}}</small> <i class="fa fa-star"></i>
         </span>
 
         <div class="dropdown-relative pull-right">
