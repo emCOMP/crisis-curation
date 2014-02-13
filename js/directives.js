@@ -9,7 +9,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = ["all", "search2"];
-        $scope.CURRENT_COLOR = "";
+        $scope.showCreateNewTag = false;
+        $scope.tag = {"newTagName": "", "color": ""};
         $scope.tags = [
             { "name":"Caution or Advice" , "color":"text-danger" },
             { "name":"Requests for Help" , "color":"text-success" }

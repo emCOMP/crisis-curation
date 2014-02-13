@@ -23,7 +23,8 @@
                         <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div> 
-                <!-- this form is somehow preventing users from applying tags, so I'm commenting it out for now <new-tag-popup></new-tag-popup>-->
+                <a href="#" ng-click="showCreateNewTag=(!showCreateNewTag)">Create new tag</a>
+                <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
             </div>
 
 
