@@ -51,9 +51,21 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
 
         // Create a new column
         $scope.newColumn = function() {
-            $scope.CURRENT_COLS.push($scope.searchTerm);
-            var el = $compile( "<column-stream colname='" + $scope.searchTerm + "'></column-stream>" )( $scope );
+            // Get new search term
+            var newColName = $scope.searchTerm;
+            $scope.searchTerm = "";
+
+            // Make new column based on search term
+            $scope.CURRENT_COLS.push(newColName);
+            var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
             $(".content").append( el );
+
+            // Send new column to back end
+            $http.post('http://localhost:8080/newcolumn', {"col": newColName}).success(function(response) {
+                if (response.error) {
+                    console.error("Saving new column unsuccessful");
+                }
+            });
         };
 
     })

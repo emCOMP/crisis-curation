@@ -54,6 +54,22 @@ def tweetsBefore(tweetID):
 
 ## do we want one to get a specific tweet (i.e., by ID)? 
 
+# Creates a new column search term to filter tweets by
+@post('/newcolumn')
+def newColumn():
+	col_name = json.loads(request.body.read())["col"]
+	col_document = {'colname': col_name}
+	generated_id = 	columns.insert(col_document)
+	if(generated_id > 0):
+		return '{"id": "' + str(generated_id) + '"}'
+	else:
+		return '{"error": { "message": "Column not added"}}'
+
+# For debugging only - see all columns I currently have
+@get('/columns')
+def columns():
+    cols = columns.find()
+    return '{"columns":' + dumps(cols) + '}'
 
 ###################### CLIENTS #####################################
 
@@ -405,6 +421,7 @@ tweets = db.tweets
 tags = db.tags
 tag_instances = db.tag_instances
 clients = db.clients
+columns = db.columns
 
 
 # ---- Starting the Server ----
