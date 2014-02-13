@@ -17,6 +17,9 @@ from bottle import static_file
 
 LIVE_DB_NAME = 'current_database'
 
+SERVER_HOST = 'localhost'
+SERVER_PORT = 8080
+
 """
 # a test that your server is running, uncomment this if you're having trouble
 @get('/test')
@@ -425,4 +428,4 @@ columns = db.columns
 
 # ---- Starting the Server ----
 
-run(host='localhost', port=8080, debug=True)
+run(host=SERVER_HOST, port=SERVER_PORT, debug=True)
