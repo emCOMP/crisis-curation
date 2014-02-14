@@ -85,7 +85,7 @@ function processTagInstanceUpdates(response, $scope) {
 function saveTag($scope, $http, $filter, tagname) {
 	var newTagName = tagname;
 	var colorHex = $scope.tag.color;
-	$scope.tag.color = "";
+	$scope.tag.color = '#'+Math.floor(Math.random()*16777215).toString(16);
 	
 	var tag = {'color': colorHex, 'tag_name': newTagName, 'instances': 0, '_id': {"$oid": "unknown"}};
 	$scope.CURRENT_TAGS[newTagName] = tag;

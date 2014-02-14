@@ -21,7 +21,8 @@ function getTweets($http, $scope) {
 			    	}
 			    }// End todo
 			    $scope.tweets = response.tweets;
-				LAST_UPDATE = response.created_at
+				LAST_UPDATE = response.created_at;
+				console.clear();
 			 }
 		});
 	} else {
@@ -38,6 +39,7 @@ function getTweets($http, $scope) {
 			    	}
 			    }// End todo
 			    $scope.tweets = response.tweets.concat($scope.tweets);
+			    console.clear();
 			 }
 		});
 	}    

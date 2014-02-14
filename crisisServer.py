@@ -27,6 +27,9 @@ SERVER_PORT = int(system_configs['server_port'])
 
 ### __________________________________________________________ ### 
 
+#### Katlyn's possibly weird global
+COLUMNS = []
+
 
 """
 # a test that your server is running, uncomment this if you're having trouble
@@ -47,6 +50,7 @@ def tweets(num):
 	tweet_instances = tweets.find().sort("id", pymongo.DESCENDING).limit(num)
 	return '{"tweets": ' + dumps(tweet_instances) +  ', "created_at" :' + dumps(time) + ' }'
 
+
 @get('/tweets/since/<tweetID:int>')
 def tweetsSince(tweetID):
 	tweet = tweets.find({"id" : float(tweetID)})
@@ -61,17 +65,24 @@ def tweetsBefore(tweetID):
 	tweet = tweets.find({"id" : tweetID})
 	if(tweet.count() > 0):
 		t_before = tweets.find({'id' : {'$lt': tweetID}}).sort("id", pymongo.DESCENDING)
+
 		return '{"tweets": ' + dumps(t_before) + '}'
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
 ## do we want one to get a specific tweet (i.e., by ID)? 
 
+"""Oh for taking all of those tweets, you're gonna have to loop through them, 
+json dumps them, then it's a dictionary so you can just use tweet['col'] = <col> to add in a
+column attribute. Maybe that's helpful? Or probably you already got it."""
+# def addColumnInfo(tweet_instances):
+
 # Creates a new column search term to filter tweets by
 @post('/newcolumn')
 def newColumn():
 	col_name = json.loads(request.body.read())["col"]
 	col_document = {'colname': col_name}
+  COLUMNS.append(col_name)
 	generated_id = 	columns.insert(col_document)
 	if(generated_id > 0):
 		return '{"id": "' + str(generated_id) + '"}'

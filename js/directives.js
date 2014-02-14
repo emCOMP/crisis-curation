@@ -10,7 +10,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = ["all", "search2"];
         $scope.showCreateNewTag = false;
-        $scope.tag = {"newTagName": "", "color": ""};
+        $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
         $scope.tags = [
             { "name":"Caution or Advice" , "color":"text-danger" },
             { "name":"Requests for Help" , "color":"text-success" }
