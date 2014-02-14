@@ -82,7 +82,7 @@ column attribute. Maybe that's helpful? Or probably you already got it."""
 def newColumn():
 	col_name = json.loads(request.body.read())["col"]
 	col_document = {'colname': col_name}
-  COLUMNS.append(col_name)
+  #COLUMNS.append(col_name)
 	generated_id = 	columns.insert(col_document)
 	if(generated_id > 0):
 		return '{"id": "' + str(generated_id) + '"}'
