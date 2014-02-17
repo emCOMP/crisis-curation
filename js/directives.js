@@ -1,4 +1,5 @@
-MAX_TWEETS_PER_COLUMN = 25;
+MAX_TWEETS_PER_COLUMN = 10;
+PAUSED_COL = {'colname': null, 'recentTweet': null};
 
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique', 'colorpicker.module'])
 
@@ -99,6 +100,13 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
             scope: true,
             link: function (scope, element, attrs) {
                 scope.name = attrs["colname"];        // Inhereting scopes - independent for each col 
+                element.on("mouseenter", function() {
+                    console.log("most recent tweet: " + RECENT_ID);
+                    PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID};
+                });
+                element.on("mouseleave", function() {
+                    PAUSED_COL = {'colname': null, 'recentTweet': null};
+                })
             }
 		};
     })
@@ -152,11 +160,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
 		    replace: true,
 		    templateUrl: 'tweet.html',
 		    link: function(scope, element, attrs) {
-			attrs.$observe('tweet', function(tweet) {
-                if (scope.$parent) {
-			     scope.tweet = scope.$parent.tweet;
-                }
-			});
+    			attrs.$observe('tweet', function(tweet) {
+                    if (scope.$parent) {
+    			     scope.tweet = scope.$parent.tweet;
+                    }
+    			});;
 		    }
 		};
     })
@@ -179,8 +187,13 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
             var arrayToReturn = []; 
             if (items) {
                 for (var i=0; i<items.length; i++){
-                    if (items[i].colname.indexOf(name) != -1) {
-                        arrayToReturn.push(items[i]);
+                    if (items[i].colname.indexOf(name) != -1 ) { // this tweet should be in my column
+                        if (name != PAUSED_COL.colname) {  //the column is not being paused
+                            arrayToReturn.push(items[i]);
+                        } else if (name == PAUSED_COL.colname &&  // the column is paused
+                                   items[i].id <= PAUSED_COL.recentTweet) {  // enforce "pausing"
+                            arrayToReturn.push(items[i]);
+                        }
                     }
                 }
             }
