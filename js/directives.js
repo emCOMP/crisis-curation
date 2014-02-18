@@ -187,6 +187,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         return function(items, name, scope) {
             var arrayToReturn = []; 
             if (items) {
+                var count = 0;
                 for (var i=0; i<items.length; i++){
                     if (items[i].colname.indexOf(name) != -1 ) { // this tweet should be in my column
                         if (name != scope.PAUSED_COL.colname) {  //the column is not being paused
@@ -196,10 +197,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                             arrayToReturn.push(items[i]);
                         } else {
                             // Column paused, tweet is being filtered
-                            scope.PAUSED_COL.queued = parseInt(scope.PAUSED_COL.queued) + 1;
+                            count++;
                         }
                     }
                 }
+                scope.PAUSED_COL.queued = count;
             }
             // limit number of tweets in a column
             if(arrayToReturn.length > MAX_TWEETS_PER_COLUMN) {

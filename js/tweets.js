@@ -33,7 +33,7 @@ function getTweets($http, $scope) {
 			    // TODO: Remove this when db sends specific col info
 			    for(var i = 0; i < response.tweets.length; i++) {
 			    	response.tweets[i].colname = ["all"];
-			    	if (Math.random() > 0.7) {
+			    	if (Math.random() > 0.9) {
 			    		response.tweets[i].colname.push("search2");
 			    	}
 			    }// End todo
