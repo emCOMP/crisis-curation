@@ -1,4 +1,4 @@
-MAX_TWEETS_PER_COLUMN = 10;
+MAX_TWEETS_PER_COLUMN = 50;
 PAUSED_COL = {'colname': null, 'recentTweet': null};
 
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique', 'colorpicker.module'])
