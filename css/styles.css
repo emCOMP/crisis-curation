@@ -139,3 +139,19 @@ input[type="search"]:hover {
   background-color: #eee;
   color: #333333;
 }
+
+
+.queued {
+  position: absolute;
+  width: 320px;
+  top: 4em;
+  text-align: center;
+}
+
+.queued > span {
+  border-radius: 1em;
+  background-color: #dddddd;
+  border: 1px solid darkgray;
+  padding: .3em;
+  box-shadow: 2px 2px 1px #aaaaaa;
+}

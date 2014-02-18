@@ -1,5 +1,4 @@
 MAX_TWEETS_PER_COLUMN = 10;
-PAUSED_COL = {'colname': null, 'recentTweet': null};
 
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.unique', 'colorpicker.module'])
 
@@ -11,6 +10,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = ["all", "search2"];
         $scope.showCreateNewTag = false;
+        $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
         $scope.tags = [
             { "name":"Caution or Advice" , "color":"text-danger" },
@@ -102,10 +102,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
                 scope.name = attrs["colname"];        // Inhereting scopes - independent for each col 
                 element.on("mouseenter", function() {
                     console.log("most recent tweet: " + RECENT_ID);
-                    PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID};
+                    scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
                 });
                 element.on("mouseleave", function() {
-                    PAUSED_COL = {'colname': null, 'recentTweet': null};
+                    scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
                 })
             }
 		};
@@ -183,16 +183,19 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'ui.uniqu
     // Filter tweets specific to each column, as well
     // as limit the number of tweets per column to 75.
     .filter('columnSpecific', function() {
-        return function(items, name) {
+        return function(items, name, scope) {
             var arrayToReturn = []; 
             if (items) {
                 for (var i=0; i<items.length; i++){
                     if (items[i].colname.indexOf(name) != -1 ) { // this tweet should be in my column
-                        if (name != PAUSED_COL.colname) {  //the column is not being paused
+                        if (name != scope.PAUSED_COL.colname) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
-                        } else if (name == PAUSED_COL.colname &&  // the column is paused
-                                   items[i].id <= PAUSED_COL.recentTweet) {  // enforce "pausing"
+                        } else if (name == scope.PAUSED_COL.colname &&  // the column is paused
+                                   items[i].id <= scope.PAUSED_COL.recentTweet) {  // enforce "pausing"
                             arrayToReturn.push(items[i]);
+                        } else {
+                            // Column paused, tweet is being filtered
+                            scope.PAUSED_COL.queued = parseInt(scope.PAUSED_COL.queued) + 1;
                         }
                     }
                 }
