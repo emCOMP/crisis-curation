@@ -1,18 +1,30 @@
 body {
   -webkit-font-smoothing: antialiased !important;
+  background-color: #edf0f2;
+}
+p {
+  color: #292f33;
+}
+hr {
+  border-color: #e1e8ed;
+  margin: 0;
+  padding: 0;
 }
 .left-menu {
-  border-right: 2px solid #eeeeee;
+  border: 1px solid #e1e8ed;
+  border-radius: 5px 5px;
+  background-color: #ffffff;
 }
 .left-menu h4 {
-  padding: 4px 15px 14px 13px;
-  border-bottom: 2px solid #eeeeee;
-  font-weight: 700;
-  letter-spacing: .04em;
-  color: #333333;
+  padding: 4px 15px 12px 13px;
+  font-weight: 500;
+  color: #8899a6;
+  border-bottom: 1px solid #e1e8ed;
 }
 #tag-title {
   margin: 0 0 0 0;
+  font-weight: 500;
+  color: #292f33;
 }
 .nav-stacked > li + li {
   margin-top: 0;
@@ -22,16 +34,21 @@ body {
 .nav-pills li a:hover {
   border-radius: 0;
   margin-top: 0;
-  color: #333333;
-  border-bottom: 2px solid #eeeeee;
+  color: #000000;
+  border-bottom: 1px solid #e1e8ed;
 }
 .nav-pills li a i,
 .nav-pills li a:hover i {
   margin-right: 12px;
+  margin-top: 3px;
+}
+.nav-pills li a:hover {
+  background-color: #f5f8fa;
 }
 .input-group .fa-search {
   margin-left: 2px;
   padding-bottom: 2px;
+  color: #8899a6;
 }
 input[type="search"] {
   border: none;
@@ -54,8 +71,8 @@ input[type="search"]:hover {
 #tag-title {
   padding: 5px 0 5px 15px;
   margin-top: 10px;
-  border-top: 2px solid #eeeeee;
-  border-bottom: 2px solid #eeeeee;
+  border-top: 1px solid #e1e8ed;
+  border-bottom: 1px solid #e1e8ed;
   font-weight: 700;
 }
 #tag-title .fa-plus {
@@ -64,58 +81,90 @@ input[type="search"]:hover {
 #tag-title .fa-plus:hover {
   text-decoration: none;
 }
+.queued {
+  color: #ffffff;
+  position: fixed;
+  top: 55px;
+  margin-left: 100px;
+  background-color: #1f98c7;
+  padding: 5px 15px;
+  font-weight: 600;
+  border-radius: 30px;
+}
 .tweet-header {
-  border: 2px solid #eeeeee;
+  border: 1px solid #e1e8ed;
   border-top-left-radius: 5px 5px;
   border-top-right-radius: 5px 5px;
   border-bottom: 0;
-  padding: 5px 5px 10px 5px;
+  padding: 8px 5px 13px 5px;
+  background-color: #ffffff;
 }
-.tweet-header .fa-home {
+.tweet-header .fa-search {
   margin-top: 1px;
+  margin-right: 10px;
 }
 .tweet-header h4 {
   margin: 5px 0 0 5px;
+  color: #8899a6;
 }
 .tweet-header .fa-caret-down {
   margin: 2px 5px 0 0;
 }
 .tweet-stream {
-  border: 2px solid #eeeeee;
+  border: 1px solid #e1e8ed;
   border-bottom-left-radius: 5px 5px;
   border-bottom-right-radius: 5px 5px;
+  background-color: #ffffff;
 }
 .media {
   padding: 10px;
-  border-bottom: 2px solid #eeeeee;
+  border-bottom: 1px solid #e1e8ed;
   margin-top: 0;
+  background-color: #ffffff;
 }
 .media p {
   margin-bottom: 5px;
 }
 .media .media-body .fullname a {
-  color: #333333;
+  color: #000000;
 }
 .media:last-child {
   border-bottom: 0;
 }
+.media:hover {
+  background-color: #f5f8fa;
+  cursor: pointer;
+}
+.username,
+.timestamp {
+  color: #8899a6;
+  font-weight: 500;
+}
+.timestamp:before {
+  content: "\00b7";
+  margin-right: 4px;
+}
 .help-block {
   margin: 0 0 0 58px;
+}
+.help-block .tweet-info {
+  color: #ccd6dd;
 }
 .help-block .tweet-info a:hover {
   text-decoration: none;
 }
 .help-block .btn {
   border: 0;
-  letter-spacing: 0.03em;
   margin-left: 5px;
-  color: #999999;
+  color: #ccd6dd;
+  font-weight: 500;
 }
-.help-block .btn .caret {
-  margin: 0 0 2px 1px;
+.help-block .btn .fa-caret-down {
+  margin: 0 0 2px 4px;
 }
 .help-block .btn:hover {
-  color: #333333;
+  color: #f5f8fa;
+  background-color: #55acee;
 }
 .dropdown .dropdown-menu {
   padding: 5px 0;
@@ -137,21 +186,5 @@ input[type="search"]:hover {
 }
 .dropdown .dropdown-menu label:hover {
   background-color: #eee;
-  color: #333333;
-}
-
-
-.queued {
-  position: absolute;
-  width: 320px;
-  top: 4em;
-  text-align: center;
-}
-
-.queued > span {
-  border-radius: 1em;
-  background-color: #dddddd;
-  border: 1px solid darkgray;
-  padding: .3em;
-  box-shadow: 2px 2px 1px #aaaaaa;
+  color: #000000;
 }

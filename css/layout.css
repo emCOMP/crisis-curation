@@ -23,6 +23,9 @@ body {
   margin-left: 5px;
   margin-top: 5px;
 }
+.left-menu {
+  margin: 5px;
+}
 .tweet-stream {
   overflow-y: scroll;
   bottom: 0;
@@ -33,6 +36,7 @@ body {
 
   display: -moz-box;
   /* OLD: Firefox (buggy) */
+
   display: -ms-flexbox;
   /* MID: IE 10 */
 
@@ -53,6 +57,7 @@ body {
 
   display: -moz-box;
   /* OLD: Firefox (buggy) */
+
   display: -ms-flexbox;
   /* MID: IE 10 */
 
@@ -61,6 +66,7 @@ body {
 
   display: flex;
   /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
+
 }
 .column {
   -webkit-flex: none;

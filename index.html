@@ -32,28 +32,28 @@
 
   <body ng-controller="Ctrl">
         <div class="left-menu">
-        <h4>Crisis Curation</h4>
-        <div class="input-group" id="nav-menu">
-          <span class="input-group-addon"><a href="#"><i class="fa fa-search text-muted"></i></a></span>
-          <form ng-submit="newColumn()">
-            <input ng-model="searchTerm" type="search" class="form-control" placeholder="Search" autofocus>
-          </form>
-        </div>
+            <h4>Crisis Curation</h4>
+            <div class="input-group" id="nav-menu">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <form ng-submit="newColumn()">
+                <input ng-model="searchTerm" type="search" class="form-control" placeholder="Search" autofocus>
+              </form>
+            </div>
 
-        <div class="dropdown-relative">
-            <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
+            <div class="dropdown-relative">
+                <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
+            </div>
+            <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+                <li ng-repeat="tag in CURRENT_TAGS" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
+                    popover-template="editTag.html" popover-placement="right">
+                    <a href="#"  >
+                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                        {{tag.tag_name}}
+                        <span class="badge pull-right"></span>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-            <li ng-repeat="tag in CURRENT_TAGS" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
-                popover-template="editTag.html" popover-placement="right">
-                <a href="#"  >
-                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                    {{tag.tag_name}}
-                    <span class="badge pull-right"></span>
-                </a>
-            </li>
-        </ul>
-    </div>
     <div class="content">
       <column-stream colname="all"></column-stream>
       <column-stream colname="search2"></column-stream>

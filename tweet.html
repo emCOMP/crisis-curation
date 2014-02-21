@@ -1,17 +1,17 @@
 <div ng-show="tweet.text" class="media">
     <a class=" profile-pic pull-left" href="#">
-        <img class="media-object" ng-src="{{ tweet.user.profile_image_url_https }}" err-src="assets/img/profile-pic.png" alt="Profiles Picture"> 
+        <img class="media-object" ng-src="{{ tweet.user.profile_image_url_https }}" err-src="assets/img/profile-pic.png" alt="Profiles Picture">
     </a>
     <div class="media-body">
         <span class="fullname"><a href="http://twitter.com/{{tweet.name}}"><strong>{{tweet.user.name}}</strong></a></span>
-        <span class="username text-muted"><small>@{{tweet.user.screen_name}}</small></span>
-        <span class="timestamp text-muted pull-right"><small>{{tweet.created_at.split("+")[0]}}</small></span>
+        <span class="username"><small>@{{tweet.user.screen_name}}</small></span>
+        <span class="timestamp"><small>{{tweet.created_at.split("+")[0]}}</small></span>
         <p class="tweet-text">
         {{tweet.text}}</p>
     </div>
     <div class="help-block">
-        <span class="tweet-info text-muted">
-            <small>{{tweet.retweet_count}}</small> <i class="fa fa-retweet text-muted"></i>
+        <span class="tweet-info">
+            <small>{{tweet.retweet_count}}</small> <i class="fa fa-retweet"></i>
             <small>{{tweet.favorite_count}}</small> <i class="fa fa-star"></i>
         </span>
 
@@ -22,7 +22,7 @@
                     <label>
                         <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
-                </div> 
+                </div>
                 <a href="#" ng-click="showCreateNewTag=(!showCreateNewTag)">Create new tag</a>
                 <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
             </div>
