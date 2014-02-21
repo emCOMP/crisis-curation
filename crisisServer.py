@@ -72,28 +72,24 @@ def tweetsBefore(tweetID):
 
 ## do we want one to get a specific tweet (i.e., by ID)? 
 
-"""Oh for taking all of those tweets, you're gonna have to loop through them, 
-json dumps them, then it's a dictionary so you can just use tweet['col'] = <col> to add in a
-column attribute. Maybe that's helpful? Or probably you already got it."""
-# def addColumnInfo(tweet_instances):
+### For getting tweets in a search
+# below, figure out how to guarantee that searchterm is text. 
+@get('/tweets/search/<searchterm>/since/<tweetID:int>')
+def tweetsSearchSince():
+	# figure out what search term text means (replace + with " " and whatever else) 
+	# do query: 
+	# 1. get all tweets since tweetID --> note what the 'newest' id is (call it <lastidchecked>)
+	# 2. within that set, get all tweets that fit the search
+	# send back {tweets:[], search:<same string they gave us before>, lastID:<lastidchecked>}
+	return 0
 
-# Creates a new column search term to filter tweets by
-@post('/newcolumn')
-def newColumn():
-	col_name = json.loads(request.body.read())["col"]
-	col_document = {'colname': col_name}
-  #COLUMNS.append(col_name)
-	generated_id = 	columns.insert(col_document)
-	if(generated_id > 0):
-		return '{"id": "' + str(generated_id) + '"}'
-	else:
-		return '{"error": { "message": "Column not added"}}'
-
-# For debugging only - see all columns I currently have
-@get('/columns')
-def columns():
-    cols = columns.find()
-    return '{"columns":' + dumps(cols) + '}'
+@get('/tweets/search/<searchterm>')
+def tweetsSearch():
+	# figure out what search term text means
+	# do query: 
+	# 1. get all tweets that fit the search --> aim is not to use this one except when starting a colum and IF NEEDED ... 
+	# send back same as above. 
+	return 0
 
 ###################### CLIENTS #####################################
 
@@ -293,7 +289,7 @@ def newTagInstance():
     tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$push' : { 'tags' :  tag_id } })
     tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$push' : { 'tweets' : tweet_id} })
 
-    return '{"id": "' + str(generated_id) + '"}'''
+    return '{"id": "' + str(generated_id) + '"}'
 
 
 @post('/deletetaginstance')
