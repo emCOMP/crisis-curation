@@ -213,11 +213,23 @@ def changeTagColor():
     tag = getInstanceByObjectID(tagID, tags)
     if(tag):
         tags.update({'_id': objectid.ObjectId(tagID)},
-					{'$set': { 'Color' : new_color }})
+					{'$set': { 'color' : new_color }})
         return 'true'	# TODO not sure what format of response should be			
     else:
         return '{"error": { "message": "Tag id does not exist"}}'
 
+
+@post('/tags/changeText')
+def changeTagText():
+    new_text = json.loads(request.body.read())["text"]
+    tagID = json.loads(request.body.read())["tag_id"]
+    tag = getInstanceByObjectID(tagID, tags)
+    if(tag):
+        tags.update({'_id': objectid.ObjectId(tagID)},
+          {'$set': { 'tag_name' : new_text }})
+        return 'true' # TODO not sure what format of response should be     
+    else:
+        return '{"error": { "message": "Tag id does not exist"}}'
 ## hold off on this one - it's not important yet 
 ## we need to first figure out how we're passing time back/forth between frontend and backend and how we're storing it.
 ## method for getting all tags created between time T1 and time T2

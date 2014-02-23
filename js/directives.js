@@ -47,6 +47,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             deleteTag(tag, $http,  $scope);
         }
 
+        $scope.editTagColor = function(tag, color) {
+            editTagColor(tag, color, $http, $scope);
+        }
+
+        $scope.editTagText = function(tag, newTagName) {
+            editTagText(tag, newTagName, $http, $scope);
+        }
+
         $scope.editTagPopover = function (tag) {
             closeOtherTagPopovers(tag);
         };
@@ -56,12 +64,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			applyTag(tag_id, tweet_id, checked, $http);
 		};
 
-        // Create a new column
+        // Create a new column from search box
         $scope.newColumn = function() {
             // Get new search term
             var newColName = $scope.searchTerm;
             $scope.searchTerm = "";
+            $scope.createColumn(newColName);
+        };
 
+        // Generic create column with a given column search string
+        $scope.createColumn = function(newColName) {
+            console.log(newColName);
             // Make new column based on search term
             $scope.CURRENT_COLS.push(newColName);
             var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
@@ -74,7 +87,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 }
             });
         };
-
     })
 
 

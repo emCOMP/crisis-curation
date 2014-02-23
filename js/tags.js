@@ -135,6 +135,15 @@ function applyTag(tag, tweet, checked, $http){
 	// confused.  Maybe display some sort of dialogue (e.g. 'woops! this tag no longer exists')
 }
 
+function editTagText(tag, newTagName, $http, $scope) {
+	$scope.CURRENT_TAGS[tag._id.$oid].tag_name = newTagName;
+	$http.post('http://localhost:8080/tags/changeText', {"tag_id": tag._id.$oid, "text": newTagName });
+}
+
+function editTagColor(tag, color, $http, $scope) {
+	$http.post('http://localhost:8080/tags/changeColor', {"tag_id": tag._id.$oid, "color": color});
+}
+
 // Deletes a tag.  This will remove all the tag instances for this tag.
 function deleteTag(tag, $http, $scope){
 	// TODO prompt user to confirm deletion
