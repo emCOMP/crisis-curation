@@ -136,8 +136,10 @@ function applyTag(tag, tweet, checked, $http){
 }
 
 function editTagText(tag, newTagName, $http, $scope) {
-	$scope.CURRENT_TAGS[tag._id.$oid].tag_name = newTagName;
-	$http.post('http://localhost:8080/tags/changeText', {"tag_id": tag._id.$oid, "text": newTagName });
+	if (newTagName) {
+		$scope.CURRENT_TAGS[tag._id.$oid].tag_name = newTagName;
+		$http.post('http://localhost:8080/tags/changeText', {"tag_id": tag._id.$oid, "text": newTagName });
+	}
 }
 
 function editTagColor(tag, color, $http, $scope) {

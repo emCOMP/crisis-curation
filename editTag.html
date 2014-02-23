@@ -1,9 +1,10 @@
+<i class="fa fa-circle fa-lg" style="color: {{tag.color}};" colorpicker ng-model="CURRENT_TAGS[tag._id.$oid].color" ng-change="editTagColor(tag, CURRENT_TAGS[tag._id.$oid].color)"></i>
+
+<input id="editTagInputBox" type="text" class="form-control" placeholder="{{tag.tag_name}}" ng-model="newTagName"/>
+<br/>
+<a href="#" type="button" class="help-block btn btn-default btn-xs" ng-click="editTagText(tag, newTagName)">Change tag name</a>
+<br />
 <a href="#" ng-click="createColumn(tag.tag_name)">Search for this tag</a>
-<br />
-<input type="text" placeholder="{{tag.tag_name}}" ng-model="newTagName"/>
-<a href="#" ng-click="editTagText(tag, newTagName)">Change tag name</a>
-<br />
-<a href="#" colorpicker ng-model="CURRENT_TAGS[tag._id.$oid].color" ng-change="editTagColor(tag, CURRENT_TAGS[tag._id.$oid].color)">Change tag color</a>
 <br />
 <a href="#" ng-click="deleteTag(tag)">Delete</a>
 
