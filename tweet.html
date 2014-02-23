@@ -5,7 +5,7 @@
     <div class="media-body">
         <span class="fullname"><a href="http://twitter.com/{{tweet.name}}"><strong>{{tweet.user.name}}</strong></a></span>
         <span class="username"><small>@{{tweet.user.screen_name}}</small></span>
-        <span class="timestamp"><small>{{tweet.created_at.split("+")[0]}}</small></span>
+        <span class="timestamp"><small am-time-ago="tweet.created_at"></small></span>
         <p class="tweet-text">
         {{tweet.text}}</p>
     </div>

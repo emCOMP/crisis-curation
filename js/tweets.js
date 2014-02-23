@@ -21,7 +21,7 @@ function getTweets($http, $scope) {
 			    	}
 			    }// End todo
 			    $scope.tweets = response.tweets;
-				LAST_UPDATE = response.created_at;
+			    LAST_UPDATE = response.created_at;
 			 }
 		});
 	} else {
