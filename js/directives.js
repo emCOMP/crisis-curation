@@ -13,10 +13,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
-        $scope.tags = [
-            { "name":"Caution or Advice" , "color":"text-danger" },
-            { "name":"Requests for Help" , "color":"text-success" }
-        ];
 
         // Set up initial user
     	getUser($http, $modal, localStorageService);
@@ -45,14 +41,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.deleteTag = function (tag) {
             deleteTag(tag, $http,  $scope);
+            hidepop();
         }
 
         $scope.editTagColor = function(tag, color) {
             editTagColor(tag, color, $http, $scope);
+            hidepop();
         }
 
         $scope.editTagText = function(tag, newTagName) {
             editTagText(tag, newTagName, $http, $scope);
+            hidepop();
         }
 
         $scope.editTagPopover = function (tag) {
