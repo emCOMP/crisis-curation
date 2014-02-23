@@ -34,7 +34,8 @@ UNIX_EPOCH = datetime.datetime(1970, 1, 1, 0, 0, tzinfo = pytz.utc)
 def EPOCH(utc_datetime):
     delta = utc_datetime - UNIX_EPOCH
     seconds = delta.total_seconds()
-    return int(seconds)
+    ms = seconds * 1000
+    return int(ms)
 
 ## IF any entry in historicaldb doesn't have unix time:
 ##   add it. 
