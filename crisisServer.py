@@ -10,6 +10,7 @@ import json
 import datetime
 import pytz
 import random
+import re
 from bson import Binary, Code
 from bson.json_util import dumps
 from bson import objectid
@@ -27,9 +28,6 @@ SERVER_PORT = int(system_configs['server_port'])
 
 ### __________________________________________________________ ### 
 
-#### Katlyn's possibly weird global
-COLUMNS = []
-
 
 """
 # a test that your server is running, uncomment this if you're having trouble
@@ -42,23 +40,37 @@ def test():
 
 # ---- For clients to get Tweets ----
 
-@get('/tweets/<num:int>')
+# Adds a'columns' array to each tweet, which lists all the columns the tweet belongs to
+def addCols(cols, tweet_list):
+	for tweet in tweet_list:
+		tweet["columns"] = []
+		for col in cols:
+			if findWholeWord(col['search'])(tweet["text"]):
+				tweet["columns"].append(col["name"])
+
+@post('/tweets/<num:int>')
 def tweets(num):
-	time = currentTime(); 
 	if(num < 0):
-		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'		
-	tweet_instances = tweets.find().sort("id", pymongo.DESCENDING).limit(num)
-	return '{"tweets": ' + dumps(tweet_instances) +  ', "created_at" :' + dumps(time) + ' }'
+		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'
+	
+	cols = json.loads(request.body.read())["cols"]
+	tweet_list = list(tweets.find().sort("id", pymongo.DESCENDING).limit(num))
+	addCols(cols, tweet_list);
 
+	time = currentTime(); 		
+	return '{"tweets": ' + dumps(tweet_list) +  ', "created_at" :' + dumps(time) + ' }'
 
-@get('/tweets/since/<tweetID:int>')
-def tweetsSince(tweetID):
+@post('/tweets/since/<tweetID:int>')
+def _tweetsSince(tweetID):
 	tweet = tweets.find({"id" : float(tweetID)})
-	if(tweet.count() > 0):
-		t_since = tweets.find({'id' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING)
-		return '{"tweets": ' + dumps(t_since) + '}'
-	else:
+	if(tweet.count() == 0):
 		return '{"error": { "message": "Tweet id does not exist"}}'
+	
+	cols = json.loads(request.body.read())["cols"]
+	t_since = list(tweets.find({'id' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING))
+	addCols(cols, t_since)
+
+	return '{"tweets": ' + dumps(t_since) + '}'
 
 @get('/tweets/before/<tweetID:int>')
 def tweetsBefore(tweetID):
@@ -70,26 +82,6 @@ def tweetsBefore(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
-## do we want one to get a specific tweet (i.e., by ID)? 
-
-### For getting tweets in a search
-# below, figure out how to guarantee that searchterm is text. 
-@get('/tweets/search/<searchterm>/since/<tweetID:int>')
-def tweetsSearchSince():
-	# figure out what search term text means (replace + with " " and whatever else) 
-	# do query: 
-	# 1. get all tweets since tweetID --> note what the 'newest' id is (call it <lastidchecked>)
-	# 2. within that set, get all tweets that fit the search
-	# send back {tweets:[], search:<same string they gave us before>, lastID:<lastidchecked>}
-	return 0
-
-@get('/tweets/search/<searchterm>')
-def tweetsSearch():
-	# figure out what search term text means
-	# do query: 
-	# 1. get all tweets that fit the search --> aim is not to use this one except when starting a colum and IF NEEDED ... 
-	# send back same as above. 
-	return 0
 
 ###################### CLIENTS #####################################
 
@@ -419,6 +411,10 @@ def getInstanceByObjectID(id, collection):
 # Returns current Datetime, as a string
 def currentTime():
 	return datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d%H%M%S')
+
+
+def findWholeWord(w):
+    return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
 ###################### STATIC FILES #####################################
 

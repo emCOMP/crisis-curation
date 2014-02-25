@@ -9,7 +9,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService) {
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
-        $scope.CURRENT_COLS = ["all", "search2"];
+        $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
@@ -75,16 +75,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.createColumn = function(newColName) {
             console.log(newColName);
             // Make new column based on search term
-            $scope.CURRENT_COLS.push(newColName);
+            $scope.CURRENT_COLS.push({'name': newColName, 'search': newColName});
             var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
             $(".content").append( el );
-
-            // Send new column to back end
-            $http.post('http://localhost:8080/newcolumn', {"col": newColName}).success(function(response) {
-                if (response.error) {
-                    console.error("Saving new column unsuccessful");
-                }
-            });
         };
     })
 
@@ -111,7 +104,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 		    templateUrl: 'column.html',
             scope: true,
             link: function (scope, element, attrs) {
-                scope.name = attrs["colname"];        // Inhereting scopes - independent for each col
+                scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
                 element.on("mouseenter", function() {
                     console.log("most recent tweet: " + RECENT_ID);
                     scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
@@ -200,7 +193,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (items) {
                 var count = 0;
                 for (var i=0; i<items.length; i++){
-                    if (items[i].colname.indexOf(name) != -1 ) { // this tweet should be in my column
+                    if (items[i].columns.indexOf(name) != -1 ) { // this tweet should be in my column
                         if (name != scope.PAUSED_COL.colname) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
                         } else if (name == scope.PAUSED_COL.colname &&  // the column is paused
