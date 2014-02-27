@@ -1,6 +1,6 @@
 #! /bin/bash
 
-
+######GLOBAL CONSTANTS AND FUNCTIONS
 COLOR='\e[0;32m'
 STATUS_COLOR='\e[0;32m'
 ERROR_COLOR='\e[0;31m'
@@ -14,26 +14,7 @@ echo_Error () {
 	echo -e "${ERROR_COLOR}${1}${NC}"
 }
 
-######INITIALIZATION CODE = Derive/validate paths.
-folder_crisisServer_root=`pwd`
-folder_mongo_root=`sudo which mongod`
-if [ "${folder_mongo_root}" = "" ] #Check mongod was found
-then
-	echo_Error"Could not find location of mongod"
-	exit 1
-else
-	folder_mongo_root=${folder_mongo_root%\/mongod}
-	if [ ! -e ${folder_crisisServer_root}/crisisServer.py ]
-	then
-		echo_Error "Could not find location of crisisServer.py"
-	exit 1
-	fi	
-fi
-
-######INITIALIZATION CODE ends
-
-
-
+start_mongodb () {
 ###### CHECK/EXECUTE MONGOD
 echo_Status "Checking for running instance of Mongo DB server."
 mongod_running=`pgrep -f mongod | wc -l`
@@ -55,16 +36,21 @@ else	echo_Status "Running instance of Mongo DB server detected."
 fi
 ###### CHECK/EXECUTE MONGOD ends
 
+
 ###### DROP CURRENT_DATABASE IN MONGO DB
 echo_Status "Inspecting Database for \"Current Database\" collection"
 mongo << EOF
 use current_database
 db.dropDatabase()
+db.tweets.ensureIndex({"id":1})
 exit
 EOF
 
 echo_Status "Current Database wiped for new execution."
 ###### DROP CURRENT_DATABASE IN MONGO DB ends
+}
+
+start_crisisServer () {
 
 ##### STARTING crisisServer.py
 echo_Status "Checking for running instance of crisisSever"
@@ -90,6 +76,10 @@ fi
 echo_Status "CrisisServer initiated."
 ###### STARTING crisisServer.py ends
 
+}
+
+start_historicalTweets () {
+
 ###### STARTING historicalTweets.py
 echo_Status "Checking for running instance of historicalTweets.py"
 historicalTweets_running=`pgrep -f historicalTweets.py | wc -l`
@@ -113,3 +103,71 @@ then 	echo_Status "Could not start historicaltweeets.py"
 fi
 echo_Status "Historical Tweets are now being pulled."
 ###### STARTIN historicalTweets.py ends
+
+}
+
+######GLOBAL CONSTANTS AND FUNCTIONS ends
+
+##################MAIN PROGRAM BEGINS##################
+
+######PARSE COMMANDLINE PARAMETERS 
+###Note to developers - if you dont pass parameters to this file, just ignore this bit
+start_mongodb="Y"
+start_crisisServer="N"
+start_historicalTweets="N"
+start_import="N"
+
+if [[ $# -eq 0 ]]
+then
+	start_crisisServer="Y"
+	start_historicalTweets="Y"
+else
+	while getopts "mchi" OPTION 
+	do
+	    case $OPTION in
+	        c) start_crisisServer="Y";;
+       		h) start_historicalTweets="Y";;
+		i) start_import="Y";;
+	        m) start_mongodb="Y";;
+        	# Unknown option. No need for an error, getopts informs
+        	# the user itself.
+        	\?) exit 99;;
+    		esac
+	done
+fi
+
+#echo $start_crisisServer, $start_historicalTweets, $start_import, $start_mongodb
+######PARSE COMMANDLINE PARAMETERS ends
+
+######INITIALIZATION CODE = Derive/validate paths.
+folder_crisisServer_root=`pwd`
+folder_mongo_root=`sudo which mongod`
+if [ "${folder_mongo_root}" = "" ] #Check mongod was found
+then
+	echo_Error "Could not find location of mongod"
+	exit 1
+else
+	folder_mongo_root=${folder_mongo_root%\/mongod}
+	if [ ! -e ${folder_crisisServer_root}/crisisServer.py ]
+	then
+		echo_Error "Could not find location of crisisServer.py"
+	exit 1
+	fi	
+fi
+
+######INITIALIZATION CODE ends
+
+if [[ $start_mongodb = "Y" ]]
+then 	start_mongodb
+else 	echo_Status "Skipped starting of monogo DB"
+fi
+if [[ $start_crisisServer = "Y" ]]
+then 	start_crisisServer
+else 	echo_Status "Skipped starting of crisisServer"
+fi
+if [[ $start_historicalTweets = "Y" ]]
+then 	start_historicalTweets
+else 	echo_Status "Skipped starting of historicalTweets"
+fi
+
+

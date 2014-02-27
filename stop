@@ -1,5 +1,6 @@
 #! /bin/bash
 
+######GLOBAL CONSTANTS AND FUNCTIONS
 COLOR='\e[0;32m'
 STATUS_COLOR='\e[0;32m'
 ERROR_COLOR='\e[0;31m'
@@ -13,18 +14,7 @@ echo_Error () {
 	echo -e "${ERROR_COLOR}${1}${NC}"
 }
 
-######INITIALIZATION CODE = Derive/validate paths.
-folder_mongo_root=`sudo which mongod`
-if [ "${folder_mongo_root}" = "" ] #Check mongod was found
-then
-	echo_Error"Could not find location of mongod"
-	exit 1
-else
-	folder_mongo_root=${folder_mongo_root%\/mongod}
-fi
-
-######INITIALIZATION CODE ends
-
+stop_historicalTweets () {
 ##### STOPPING historicalTweets.py
 echo_Status "Checking for running instance of historicalTweets.py"
 historicalTweets_running=`pgrep -f historicalTweets.py | wc -l`
@@ -37,7 +27,9 @@ else	echo_Status "Running instance of historicalTweets.py detected."
 fi
 echo_Status "Historical Tweets instance killed"
 ##### STOPPING historicalTweets.py ends
+}
 
+stop_crisisServer () {
 ##### STOPPING crisisServer.py
 echo_Status "Checking for running instance of crisisSever"
 crisisServer_running=`pgrep -f crisisServer.py | wc -l`
@@ -50,7 +42,9 @@ else	echo_Status "Running instance of crisisServer detected."
 fi
 echo -e "${COLOR}Crisis Server instance killed."
 ##### STOPPING crisisServer.py ends
+}
 
+stop_mongodb () {
 ###### STOP MONGOD
 echo_Status "Checking for running instance of Mongo DB server."
 mongod_running=`pgrep -f mongod | wc -l`
@@ -67,5 +61,66 @@ EOF
 	echo_Status "Stopped Mongo DB server"
 fi
 ###### STOP MONGOD ends
+}
 
-rm -f nohup.out
+######GLOBAL CONSTANTS AND FUNCTIONS ends
+
+######PARSE COMMANDLINE PARAMETERS 
+###Note to developers - if you dont pass parameters to this file, just ignore this bit
+stop_mongodb="N"
+stop_crisisServer="N"
+stop_historicalTweets="N"
+
+if [[ $# -eq 0 ]]
+then
+	stop_crisisServer="Y"
+	stop_historicalTweets="Y"
+else
+	while getopts "mch" OPTION 
+	do
+	    case $OPTION in
+	        c) stop_crisisServer="Y";;
+       		h) stop_historicalTweets="Y";;
+	        m) stop_mongodb="Y"
+		   stop_crisisServer="Y"
+		   stop_historicalTweets="Y";;
+        	# Unknown option. No need for an error, getopts informs
+        	# the user itself.
+        	\?) exit 99;;
+    		esac
+	done
+fi
+
+#echo $stop_crisisServer, $stop_historicalTweets, $stop_mongodb
+######PARSE COMMANDLINE PARAMETERS ends
+
+##################MAIN PROGRAM BEGINS##################
+
+######INITIALIZATION CODE = Derive/validate paths.
+folder_mongo_root=`sudo which mongod`
+if [ "${folder_mongo_root}" = "" ] #Check mongod was found
+then
+	echo_Error"Could not find location of mongod"
+	exit 1
+else
+	folder_mongo_root=${folder_mongo_root%\/mongod}
+fi
+
+######INITIALIZATION CODE ends
+
+if [[ $stop_crisisServer = "Y" ]]
+then 	stop_crisisServer
+else 	echo_Status "Skipped stopping of crisisServer"
+fi
+if [[ $stop_historicalTweets = "Y" ]]
+then 	stop_historicalTweets
+else 	echo_Status "Skipped stopping of historicalTweets"
+fi
+if [[ $stop_crisisServer = "Y" && $stop_historicalTweets = "Y" ]]
+then 	rm -f nohup.out
+fi
+if [[ $stop_mongodb = "Y" ]]
+then 	stop_mongodb
+else 	echo_Status "Skipped stopping of monogo DB"
+fi
+echo_Status "Execution finished. Exiting..." 
