@@ -18,7 +18,7 @@ stop_historicalTweets () {
 ##### STOPPING historicalTweets.py
 echo_Status "Checking for running instance of historicalTweets.py"
 historicalTweets_running=`pgrep -f historicalTweets.py | wc -l`
-if [[ $historicalTweets_running == 0 ]]
+if [[ $historicalTweets_running -eq 0 ]]
 then  	echo_Status "historicalTweets.py is not running"
 	echo_Status "Proceeding with execution..."
 else	echo_Status "Running instance of historicalTweets.py detected."
@@ -33,7 +33,7 @@ stop_crisisServer () {
 ##### STOPPING crisisServer.py
 echo_Status "Checking for running instance of crisisSever"
 crisisServer_running=`pgrep -f crisisServer.py | wc -l`
-if [[ $crisisServer_running == 0 ]]
+if [[ $crisisServer_running -eq 0 ]]
 then  	echo_Status "crisisServer is not running"
 	echo_Status "Proceeding with execution..."
 else	echo_Status "Running instance of crisisServer detected."
@@ -48,7 +48,7 @@ stop_mongodb () {
 ###### STOP MONGOD
 echo_Status "Checking for running instance of Mongo DB server."
 mongod_running=`pgrep -f mongod | wc -l`
-if [[ $mongod_running == 0 ]]
+if [[ $mongod_running -eq 0 ]]
 then  	echo_Status "Mongo DB server is not running"
 	echo_Status "Proceeding with execution..."
 else	echo_Status "Running instance of Mongo DB server detected."
