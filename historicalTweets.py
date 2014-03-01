@@ -18,8 +18,8 @@ if system_configs['historical_or_live'] != 'historical':
 historical_configs = config.read_historical_configs()
 
 HISTORICAL_DB_NAME = historical_configs['historical_database']
-TIME_MULTIPLIER = int(historical_configs['time_multiplier'])
-SLEEP_SECONDS = int(historical_configs['sleep'])
+TIME_MULTIPLIER = float(historical_configs['time_multiplier'])
+SLEEP_SECONDS = float(historical_configs['sleep'])
 
 ### __________________________________________________________ ### 
 
