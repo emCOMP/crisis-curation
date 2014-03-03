@@ -4,6 +4,15 @@
 
 var USER = null;
 
+function displayUsername(localStorageService) {
+	return localStorageService.get('current_username');
+}
+
+function destroyUser(localStorageService) {
+	localStorageService.remove('current_username');
+	localStorageService.remove('current_user');
+}
+
 // Get the user's information and save it to both 
 // the browser's cache and the DB
 function getUser($http, $modal, localStorageService) {
@@ -26,6 +35,7 @@ function getUser($http, $modal, localStorageService) {
 			} else {
 				USER = response.id;
 				localStorageService.add('current_user', response.id);
+				localStorageService.add('current_username', userName);
 			}
 		});
 	});

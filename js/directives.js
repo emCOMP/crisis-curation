@@ -14,14 +14,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         // Set up initial user
-    	getUser($http, $modal, localStorageService);
+        getUser($http, $modal, localStorageService);
 
         // Start timer to constantly pull from DB
-		$interval(function(){
+        $interval(function(){
             updateTags($scope, $http);
-		 	updateTagInstances($scope, $http);
-			getTweets($http, $scope);
-		}, 1 * 1000);
+            updateTagInstances($scope, $http);
+            getTweets($http, $scope);
+        }, 1 * 1000);
 
         // Set up new tag popover, tag edit popovers
         setUpNewTagPopover($compile, $scope);
@@ -30,6 +30,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         ////////////////////////
         // Functions
         /////////////////////////
+        $scope.getUsername = function() {
+            return displayUsername(localStorageService);
+        }
+
+        $scope.logout = function() {
+            destroyUser(localStorageService);
+            getUser($http, $modal, localStorageService);
+        }
 
         // Save a new tag
         $scope.saveNewTag = function (tagname) {
@@ -61,9 +69,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
 
         // Apply a tag to a specific tweet
-		$scope.applyTag = function(tag_id, tweet_id, checked) {
-			applyTag(tag_id, tweet_id, checked, $http);
-		};
+        $scope.applyTag = function(tag_id, tweet_id, checked) {
+            applyTag(tag_id, tweet_id, checked, $http);
+        };
 
         // Create a new column from search box
         $scope.newColumn = function() {
@@ -100,10 +108,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
     // Template for one column of tweets
     .directive("columnStream", function() {
-		return {
+        return {
             transclude: true,
-		    restrict: 'EA',
-		    templateUrl: 'column.html',
+            restrict: 'EA',
+            templateUrl: 'column.html',
             scope: true,
             link: function (scope, element, attrs) {
                 scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
@@ -115,7 +123,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                     scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
                 })
             }
-		};
+        };
     })
 
     // Template for a dynamically resizing window
@@ -145,7 +153,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         scope.$apply();
                 });
         }
-	})
+    })
 
     // Directive to handle missing profile pictures
     .directive('errSrc', function() {
@@ -160,20 +168,20 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
     // Template for one single tweet
     .directive("tweet", function() {
-		return {
-		    restrict: 'EA',
+        return {
+            restrict: 'EA',
             transclue: true,
             scope: true,
-		    replace: true,
-		    templateUrl: 'tweet.html',
-		    link: function(scope, element, attrs) {
-    			attrs.$observe('tweet', function(tweet) {
+            replace: true,
+            templateUrl: 'tweet.html',
+            link: function(scope, element, attrs) {
+                attrs.$observe('tweet', function(tweet) {
                     if (scope.$parent) {
-    			     scope.tweet = scope.$parent.tweet;
+                     scope.tweet = scope.$parent.tweet;
                     }
-    			});;
-		    }
-		};
+                });;
+            }
+        };
     })
 
     ////////////////////////////////////////////
@@ -182,10 +190,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
     // Reverse items in an array.
     .filter('reverse', function() {
-		return function(items) {
-		    return items.slice().reverse();
-		};
-	})
+        return function(items) {
+            return items.slice().reverse();
+        };
+    })
 
     // Filter tweets specific to each column, as well
     // as limit the number of tweets per column to 75.
