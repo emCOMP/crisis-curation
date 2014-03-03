@@ -1,4 +1,3 @@
-MAX_TWEETS_PER_COLUMN = 50;
 PAUSED_COL = {'colname': null, 'recentTweet': null};
 
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment'])
@@ -34,9 +33,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Save a new tag
         $scope.saveNewTag = function (tagname) {
-            saveTag($scope, $http, $filter, tagname);
-            $scope.tag.newTagName = "";
-            hidepop();
+            if (tagname) {
+                console.log("woot, actual tag");
+                saveTag($scope, $http, $filter, tagname);
+                $scope.tag.newTagName = "";
+                hidepop();
+            }
         };
 
         $scope.deleteTag = function (tag) {

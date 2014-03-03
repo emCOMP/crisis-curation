@@ -1,5 +1,5 @@
 <div class="column">
-	<p ng-show="PAUSED_COL.queued" class="queued"><span>{{PAUSED_COL.queued}} New Tweets</span></p>
+	<p ng-click="PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0}" ng-show="PAUSED_COL.queued" class="queued"><span>{{PAUSED_COL.queued}} New Tweets</span></p>
     <div class="tweet-header">
         <h4><i class="fa fa-search pull-left"></i>{{name || "Home"}} <!--<small class="text-muted username">@realengz</small>--><i class="fa fa-caret-down pull-right"></i></h4>
     </div>

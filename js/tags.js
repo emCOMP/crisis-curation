@@ -4,7 +4,7 @@
 
 // Get all tags from the database
 function updateTags($scope, $http) {
-	$http.get('http://localhost:8080/tags').success(function(response) {
+	$http.get(WEBSERVER + '/tags').success(function(response) {
        if (response.tags == null) {
             console.error("Getting tags unsuccessful");
        } else { 
@@ -29,7 +29,7 @@ function updateTagInstances($scope, $http) {
 	// Seed tag updates by using the tag instance ID of the latest tag made in database
 	if( LAST_UPDATE != null) {
 		var date = {'date': LAST_UPDATE};
-		$http.post('http://localhost:8080/taginstances/since', date).success(function(response) {
+		$http.post(WEBSERVER + '/taginstances/since', date).success(function(response) {
 			processTagInstanceUpdates(response, $scope);	
 			LAST_UPDATE = response.created_at;
 		});
@@ -95,7 +95,7 @@ function saveTag($scope, $http, $filter, tagname) {
 		"created_by": USER,
 		"tag_name": newTagName
 	};
-	$http.post('http://localhost:8080/newtag', newTagObj).success(function(response) {
+	$http.post(WEBSERVER + '/newtag', newTagObj).success(function(response) {
 	    if (response.id == null) {
 	    	console.error("Saving new tag unsuccessful");
 	    } else {
@@ -121,13 +121,13 @@ function applyTag(tag, tweet, checked, $http){
 		if(tweet.tags.indexOf(tag._id.$oid) < 0) {
 			tweet.tags.push(tag._id.$oid)
 		}
-		$http.post('http://localhost:8080/newtaginstance', newTagObj);
+		$http.post(WEBSERVER + '/newtaginstance', newTagObj);
 	} else {
 		// remove tag
 		var tagIndex = tweet.tags.indexOf(tag._id.$oid)
 		if(tagIndex >= 0) {
 			tweet.tags.splice(tagIndex, 1);
-			$http.post('http://localhost:8080/deletetaginstance', newTagObj);
+			$http.post(WEBSERVER + '/deletetaginstance', newTagObj);
 		}	
 	}
 	// TODO: if they try to apply a tag that doesn't exist (ie, someone deletes 
@@ -138,18 +138,18 @@ function applyTag(tag, tweet, checked, $http){
 function editTagText(tag, newTagName, $http, $scope) {
 	if (newTagName) {
 		$scope.CURRENT_TAGS[tag._id.$oid].tag_name = newTagName;
-		$http.post('http://localhost:8080/tags/changeText', {"tag_id": tag._id.$oid, "text": newTagName });
+		$http.post(WEBSERVER + '/tags/changeText', {"tag_id": tag._id.$oid, "text": newTagName });
 	}
 }
 
 function editTagColor(tag, color, $http, $scope) {
-	$http.post('http://localhost:8080/tags/changeColor', {"tag_id": tag._id.$oid, "color": color});
+	$http.post(WEBSERVER + '/tags/changeColor', {"tag_id": tag._id.$oid, "color": color});
 }
 
 // Deletes a tag.  This will remove all the tag instances for this tag.
 function deleteTag(tag, $http, $scope){
 	// TODO prompt user to confirm deletion
-	$http.post('http://localhost:8080/deletetag', {"created_by": USER, "tag_id": tag._id.$oid,});
+	$http.post(WEBSERVER + '/deletetag', {"created_by": USER, "tag_id": tag._id.$oid,});
 	// TODO verify deletion success before deleting from view
 	delete($scope.CURRENT_TAGS[tag._id.$oid]);	
 }

@@ -20,7 +20,7 @@ function getUser($http, $modal, localStorageService) {
 	});
 
 	modalInstance.result.then(function (userName) {
-		$http.post('http://localhost:8080/clientName', {"client_name": userName}).success(function(response) {
+		$http.post(WEBSERVER + '/clientName', {"client_name": userName}).success(function(response) {
 			if (response.id == null) {
 				alert("Saving user unsuccessful");
 			} else {
