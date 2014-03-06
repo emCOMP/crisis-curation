@@ -34,12 +34,13 @@ UNIX_EPOCH = datetime.datetime(1970, 1, 1, 0, 0, tzinfo = pytz.utc)
 def EPOCH(utc_datetime):
     delta = utc_datetime - UNIX_EPOCH
     seconds = delta.total_seconds()
-    return seconds
+    ms = seconds * 1000
+    return ms
 
 ## IF any entry in historicaldb doesn't have unix time:
 ##   add it. 
 print 'adding unix times - might take a bit'
-no_unix = historicaldb.tweets.find( { 'unix_time' : {'$exists': False} } )
+no_unix = historicaldb.tweets.find( { 'unix_time' : {'$exists': False} } ) # returns nothing.. -J
 for tweet in no_unix:
     unix_time = EPOCH(dparser.parse(tweet['created_at']))
     historicaldb.tweets.update({"_id" : tweet['_id']}, {'$set': {'unix_time': unix_time}})
