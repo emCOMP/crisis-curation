@@ -142,7 +142,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                                 var windowHeight = $(window).height();
                                 var headerHeight = $(".tweet-header").height();
                                             return {
-                                                'height': (windowHeight - headerHeight - 40) + 'px',
+                                                'height': (windowHeight - headerHeight - 32) + 'px',
                                                 'width': 320 + 'px'
                                             };
                             };
