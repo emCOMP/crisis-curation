@@ -150,8 +150,8 @@ input[type="search"]:hover {
 .help-block .tweet-info {
   color: #ccd6dd;
 }
-.help-block .tweet-info a:hover {
-  text-decoration: none;
+.help-block .tweet-info small:nth-of-type(2) {
+  margin-left: 10px;
 }
 .help-block .btn {
   border: 0;
@@ -187,11 +187,4 @@ input[type="search"]:hover {
 .dropdown .dropdown-menu label:hover {
   background-color: #eee;
   color: #000000;
-}
-
-/* Katlyn Added */
-#editTagInputBox {
-  width: 80%; 
-  display: inline; 
-  margin-left: 3px;
 }
