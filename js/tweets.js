@@ -12,7 +12,7 @@ function getTweets($http, $scope) {
 	if (RECENT_ID == null) {
 		$http.post(WEBSERVER + '/tweets/1', {'cols':  $scope.CURRENT_COLS}).success(function(response) {
 		    if (response.tweets.length != 0) {
-			    RECENT_ID = response.tweets[0].id;
+			    RECENT_ID = response.tweets[0].id_str;
 			    $scope.tweets = response.tweets;
 			    LAST_UPDATE = response.created_at;
 			 }
@@ -21,8 +21,8 @@ function getTweets($http, $scope) {
 		// Every other time send the most recent tweet you've seen
 		$http.post(WEBSERVER + '/tweets/since/' + RECENT_ID,  {"cols":  $scope.CURRENT_COLS }).success(function(response) {
 		    if (response.tweets.length != 0 && 
-		    	!(response.tweets.length == 1 && response.tweets[0].id == RECENT_ID)) {
-			    RECENT_ID = response.tweets[0].id;
+		    	!(response.tweets.length == 1 && response.tweets[0].id_str == RECENT_ID)) {
+			    RECENT_ID = response.tweets[0].id_str;
 			    $scope.tweets = response.tweets.concat($scope.tweets);
 			 }
 		});

@@ -60,23 +60,23 @@ def tweets(num):
 	time = currentTime(); 		
 	return '{"tweets": ' + dumps(tweet_list) +  ', "created_at" :' + dumps(time) + ' }'
 
-@post('/tweets/since/<tweetID:int>')
+@post('/tweets/since/<tweetID>')
 def _tweetsSince(tweetID):
-	tweet = tweets.find({"id" : float(tweetID)})
+	tweet = tweets.find({"id_str" : tweetID})
 	if(tweet.count() == 0):
 		return '{"error": { "message": "Tweet id does not exist"}}'
 	
 	cols = json.loads(request.body.read())["cols"]
-	t_since = list(tweets.find({'id' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING))
+	t_since = list(tweets.find({'id_str' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING))
 	addCols(cols, t_since)
 
 	return '{"tweets": ' + dumps(t_since) + '}'
 
 @get('/tweets/before/<tweetID:int>')
 def tweetsBefore(tweetID):
-	tweet = tweets.find({"id" : tweetID})
+	tweet = tweets.find({"id_str" : tweetID})
 	if(tweet.count() > 0):
-		t_before = tweets.find({'id' : {'$lt': tweetID}}).sort("id", pymongo.DESCENDING)
+		t_before = tweets.find({'id_str' : {'$lt': tweetID}}).sort("id", pymongo.DESCENDING)
 
 		return '{"tweets": ' + dumps(t_before) + '}'
 	else:
@@ -222,16 +222,6 @@ def changeTagText():
         return 'true' # TODO not sure what format of response should be     
     else:
         return '{"error": { "message": "Tag id does not exist"}}'
-## hold off on this one - it's not important yet 
-## we need to first figure out how we're passing time back/forth between frontend and backend and how we're storing it.
-## method for getting all tags created between time T1 and time T2
-# get times from frontend (coordinate with frontend to decide what format -- datetime?)
-#    for format, it should be the same format they are giving time when they send tweets/tags
-#    and it should be the a format that works with greater than/less than queries
-#    OR we (before storing/looking up) need to do conversions
-# have option for T2 to be unspecified = goes up til now
-# have option for T1 to be unspecified = from the beginning up until T2
-# return json of tags OR list of tagIDs (coordinate with frontend for this choice)
 
 ## hold off on this one - it is important, but we need to make group decisions
 ## dealing with deleting tags (but keeping records of them)??? 
@@ -249,10 +239,6 @@ def tagsByClient(clientID):
 	else:
 		return '{"error": { "message": "Client id does not exist"}}'
 
-# ---- Interactions with tags and tweets (and no other tables)----
-## I can't think of anything
-
-## anything else for tags?
 # eventually, we'll add something with tags and/or tag instances to tag twitter users instead of just tweets but not yet
 # that (on the back end at least) is going to mean adding a database table
 
@@ -338,7 +324,7 @@ def tagInstancesSince():
 # ---- Interactions with tags instances (but no other tables) ----
 
 ## method for getting all tag instances associated with a specific tweet
-@get('/taginstances/tweetID/<tweetID:path>')
+@get('/taginstances/tweetID/<tweetID:path>') 
 def tagInstancesByTweetID(tweetID):
 	tweet = getInstanceByObjectID(tweetID, tweets)
 	if(tweet):
@@ -347,17 +333,6 @@ def tagInstancesByTweetID(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
-## don't do this yet. 
-## method for getting all tag instances created between time T1 and time T2
-# get times from frontend (coordinate with frontend to decide what format -- datetime? -- same as above!)
-# have option for T2 to be unspecified = goes up til now
-# have option for T1 to be unspecified = from the beginning up until T2
-# return json of tags OR list of tagIDs (coordinate with frontend for this choice)
-
-
-# ---- Interactions with tags instances and tweets (but no other tables) ----
-
-## ? 
 
 
 # ---- Interactions with tags instances and clients (but no other tables) ----
@@ -385,9 +360,6 @@ def tagInstancesByTagID(tagID):
 	else:
 		return '{"error": { "message": "Tag id does not exist"}}'
 
-# ---- Interactions with more than 2 tables? ----
-
-## ?
 
 ## anything else with tag instances? anything else at all? 
 # eventually, we'll add something with tags and/or tag instances to tag twitter users instead of just tweets, 
