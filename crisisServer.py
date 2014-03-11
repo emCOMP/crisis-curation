@@ -22,6 +22,7 @@ from bottle import static_file
 import config
 system_configs = config.read_system_configs()
 
+EVENT_TITLE = system_configs['event_title']
 LIVE_DB_NAME = system_configs['current_database']
 SERVER_HOST = system_configs['server_host']
 SERVER_PORT = int(system_configs['server_port'])
@@ -403,6 +404,10 @@ def get_html(path):
 @get('/<folder:re:(css|js|fonts|assets)>/<filename:path>')
 def get_static(folder, filename):
 	return static_file(filename, root=folder)
+
+@get('/eventTitle')
+def get_eventTitle():
+	return EVENT_TITLE
 
 
 
