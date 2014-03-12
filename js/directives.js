@@ -89,6 +89,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
             $(".content").append( el );
         };
+
+        $scope.deleteColumn = function(colName) {
+			if(colName == "all") { return; } // don't let them delete the first column
+            var cols = $scope.CURRENT_COLS;
+            for(var i = 0; i < cols.length; i++){
+                if(cols[i].name == colName) {
+                    $scope.CURRENT_COLS.splice(i, 1);
+                    $("column-stream[colname='" + colName + "']").remove();	
+                    break;			
+                }		
+            }
+        }
     })
 
 
