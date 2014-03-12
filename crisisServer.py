@@ -144,7 +144,6 @@ def newTag():
                     'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
                     'created_by': created_by, 
                     'tag_name': tag_name,
-                    'instances' : 0,
                     'tweets': []}
    tag = tags.find({'tag_name' : tag_name})
    if(tag.count() > 0):
@@ -180,9 +179,11 @@ def deleteTag():
 
 @get('/tags')
 def tags():
-    all_tags = tags.find({}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1})
-    return '{"tags":' + dumps(all_tags) + '}'  ## TODO: I need counts of each tag instance for each tag
-                                               ## format is  "instances" : 34   etc.
+    all_tags = list(tags.find({}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tweets': 1}))
+    for tag in all_tags:
+        tag["num_instances"] = len(tag["tweets"])
+        del tag["tweets"] # no need to send embedded tweets
+    return '{"tags":' + dumps(all_tags) + '}'
 
 ## might want one to get tags only since the last tag was created (like tweets/since)
 ## but might not need it since we expect there will always be a small number of tags
