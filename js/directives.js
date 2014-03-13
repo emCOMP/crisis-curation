@@ -128,13 +128,28 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             scope: true,
             link: function (scope, element, attrs) {
                 scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
-                element.on("mouseenter", function() {
-                    console.log("most recent tweet: " + RECENT_ID);
-                    scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                element.on("click", function(e) {
+                    if (e.srcElement.localName == "div") {
+                        console.log("woo not a button");
+                        if (scope.PAUSED_COL.colname) {
+                            element.css("opacity", "1");
+                            scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
+                        } else {
+                            element.css("opacity", "0.5");
+                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        }
+                    }
                 });
-                element.on("mouseleave", function() {
-                    scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
-                })
+                $(element).find(".tweet-stream").bind("scroll", function() {
+                    if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
+                        element.css("opacity", "0.5");
+                        scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                    } else {
+                        element.css("opacity", "1");
+                        scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
+                    }
+                    scope.$apply();
+                });
             }
         };
     })
