@@ -6,6 +6,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Controller
     /////////////////////////////////////////////////
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService) {
+        getCurrentCrisis($http, $scope);
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
@@ -236,3 +237,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             return arrayToReturn;
         }
     });
+
+
+function getCurrentCrisis($http, $scope) {
+    $http.get(WEBSERVER + '/eventTitle').success(function(response) {
+            $scope.currentCrisis = response;
+        });
+}
