@@ -12,6 +12,21 @@ You'll need to start up both Chrome and our Server/DB
 - **Server & DB**: `./start`
 To restart use `./stop`
 
+Flags available in start script:
+
+1. `-m` Starts only mongo server daemon
+2. `-h` Runs only historicTweets.py and processes it depends on.
+3. `-c` Runs only crisisServer.py and processes it depends on.
+4. `-i` Reserved. Will be used to do initialization stuff.
+5. Behavior when no flags are mentioned: All 3 processes are started. Similar to `-mch`
+
+Flags available in stop script:
+
+1. `-m` Stops mongo server daemon and all processes that depend on it.
+2. `-h` Stops only historicTweets.py.
+3. `-c` Stops only crisisServer.py.
+4. Behavior when no flags are mentioned: Stops all processes except the mongo server daemon. Similar to `-ch`.
+
 If things aren't working you can do things manually [here](https://github.com/engz/crisis-curation/wiki/Starting-Server-Manually).
 
 Resetting Historical Tweet Stream
