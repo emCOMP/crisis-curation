@@ -45,6 +45,9 @@ hr {
 .nav-pills li a:hover {
   background-color: #f5f8fa;
 }
+.input-group {
+  padding: 10px 0 0 0;
+}
 .input-group .fa-search {
   margin-left: 2px;
   padding-bottom: 2px;
@@ -67,6 +70,18 @@ input[type="search"]:hover {
   border: none;
   border-radius: 0px;
   background: none;
+}
+#user-info {
+  border-bottom: 1px solid #e1e8ed;
+  padding: 5px 0 5px 15px;
+}
+#user-info p {
+  font-weight: 500;
+  color: #8899a6;
+}
+#user-info .logout {
+  margin-right: 12px;
+  cursor: pointer;
 }
 #tag-title {
   padding: 5px 0 5px 15px;

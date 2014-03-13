@@ -34,12 +34,11 @@
   </head>
 
   <body ng-controller="Ctrl">
-        <div style="text-align: center; padding: 10px; margin: 5px; opacity:0.7; position: absolute; right: 0; top: 0; border: 1px solid #e1e8ed; border-radius: 5px 5px; background-color: #ffffff;"> 
-            Welcome {{getUsername()}}<br/>
-            <a ng-click="logout()">Logout</a>
-        </div>
         <div class="left-menu">
-            <h4>&nbsp;{{currentCrisis}}</h4>
+            <h4>{{currentCrisis}}</h4>
+            <div id="user-info">
+                <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
+            </div>
             <div class="input-group" id="nav-menu">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
                 <form ng-submit="newColumn()">
