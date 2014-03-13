@@ -130,7 +130,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
                 element.on("click", function(e) {
                     if (e.srcElement.localName == "div") {
-                        console.log("woo not a button");
                         if (scope.PAUSED_COL.colname) {
                             element.css("opacity", "1");
                             scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
