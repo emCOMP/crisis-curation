@@ -140,10 +140,6 @@ input[type="search"]:hover {
   color: #8899a6;
   font-weight: 500;
 }
-.timestamp:before {
-  content: "\00b7";
-  margin-right: 4px;
-}
 .help-block {
   margin: 0 0 0 58px;
 }
