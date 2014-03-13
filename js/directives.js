@@ -142,8 +142,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 });
                 $(element).find(".tweet-stream").bind("scroll", function() {
                     if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
-                        element.css("opacity", "0.5");
-                        scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        if (scope.PAUSED_COL.colname ==  null) {
+                            element.css("opacity", "0.5");
+                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        }
                     } else {
                         element.css("opacity", "1");
                         scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
