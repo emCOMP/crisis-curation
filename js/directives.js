@@ -1,5 +1,3 @@
-PAUSED_COL = {'colname': null, 'recentTweet': null};
-
 angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment'])
 
     /////////////////////////////////////////////////
@@ -48,7 +46,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 $scope.tag.newTagName = "";
                 hidepop();
             }
-        };
+        }
+
+        $scope.unpauseColumn = function(colname) {
+            $scope.PAUSED_COL = {'colname': undefined, 'recentTweet': undefined, 'queued': 0};
+            $("column-stream[colname='" +  colname + "']").css("opacity", 1.0);
+            $($("column-stream[colname='" +  colname + "']").find(".tweet-stream")).scrollTop(0);
+        }
+
+        $scope.pauseColumn = function(colname) {
+            $("column-stream[colname='" +  colname + "']").css("opacity", "0.5");
+            $scope.PAUSED_COL = {'colname': colname, 'recentTweet': RECENT_ID, 'queued': 0};
+        }
 
         $scope.deleteTag = function (tag) {
             deleteTag(tag, $http,  $scope);
@@ -144,30 +153,25 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
                 element.on("click", function(e) {
                     if (e.srcElement.localName == "div") {
-                        if (scope.PAUSED_COL.colname) {
-                            element.css("opacity", "1");
-                            scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
+                        if (scope.$parent.PAUSED_COL.colname) {
+                            scope.unpauseColumn(scope.name);
                         } else {
-                            element.css("opacity", "0.5");
-                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                            scope.pauseColumn(scope.name);
                         }
                     } else if (e.srcElement.id == "TagTweetButton") {
                         // if not paused, pause it!
-                        if (!scope.PAUSED_COL.colname) {
-                            element.css("opacity", "0.5");
-                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        if (!scope.$parent.PAUSED_COL.colname) {
+                            scope.pauseColumn(scope.name);
                         }
                     }
                 });
                 $(element).find(".tweet-stream").bind("scroll", function() {
                     if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
-                        if (scope.PAUSED_COL.colname ==  null) {
-                            element.css("opacity", "0.5");
-                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        if (scope.$parent.PAUSED_COL.colname ==  null) {
+                            scope.pauseColumn(scope.name);
                         }
                     } else {
-                        element.css("opacity", "1");
-                        scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
+                        scope.unpauseColumn(scope.name);
                     }
                     scope.$apply();
                 });
@@ -264,7 +268,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         }
                     }
                 }
-                scope.PAUSED_COL.queued = count;
+                if (name == scope.PAUSED_COL.colname) {
+                    scope.PAUSED_COL.queued = count;
+                }
             }
             // limit number of tweets in a column
             if(arrayToReturn.length > MAX_TWEETS_PER_COLUMN) {
