@@ -44,7 +44,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Save a new tag
         $scope.saveNewTag = function (tagname) {
             if (tagname) {
-                console.log("woot, actual tag");
                 saveTag($scope, $http, $filter, tagname);
                 $scope.tag.newTagName = "";
                 hidepop();
@@ -76,7 +75,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Also puts cursor at end of pre-filled text
         $scope.editTagPopoverSetup = function() {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
-                console.log("hi");
                 var element = document.getElementById("editTagInputBox");
                 var val = $scope.newTagName;
                 element.setSelectionRange(val.length,val.length);
@@ -101,7 +99,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Generic create column with a given column search string
         $scope.createColumn = function(newColName) {
-            console.log(newColName);
             // Make new column based on search term
             $scope.CURRENT_COLS.push({'name': newColName, 'search': newColName});
             var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
@@ -151,6 +148,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                             element.css("opacity", "1");
                             scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued': 0};
                         } else {
+                            element.css("opacity", "0.5");
+                            scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
+                        }
+                    } else if (e.srcElement.id == "TagTweetButton") {
+                        // if not paused, pause it!
+                        if (!scope.PAUSED_COL.colname) {
                             element.css("opacity", "0.5");
                             scope.PAUSED_COL = {'colname': attrs["colname"], 'recentTweet': RECENT_ID, 'queued': 0};
                         }

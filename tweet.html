@@ -16,7 +16,7 @@
         </span>
 
         <div class="dropdown-relative pull-right">
-            <a href="#" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag tweet <i class="fa fa-caret-down"></i></a>
+            <a href="#" id="TagTweetButton" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag tweet <i class="fa fa-caret-down"></i></a>
             <div ng-show="showTags">
                 <div ng-repeat="tag in CURRENT_TAGS" >
                     <label>
