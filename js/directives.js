@@ -13,6 +13,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+        $scope.editTagPopOverOpen = false;
 
         // Set up initial user
         getUser($http, $modal, localStorageService);
@@ -66,8 +67,24 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.editTagPopover = function (tag) {
+            $scope.newTagName = tag.tag_name;
+            $scope.editTagPopOverOpen = false;
             closeOtherTagPopovers(tag);
         };
+
+        // Super hacky way to get focus on input box in tag editor
+        // Also puts cursor at end of pre-filled text
+        $scope.editTagPopoverSetup = function() {
+            if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
+                console.log("hi");
+                var element = document.getElementById("editTagInputBox");
+                var val = $scope.newTagName;
+                element.setSelectionRange(val.length,val.length);
+                element.focus();
+                $scope.editTagPopOverOpen = true;
+            }
+            return true;
+        }
 
         // Apply a tag to a specific tweet
         $scope.applyTag = function(tag_id, tweet_id, checked) {
