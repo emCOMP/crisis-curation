@@ -18,19 +18,36 @@
         <div class="dropdown-relative pull-right">
             <a href="#" id="TagTweetButton" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag tweet <i class="fa fa-caret-down"></i></a>
             <div ng-show="showTags">
-                <div ng-repeat="tag in CURRENT_TAGS" >
+                <div ng-repeat="tag in TAGS.tags" >
                     <label>
-                        <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
+                        <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="TAGS.applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div>
                 <a href="#" ng-click="showCreateNewTag=(!showCreateNewTag)">Create new tag</a>
                 <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
             </div>
 
+     <div class="dropdown-relative pull-right">
+            <a href="#" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Tag user <i class="fa fa-caret-down"></i></a>
+            <div ng-show="showUserTags">
+                <div ng-repeat="tag in USER_TAGS.tags" >
+                    <label>
+                        <input type="checkbox" ng-checked="tweet.user_tags.indexOf(tag._id.$oid) >= 0" ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked); $parent.showUserTags = !$parent.showUserTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
+                    </label>
+                </div>
+                <a href="#" ng-click="showCreateNewUserTag=(!showCreateNewUserTag)">Create new user tag</a>
+                <new-user-tag-popup ng-show="showCreateNewUserTag"></new-user-tag-popup>
+     </div>
+
 
         <div>
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="CURRENT_TAGS[tag]" ng-repeat="tag in tweet.tags" tooltip="{{CURRENT_TAGS[tag].tag_name}}" class="fa fa-circle" style="color: {{CURRENT_TAGS[tag].color}};"></i>
+            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle" style="color: {{TAGS.tags[tag].color}};"></i>
         </div>
+
+        <div>
+            <!-- ng-show: only show dot if this tag exists -->
+            <i ng-show="USER_TAGS.tags[tag]" ng-repeat="tag in tweet.user_tags" tooltip="{{USER_TAGS.tags[tag].tag_name}}" class="fa fa-stop" style="color: {{USER_TAGS.tags[tag].color}};"></i>
+	</div>
     </div>
 </div>

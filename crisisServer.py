@@ -37,6 +37,7 @@ def test():
     return 'This is just a test. This server is running as expected.'
 """
 
+
 ###################### TWEETS #####################################
 
 # ---- For clients to get Tweets ----
@@ -48,9 +49,10 @@ def addCols(cols, tweet_list):
 		for col in cols:
 			if findWholeWord(col['search'])(tweet["text"]):
 				tweet["columns"].append(col["name"])
+		
 
 @post('/tweets/<num:int>')
-def tweets(num):
+def tweetNum(num):
 	if(num < 0):
 		return '{"error": { "message": "Number of tweets requested cannot be negative"}}'
 	
@@ -62,7 +64,7 @@ def tweets(num):
 	return '{"tweets": ' + dumps(tweet_list) +  ', "created_at" :' + dumps(time) + ' }'
 
 @post('/tweets/since/<tweetID>')
-def _tweetsSince(tweetID):
+def tweetsSince(tweetID):
 	tweet = tweets.find({"id_str" : tweetID})
 	if(tweet.count() == 0):
 		return '{"error": { "message": "Tweet id does not exist"}}'
@@ -146,217 +148,290 @@ def clients():
     peeps = clients.find()
     return '{"clients":' + dumps(peeps) + '}'
 
-## I can't think of anything else necessary. 
-# Maybe look up client by id? Probably not (and also I won't mention similar things for other entities)
-# Maybe let the client change their name?
-# Definitely don't need this yet, maybe ever.
+
+###################### TAG MODELS #####################################
+'''
+	Mongo Data representation
+
+	tweets collection:
+	Each tweet contains two tag lists, that represent tags that have been
+    applied to this tweet. One for tweet tags (tags), and one for user tags (user_tags).
+	tweet
+	{
+		tags: []
+		user_tags: []
+	}
+
+
+	tags and user_tags collections:
+	The tags collection represents tweet tags.
+	The user_tags collection represents user tags.
+	Each tag contains a list of all the items that have been tagged with this tag.
+	tag
+	{
+		created_at: date
+		created_by: user_id
+		color: color
+		tag_name: name
+		tagged_item_ids: []     # either tweet IDs or Twitter User IDs, depending on the type of tag
+		active: True			# True if this tag is not deleted
+	}
+
+
+
+	tag_instance and user_tag_instance collections:
+	These represent applied istances of tags
+	tag instance
+	{
+		tagged_item_id:			# either a tweet ID or Twitter User ID, depending on the type of tag	
+		tag_id:	
+		created_at:
+		created_by:
+		active: True
+	}
+'''
+
+class TagsModel:
+	def getTags(self):
+		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tweets': 1}))
+		return '{"tags":' + dumps(all_tags) + '}'
+
+	def newTag(self):
+		tag_name = json.loads(request.body.read())["tag_name"]
+		tag_color = json.loads(request.body.read())["color"]
+		created_by = json.loads(request.body.read())["created_by"]
+
+		# check if tag already exists
+		tag_instance = self.tags.find({'tag_name': tag_name})
+		if(tag_instance.count() > 0):
+		    return '{"id": "' + str(tag_instance[0]["_id"]) + '"}'
+	
+		tag_document = self.tagDocument(tag_name, tag_color, created_by)
+
+		generated_id = self.tags.insert(tag_document)
+		return '{"id": "' + str(generated_id) + '"}'
+
+	def deleteTag(self):
+		created_by = json.loads(request.body.read())["created_by"]
+		tag_id = json.loads(request.body.read())["tag_id"]
+
+		# remove embedded tags from tweets collection
+		self.removeEmbeddedData(tag_id)
+
+		# inactivate instances of this tag
+		self.tag_instances.update({'tag_id' : tag_id}, {'$set' :{'active': False, 'created_at': currentTime() }})
+
+	def changeColor(self):
+		new_color = json.loads(request.body.read())["color"]
+		tagID = json.loads(request.body.read())["tag_id"]
+
+		tag = getInstanceByObjectID(tagID, self.tags)
+		if(tag):
+		    self.tags.update({'_id': objectid.ObjectId(tagID)},
+						{'$set': { 'color' : new_color }})
+		    return 'true'			
+		else:
+		    return '{"error": { "message": "Tag id does not exist"}}'
+
+	def changeText(self):
+		new_text = json.loads(request.body.read())["text"]
+		tagID = json.loads(request.body.read())["tag_id"]
+		tag = getInstanceByObjectID(tagID, self.tags)
+		if(tag):
+		    self.tags.update({'_id': objectid.ObjectId(tagID)},
+		      {'$set': { 'tag_name' : new_text }})
+		    return 'true'     
+		else:
+		    return '{"error": { "message": "Tag id does not exist"}}'
+
+	def tagDocument(self, tag_name, tag_color, created_by):
+		return { 'tag_name': tag_name,
+				'created_at': currentTime(),
+		        'created_by': created_by,
+		        'color': tag_color,
+				'tagged_item_ids': [],
+		        'active': True } 
+
+	def addEmbeddedData(self, tag_id, tagged_item_id):
+		# add tag to list of tagged tweets' tags	
+		tweets.update(self.taggedTweets(tagged_item_id), 
+					 {'$push' : { self.embedded_array_name :  tag_id } })
+		# add tagged item to list of this tag's tagged items
+		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, 
+					     {'$push' : { 'tagged_item_ids' : tagged_item_id} } )
+
+	def removeEmbeddedData(self, tag_id):
+		tag = self.tags.find({'_id' : objectid.ObjectId(tag_id)})
+		# remove tag from tagged tweets' tags
+		if(tag.count() > 0):
+		    for tagged_item_id in tag[0]["tagged_item_ids"]:
+				tweets.update(self.taggedTweets(tagged_item_id), 
+							  {'$pull': { self.embedded_array_name : tagged_item_id}})	
+
+		# clear this tag's list of tagged items
+		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, {'tagged_item_ids' : [] } )
+
+
+	def newTagInstance(self):
+		created_by = json.loads(request.body.read())["created_by"]
+		tag_id = json.loads(request.body.read())["tag_id"]
+		tagged_item_id = json.loads(request.body.read())["tagged_item_id"]
+
+		# Tag instance exists, and is active. Nothing to do.
+		tag_instance = self.tag_instances.find({'tag_id': tag_id, 'tagged_item_id': tagged_item_id, 'active': True})
+		if(tag_instance.count() > 0):
+		    return;
+
+		tag_instance_id = None
+		# Tag instance exists, but is inactive. Activate.
+		tag_instance = self.tag_instances.find({'tag_id': tag_id, 'tagged_item_id': tagged_item_id, 'active': False})
+		if(tag_instance.count() > 0):
+		    tag_instance_id = tag_instance[0]["_id"]
+		    self.tag_instances.update({'tag_id': tag_id, 'tagged_item_id': tagged_item_id},
+		                         {'$set' : {'created_at' : currentTime(), 
+		                                    'created_by': created_by, 'active': True } })	
+		else:
+			# Tag instance does not exist.  Create.
+			instance_document = {'tagged_item_id' : tagged_item_id,
+				                 'created_at': currentTime(),
+				                 'created_by': created_by,
+				                 'tag_id': tag_id,
+				                 'active': True}
+
+			tag_instance_id = self.tag_instances.insert(instance_document)
+		
+		self.addEmbeddedData(tag_id, tagged_item_id);
+		return '{"id": "' + str(tag_instance_id) + '"}'
+
+	def deleteTagInstance(self):
+		created_by = json.loads(request.body.read())["created_by"]
+		tag_id = json.loads(request.body.read())["tag_id"]
+		tagged_item_id = json.loads(request.body.read())["tagged_item_id"]
+		
+		# Update timestamp so this update will propogate to other systems as they pull for changes
+		tag_instance = self.tag_instances.find({'tag_id' : tag_id, 'tagged_item_id': tagged_item_id});
+		if(tag_instance.count() > 0):
+		    tag_instance_id = tag_instance[0]["_id"]
+		    self.tag_instances.update({'_id' : tag_instance_id },
+		                         	  {'$set' : {'created_at' : currentTime(), 
+		                                         'created_by': created_by, 
+									             'active': False }})	
+
+		# update embedded lists in tweets, tag
+		tweets.update(self.taggedTweets(tagged_item_id),
+			          {'$pull' : { self.embedded_array_name :  tag_id } })
+		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, 
+	                     {'$pull' : { 'tagged_item_ids' : tagged_item_id} } )
+
+
+	# Return tag instances since the given date
+	def tagInstancesSince(self):
+		last_update = json.loads(request.body.read())["date"]
+		tagInstances = self.tag_instances.find({'created_at' : {'$gt': last_update }})
+	
+		if(tagInstances.count() > 0):
+		    last_update = tagInstances[0]['created_at'];
+
+		if(tagInstances):
+		    return '{"tag_instances":' + dumps(tagInstances) + ', "created_at": "' + last_update + '"}'
+
+
+class TweetTagsModel(TagsModel):
+	def __init__(self):
+		self.tags = tags
+		self.tag_instances = tag_instances
+		self.embedded_array_name = 'tags'
+
+	def taggedTweets(self, tagged_item_id):
+		# query to find all tweets that are tagged with this tag
+		return { '_id' : objectid.ObjectId(tagged_item_id) }
+
+	def getTags(self):
+		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tagged_item_ids': 1}))
+		for tag in all_tags:
+		    tag["num_instances"] = len(tag["tagged_item_ids"])
+		    del tag["tagged_item_ids"] # no need to send embedded tweets
+		return '{"tags":' + dumps(all_tags) + '}'
+
+
+class UserTagsModel(TagsModel):
+	def __init__(self):
+		self.tags = user_tags
+		self.tag_instances = user_tag_instances
+		self.embedded_array_name = 'user_tags'
+
+	def taggedTweets(self, tagged_item_id):
+		# query to find all tweets that are tagged with this tag
+		return { 'user.id' : tagged_item_id }
+
 
 ###################### TAGS #####################################
-
-# ---- For clients to add new tags ----
-
-@get('/newtag')
-def newTag_form():
-    return '''
-    <form action="/newtag" method="post">
-      Tag Name: <input name="tag_name" type="text" />
-      Color: <input name="color" type="text" />
-      Created By: <input name="created_by" type="text" />
-      <input value="Add tag" type="submit" />
-    </form>
-    '''
-
-# Creates a new tag, returns ID of that tag.
-# If a tag with this name already exists, returns the ID of that tag
 @post('/newtag')
 def newTag():
-   tag_name = json.loads(request.body.read())["tag_name"]
-   tag_color = json.loads(request.body.read())["color"]
-   created_by = json.loads(request.body.read())["created_by"]
-   tag_document = {'color': tag_color, # Use hex form; e.g."#FF00FF'
-                    'created_at': datetime.datetime.now(pytz.timezone('US/Pacific')),
-                    'created_by': created_by, 
-                    'tag_name': tag_name,
-                    'tweets': []}
-   tag = tags.find({'tag_name' : tag_name})
-   if(tag.count() > 0):
-      return '{"id": "' + str(tag[0]["_id"]) + '"}'
-   else:
-      generated_id = tags.insert(tag_document)
-      return '{"id": "' + str(generated_id) + '"}'
+	return tweetTags.newTag()
 
-# Deletes tag with the specified ID
+@post('/newusertag')
+def newUserTag():
+	return userTags.newTag()
+
 @post('/deletetag')
-def deleteTag():
-    created_by = json.loads(request.body.read())["created_by"]
-    tag_id = json.loads(request.body.read())["tag_id"]
-	
-    # remove embedded instances of tag in tweets collection
-    tag = tags.find({'_id' : objectid.ObjectId(tag_id)})
-    if(tag.count() > 0):
-        for tweet_id in tag[0]["tweets"]:
-            tweets.update({'_id' : objectid.ObjectId(tweet_id)}, 
-                          {'$pull' : { 'tags' :  tag_id } })
-            # update time so that this change gets propagated
-            tweets.update({'_id' : objectid.ObjectId(tweet_id)}, 
-                          {'$set' : {'created_at' : currentTime(), 'active': False }})
+def deleteUserTag():
+	return tweetTags.deleteTag()
 
-    # inactivate instances of this tag
-    tag_instances.update({'tag_id' : tag_id}, 
-                         {'$set' :{'active': False, 'created_at': currentTime() }})
-
-    # remove tag itself
-    tags.remove({'_id' : objectid.ObjectId(tag_id)})
-
-# ---- For clients to get Tags from DB ----
-
-@get('/tags')
-def tags():
-    all_tags = list(tags.find({}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tweets': 1}))
-    for tag in all_tags:
-        tag["num_instances"] = len(tag["tweets"])
-        del tag["tweets"] # no need to send embedded tweets
-    return '{"tags":' + dumps(all_tags) + '}'
-
-## might want one to get tags only since the last tag was created (like tweets/since)
-## but might not need it since we expect there will always be a small number of tags
-
-# ---- Other interactions with tags (but no other tables) ----
-
-@get('/tags/changeColor')
-def changeTagColor_form():
-    return '''
-    <form action="/tags/changeColor" method="post">
-      Tag ID: <input name="tag_id" type="text" />
-      New Color: <input name="color" type="text" />
-      <input value="Change color" type="submit" />
-    </form>
-    '''
+@post('/deleteusertag')
+def deleteUserTag():
+	return userTags.deleteTag()
 
 @post('/tags/changeColor')
-def changeTagColor():
-    new_color = json.loads(request.body.read())["color"]
-    tagID = json.loads(request.body.read())["tag_id"]
-    tag = getInstanceByObjectID(tagID, tags)
-    if(tag):
-        tags.update({'_id': objectid.ObjectId(tagID)},
-					{'$set': { 'color' : new_color }})
-        return 'true'	# TODO not sure what format of response should be			
-    else:
-        return '{"error": { "message": "Tag id does not exist"}}'
+def changeUserTagColor():
+	return tweetTags.changeColor()
 
+@post('/usertags/changeColor')
+def changeUserTagColor():
+	return userTags.changeColor()
 
 @post('/tags/changeText')
-def changeTagText():
-    new_text = json.loads(request.body.read())["text"]
-    tagID = json.loads(request.body.read())["tag_id"]
-    tag = getInstanceByObjectID(tagID, tags)
-    if(tag):
-        tags.update({'_id': objectid.ObjectId(tagID)},
-          {'$set': { 'tag_name' : new_text }})
-        return 'true' # TODO not sure what format of response should be     
-    else:
-        return '{"error": { "message": "Tag id does not exist"}}'
+def changeUserTagText():
+	return tweetTags.changeText()
 
-## hold off on this one - it is important, but we need to make group decisions
-## dealing with deleting tags (but keeping records of them)??? 
-# we will probably need to talk more about this as a group before doing anything about it
+@post('/usertags/changeText')
+def changeUserTagText():
+    return userTags.changeText()
 
-# ---- Interactions with tags and clients (and no other tables) ----
+@get('/tags')
+def getTags():
+	return tweetTags.getTags()
 
-## get all tags by a certain client
-@get('/tags/byClient/<clientID:path>') 
-def tagsByClient(clientID):
-	client = getInstanceByObjectID(clientID, clients)
-	if(client):
-		tagsByClient = tags.find({"Created_By": clientID})
-		return '{"tags":' + dumps(tagsByClient) + '}'
-	else:
-		return '{"error": { "message": "Client id does not exist"}}'
-
-# eventually, we'll add something with tags and/or tag instances to tag twitter users instead of just tweets but not yet
-# that (on the back end at least) is going to mean adding a database table
+@get('/usertags')
+def getUserTags():
+	return userTags.getTags()
 
 ###################### TAG INSTANCES #####################################
 
-# ---- For clients to add new tag instances ----
-
-@get('/newtaginstance')
-def newTagInstance_form():
-    return '''
-    <form action="/newtaginstance" method="post">
-      Tag ID: <input name="tag_id" type="text" />
-      Tweet ID: <input name="tweet_id" type="text" />
-      Created By: <input name="created_by" type="text" />
-      <input value="Add tag instance" type="submit" />
-    </form>
-    '''
-
 @post('/newtaginstance')
 def newTagInstance():
-    created_by = json.loads(request.body.read())["created_by"]
-    tag_id = json.loads(request.body.read())["tag_id"]
-    tweet_id = json.loads(request.body.read())["tweet_id"]
+	return tweetTags.newTagInstance()
 
-    # check if this tweet already has this tag
-    tag_instance = tag_instances.find({'tag_id': tag_id, 'tweet_id': tweet_id})
-    if(tag_instance.count() > 0):
-        # TODO update timestamp, author
-        return '{"id": "' + str(tag_instance[0]["_id"]) + '"}'
-	
-	# TODO deal with case that client, tag, or tweet IDs do not exist
-    instance_document = {'created_at': currentTime(),
-                         'created_by': created_by,
-                         'tag_id': tag_id,
-                         'tweet_id': tweet_id,
-                         'active': True }
-    generated_id = tag_instances.insert(instance_document)
-    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$push' : { 'tags' :  tag_id } })
-    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$push' : { 'tweets' : tweet_id} })
-
-    return '{"id": "' + str(generated_id) + '"}'
-
+@post('/newusertaginstance')
+def newUserTagInstance():
+	return userTags.newTagInstance()
 
 @post('/deletetaginstance')
 def deleteTagInstance():
-    created_by = json.loads(request.body.read())["created_by"]
-    tag_id = json.loads(request.body.read())["tag_id"]
-    tweet_id = json.loads(request.body.read())["tweet_id"]
-    
-    # Update timestamp so this update will propogate to other systems as they pull for changes
-    tag_instance = tag_instances.find({'tag_id' : tag_id, 'tweet_id': tweet_id});
-    if(tag_instance.count() > 0):
-        tag_instance_id = tag_instance[0]["_id"]
-        tag_instances.update({'_id' : tag_instance_id },
-                             {'$set' : {'created_at' : currentTime(), 
-                                        'created_by': created_by, 'active': False } })	
+	return tweetTags.deleteTagInstance()
 
-    tweets.update({'_id' : objectid.ObjectId(tweet_id)}, {'$pull' : { 'tags' :  tag_id } })
-    tags.update({'_id' : objectid.ObjectId(tag_id)}, {'$pull' : { 'tweets' : tweet_id} })
-    # TODO return some indicator of success or failure, process on frontend
+@post('/deleteusertaginstance')
+def deleteUserTagInstance():
+	return userTags.deleteTagInstance()
 
-# ---- For clients to get Tag Instances ----
-
-@get('/taginstances')
-def tagInstances():
-    all_tags = tag_instances.find()
-    return '{"tag_instances":' + dumps(all_tags) + '}'
-
-
-# Return tag instances since the given date
 @post('/taginstances/since')
 def tagInstancesSince():
-    last_update = json.loads(request.body.read())["date"]
-    tagInstances = tag_instances.find({'created_at' : {'$gt': last_update }})
-	
-    if(tagInstances.count() > 0):
-        last_update = tagInstances[0]['created_at'];
+	return tweetTags.tagInstancesSince()
 
-    if(tagInstances):
-        return '{"tag_instances":' + dumps(tagInstances) + ', "created_at": "' + last_update + '"}'
+@post('/usertaginstances/since')
+def userTagInstancesSince():
+	return userTags.tagInstancesSince()
 
-
-# ---- Interactions with tags instances (but no other tables) ----
 
 ## method for getting all tag instances associated with a specific tweet
 @get('/taginstances/tweetID/<tweetID:path>') 
@@ -368,23 +443,6 @@ def tagInstancesByTweetID(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
-
-
-# ---- Interactions with tags instances and clients (but no other tables) ----
-
-## method for getting all tag instances by a certain client
-@get('/taginstances/clientID/<clientID:path>')
-def tagInstancesByClientID(clientID):
-	client = getInstanceByObjectID(clientID, clients)
-	if(client):
-		t_instances = tag_instances.find({'Created_By' : clientID })
-		return '{"tags_instances":' + dumps(t_instances) + '}'
-	else:
-		return '{"error": { "message": "Client id does not exist"}}'
-
-
-# ---- Interactions with tags instances and tags (but no other tables) ----
-
 ## method for getting all tags instances with a certain tag
 @get('/taginstances/tagID/<tagID:path>')
 def tagInstancesByTagID(tagID):
@@ -395,10 +453,6 @@ def tagInstancesByTagID(tagID):
 	else:
 		return '{"error": { "message": "Tag id does not exist"}}'
 
-
-## anything else with tag instances? anything else at all? 
-# eventually, we'll add something with tags and/or tag instances to tag twitter users instead of just tweets, 
-# but on the backend we're going to put those in a new table (even if we represent the tags the same way on the frontend) 
 
 ###################### HELPER METHODS #####################################
 
@@ -444,7 +498,6 @@ def get_eventTitle():
 	return EVENT_TITLE
 
 
-
 ###################### RUNNING CODE (NON-METHODS) #####################################
 
 # ---- Opening the Database ----
@@ -456,9 +509,13 @@ db = dbclient[LIVE_DB_NAME]
 tweets = db.tweets
 tags = db.tags
 tag_instances = db.tag_instances
+user_tags = db.user_tags
+user_tag_instances = db.user_tag_instances
 clients = db.clients
 columns = db.columns
 
+tweetTags = TweetTagsModel()
+userTags = UserTagsModel()
 
 # ---- Starting the Server ----
 

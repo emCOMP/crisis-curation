@@ -2,8 +2,14 @@
 // All things tweet related
 ////////////////////////////
 
+/*
+ * Representation: $scope.tweets holds the current tweets being displayed
+ *                 Each tweet object in this list holds a copy of its tags & user tags, like so:
+ *
+ * $scope.tweets = [ { tags: [tagId1, tagId2..], user_tags: [tagId1, tagId2..], colname: [] } , ... ]
+ */
+
 RECENT_ID = null;
-LAST_UPDATE = null;
 
 // Pulls tweets from the back end database 
 // and stores them in our front end model of known tweets.
@@ -14,7 +20,9 @@ function getTweets($http, $scope) {
 		    if (response.tweets.length != 0) {
 			    RECENT_ID = response.tweets[0].id_str;
 			    $scope.tweets = response.tweets;
-			    LAST_UPDATE = response.created_at;
+			    var first_update = response.created_at;
+			    $scope.TAGS.setLastUpdate(first_update);
+			    $scope.USER_TAGS.setLastUpdate(first_update);
 			 }
 		});
 	} else {

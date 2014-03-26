@@ -1,8 +1,8 @@
-<form ng-submit="saveNewTag(tag.newTagName)" role='form'>
+<form ng-submit="TAGS.saveTag(TAGS.tag.newTagName)" role='form'>
     <div class='form-group'>
         <label class='sr-only' for='tag-name'>Tag Name</label>
-        <input type='text' ng-model="tag.newTagName" class='form-control' id='tag-name' placeholder='Enter tag name'><!--autofocus was being stolen temporarily removed-->
+        <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name' placeholder='Enter tag name'><!--autofocus was being stolen temporarily removed-->
     </div>
-    <label><i class="fa fa-circle fa-lg" style="color: {{tag.color}};" colorpicker class="span2" type="text" ng-model="tag.color"></i> Click circle to change color</label>
+    <label><i class="fa fa-circle fa-lg" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text" ng-model="TAGS.tag.color"></i> Click circle to change color</label>
     <button type='submit' class='btn btn-default'>Add</button>
 </form>

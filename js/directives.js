@@ -7,12 +7,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $route.reloadOnSearch = false;
 
         // Set up datastructures
-        $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
-        $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+
+        $scope.TAGS = TweetTags($http);
+        $scope.USER_TAGS = UserTags($http);        
+		$scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+
         $scope.editTagPopOverOpen = false;
+
 
         ////////////////////////
         // Functions
@@ -26,14 +30,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             getUser($http, $modal, localStorageService);
         }
 
-        // Save a new tag
-        $scope.saveNewTag = function (tagname) {
-            if (tagname) {
-                saveTag($scope, $http, $filter, tagname);
-                $scope.tag.newTagName = "";
-                hidepop();
-            }
-        }
 
         $scope.unpauseColumn = function(colname) {
             $scope.PAUSED_COL = {'colname': undefined, 'recentTweet': undefined, 'queued': 0};
@@ -46,24 +42,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.PAUSED_COL = {'colname': colname, 'recentTweet': RECENT_ID, 'queued': 0};
         }
 
-        $scope.deleteTag = function (tag) {
-            deleteTag(tag, $http,  $scope);
-            hidepop();
-        }
-
-        $scope.editTagColor = function(tag, color) {
-            editTagColor(tag, color, $http, $scope);
-            hidepop();
-        }
-
-        $scope.editTagText = function(tag, newTagName) {
-            editTagText(tag, newTagName, $http, $scope);
-            hidepop();
-        }
 
         $scope.editTagPopover = function (tag) {
-            $scope.newTagName = tag.tag_name;
-            $scope.editTagPopOverOpen = false;
             closeOtherTagPopovers(tag);
         };
 
@@ -80,10 +60,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             return true;
         }
 
-        // Apply a tag to a specific tweet
-        $scope.applyTag = function(tag_id, tweet_id, checked) {
-            applyTag(tag_id, tweet_id, checked, $http);
-        };
 
         // Create a new column from search box
         $scope.newColumn = function() {
@@ -128,13 +104,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Start timer to constantly pull from DB
         $interval(function(){
-            updateTags($scope, $http);
-            updateTagInstances($scope, $http);
+            $scope.TAGS.updateTags($http);
+            $scope.TAGS.updateTagInstances($scope.tweets);
+            $scope.USER_TAGS.updateTags($http);
+            $scope.USER_TAGS.updateTagInstances($scope.tweets);
             getTweets($http, $scope);
         }, 1 * 1000);
 
         // Set up new tag popover, tag edit popovers
-        setUpNewTagPopover($compile, $scope);
+        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
+        setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
         setUpTagEditPopovers();
     })
 
@@ -143,13 +122,22 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Directives
     /////////////////////////////////////
 
-    // Popup dialog for creating a new tweet
+    // Popup dialog for creating a new tag
     .directive("newTagPopup", function() {
         return {
             restrict: 'EA',
             transclude: false,    // Has to have the root scope
             scope: false,         // so it can have the same set of tags
             templateUrl: "newTag.html"
+        }
+    })
+
+    .directive("newUserTagPopup", function() {
+        return {
+            restrict: 'EA',
+            transclude: false,    // Has to have the root scope
+            scope: false,         // so it can have the same set of tags
+            templateUrl: "newUserTag.html"
         }
     })
 

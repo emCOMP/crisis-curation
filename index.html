@@ -51,8 +51,21 @@
                 <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
             </div>
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-                <li ng-repeat="tag in CURRENT_TAGS" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
+                <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
                     popover-template="editTag.html" popover-placement="right">
+                    <a href="#"  >
+                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                        {{tag.tag_name}}
+                        <span class="badge pull-right">{{ tag.num_instances }}</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="dropdown-relative">
+                <p id="tag-title">User Tags <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
+            </div>
+            <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+                <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
+                    popover-template="editUserTag.html" popover-placement="right">
                     <a href="#"  >
                         <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                         {{tag.tag_name}}
