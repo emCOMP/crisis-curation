@@ -1,9 +1,11 @@
-angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment'])
+angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment', 'ngRoute'])
 
     /////////////////////////////////////////////////
     // Controller
     /////////////////////////////////////////////////
-    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService) {
+    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
+        $route.reloadOnSearch = false;
+
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
@@ -11,22 +13,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
         $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
         $scope.editTagPopOverOpen = false;
-
-        // Set up initial user
-        getUser($http, $modal, localStorageService);
-        getUsersColumns($http, $scope);
-        getCurrentCrisis($http, $scope);
-
-        // Start timer to constantly pull from DB
-        $interval(function(){
-            updateTags($scope, $http);
-            updateTagInstances($scope, $http);
-            getTweets($http, $scope);
-        }, 1 * 1000);
-
-        // Set up new tag popover, tag edit popovers
-        setUpNewTagPopover($compile, $scope);
-        setUpTagEditPopovers();
 
         ////////////////////////
         // Functions
@@ -104,9 +90,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             // Get new search term
             var newColName = $scope.searchTerm;
             $scope.searchTerm = "";
-            $scope.createColumn(newColName);
+            $location.search('column' + $scope.CURRENT_COLS.length, newColName);
             var data = {'user': USER, 'col': newColName};
             $http.post(WEBSERVER + '/newcolumn', data);
+            $scope.createColumn(newColName);
         };
 
         // Generic create column with a given column search string
@@ -126,10 +113,29 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                     $("column-stream[colname='" + colName + "']").remove();
                     var data = {'user': USER, 'col': colName};	
                     $http.post(WEBSERVER + '/deletecolumn', data);
+                    $location.search("column" + i, null);
                     break;			
                 }		
             }
         }
+
+
+
+        // Set up initial user
+        getUser($http, $modal, localStorageService);
+        getUsersColumns($http, $scope, $location);
+        getCurrentCrisis($http, $scope);
+
+        // Start timer to constantly pull from DB
+        $interval(function(){
+            updateTags($scope, $http);
+            updateTagInstances($scope, $http);
+            getTweets($http, $scope);
+        }, 1 * 1000);
+
+        // Set up new tag popover, tag edit popovers
+        setUpNewTagPopover($compile, $scope);
+        setUpTagEditPopovers();
     })
 
 
@@ -292,11 +298,22 @@ function getCurrentCrisis($http, $scope) {
         });
 }
 
-function getUsersColumns($http, $scope) {
-    $http.get(WEBSERVER + '/columns/' + USER).success(function(response) {
-        for (var i = 0; i < response.columns.length; i++) {
-            console.log("response.columns[i] :" , response.columns[i]);
-            $scope.createColumn(response.columns[i].colname);
-        }
-    });
+function getUsersColumns($http, $scope, $location) {
+    if ($location.search()) {
+        // Use provided URL template
+        console.log($location.search());
+        var object = $location.search();
+        angular.forEach(object, function(value, key){
+            if (key.indexOf("column") >= 0)
+                $scope.createColumn(value);
+        });
+    } else {
+        // Pull from DB
+        $http.get(WEBSERVER + '/columns/' + USER).success(function(response) {
+            for (var i = 0; i < response.columns.length; i++) {
+                console.log("response.columns[i] :" , response.columns[i]);
+                $scope.createColumn(response.columns[i].colname);
+            }
+        });
+    }
 }
