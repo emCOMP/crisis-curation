@@ -4,7 +4,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Controller
     /////////////////////////////////////////////////
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, localStorageService) {
-        getCurrentCrisis($http, $scope);
         // Set up datastructures
         $scope.CURRENT_TAGS = {};
         $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
@@ -15,6 +14,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Set up initial user
         getUser($http, $modal, localStorageService);
+        getUsersColumns($http, $scope);
+        getCurrentCrisis($http, $scope);
 
         // Start timer to constantly pull from DB
         $interval(function(){
@@ -104,6 +105,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var newColName = $scope.searchTerm;
             $scope.searchTerm = "";
             $scope.createColumn(newColName);
+            var data = {'user': USER, 'col': newColName};
+            $http.post(WEBSERVER + '/newcolumn', data);
         };
 
         // Generic create column with a given column search string
@@ -120,7 +123,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             for(var i = 0; i < cols.length; i++){
                 if(cols[i].name == colName) {
                     $scope.CURRENT_COLS.splice(i, 1);
-                    $("column-stream[colname='" + colName + "']").remove();	
+                    $("column-stream[colname='" + colName + "']").remove();
+                    var data = {'user': USER, 'col': colName};	
+                    $http.post(WEBSERVER + '/deletecolumn', data);
                     break;			
                 }		
             }
@@ -285,4 +290,13 @@ function getCurrentCrisis($http, $scope) {
     $http.get(WEBSERVER + '/eventTitle').success(function(response) {
             $scope.currentCrisis = response;
         });
+}
+
+function getUsersColumns($http, $scope) {
+    $http.get(WEBSERVER + '/columns/' + USER).success(function(response) {
+        for (var i = 0; i < response.columns.length; i++) {
+            console.log("response.columns[i] :" , response.columns[i]);
+            $scope.createColumn(response.columns[i].colname);
+        }
+    });
 }

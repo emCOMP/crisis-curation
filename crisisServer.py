@@ -83,6 +83,39 @@ def tweetsBefore(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
+# Creates a new column search term to filter tweets by
+@post('/newcolumn')
+def newColumn():
+	col_name = json.loads(request.body.read())["col"]
+	user_id = json.loads(request.body.read())["user"]
+	col_document = {'colname': str(col_name), 'user': str(user_id)}
+	generated_id =  columns.insert(col_document)
+	if(generated_id > 0):
+		return '{"id": "' + str(generated_id) + '"}'
+	else:
+		return '{"error": { "message": "Column not added"}}'
+
+# deletes a column 
+@post('/deletecolumn')
+def newColumn():
+	col_name = json.loads(request.body.read())["col"]
+	user_id = json.loads(request.body.read())["user"]
+	col_document = {'colname': str(col_name), 'user': str(user_id)}
+	columns.remove(col_document)
+	
+
+@get('/columns/<userID>')
+def columns(userID):
+	instance = {'user': str(userID)}
+	cols = columns.find(instance)
+	return '{"columns":' + dumps(cols) + '}'
+
+
+
+@get('/columns')
+def columns():
+	cols = columns.find()
+	return '{"columns":' + dumps(cols) + '}'
 
 ###################### CLIENTS #####################################
 
