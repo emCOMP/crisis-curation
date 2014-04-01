@@ -1,7 +1,7 @@
 [HCDE 598 Research Group](http://www.hcde.washington.edu/research/starbird)
 ===============
 
-Content Curation Web App for Disaster Volunteers -------
+Content Curation Web App for Disaster Volunteers
 
 Want to help out? First check out our wiki to set up your workstation.
 
