@@ -43,12 +43,18 @@
             <div class="input-group" id="nav-menu">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
                 <form ng-submit="newColumn()">
-                <input ng-model="searchTerm" type="search" class="form-control" placeholder="Search" autofocus>
-              </form>
+                    <input ng-model="searchTerm" type="search" class="form-control" placeholder="Search" autofocus>
+                </form>
+            </div>
+
+            <div class="add-column-area">
+                <form>
+                    <button type="submit" class="btn btn-primary add-column">Add Column</button>
+                </form>
             </div>
 
             <div class="dropdown-relative">
-                <p id="tag-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
+                <p class="left-menu-title"><i class="fa fa-tag"></i> Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
             </div>
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
                 <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
@@ -61,18 +67,25 @@
                 </li>
             </ul>
             <div class="dropdown-relative">
-                <p id="tag-title">User Tags <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
+                <p class="left-menu-title"><i class="fa fa-list"></i> User List <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
             </div>
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
                 <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
                     popover-template="editUserTag.html" popover-placement="right">
                     <a href="#"  >
-                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                        <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                         {{tag.tag_name}}
                         <span class="badge pull-right">{{ tag.num_instances }}</span>
                     </a>
                 </li>
             </ul>
+            <div class="collab">
+                <p class="left-menu-title"><i class="fa fa-user"></i> Collaborators (2)</p>
+                <ul class="nav nav-pills nav-stacked" id="collab-list">
+                    <li><a>Kate</a></li>
+                    <li><a>Camille</a></li>
+                </ul>
+            </div>
         </div>
     <div class="content">
       <column-stream colname="all"></column-stream>

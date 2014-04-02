@@ -1,6 +1,6 @@
 <div ng-show="tweet.text" class="media">
     <a class=" profile-pic pull-left" href="#">
-        <img class="media-object" ng-src="{{ tweet.user.profile_image_url_https }}" err-src="assets/img/default.jpg" alt="Profiles Picture">
+        <img class="media-object img-rounded" ng-src="{{ tweet.user.profile_image_url_https }}" err-src="assets/img/default.jpg" alt="Profiles Picture">
     </a>
     <div class="media-body">
         <span class="fullname"><a href="http://twitter.com/{{tweet.name}}" target="_blank" style="target-new: tab;"><strong>{{tweet.user.name}}</strong></a></span>
@@ -10,12 +10,12 @@
         {{tweet.text}}</p>
     </div>
     <div class="help-block">
-        <span class="tweet-info">
+        <!-- <span class="tweet-info">
             <small>{{tweet.retweet_count}}</small> <i class="fa fa-retweet"></i>
             <small>{{tweet.favorite_count}}</small> <i class="fa fa-star"></i>
-        </span>
+        </span> -->
 
-        <div class="dropdown-relative pull-right">
+        <div>
             <a href="#" id="TagTweetButton" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag tweet <i class="fa fa-caret-down"></i></a>
             <div ng-show="showTags">
                 <div ng-repeat="tag in TAGS.tags" >
@@ -27,8 +27,7 @@
                 <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
             </div>
 
-     <div class="dropdown-relative pull-right">
-            <a href="#" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Tag user <i class="fa fa-caret-down"></i></a>
+            <a href="#" id="TagUserButton" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Tag user <i class="fa fa-caret-down"></i></a>
             <div ng-show="showUserTags">
                 <div ng-repeat="tag in USER_TAGS.tags" >
                     <label>
@@ -37,17 +36,18 @@
                 </div>
                 <a href="#" ng-click="showCreateNewUserTag=(!showCreateNewUserTag)">Create new user tag</a>
                 <new-user-tag-popup ng-show="showCreateNewUserTag"></new-user-tag-popup>
-     </div>
-
-
-        <div>
-            <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle" style="color: {{TAGS.tags[tag].color}};"></i>
+            </div>
         </div>
 
-        <div>
+
+        <div class="tweet-tags pull-right">
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="USER_TAGS.tags[tag]" ng-repeat="tag in tweet.user_tags" tooltip="{{USER_TAGS.tags[tag].tag_name}}" class="fa fa-stop" style="color: {{USER_TAGS.tags[tag].color}};"></i>
-	</div>
+            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle tweet-tag" style="color: {{TAGS.tags[tag].color}};"></i>
+        </div>
+
+        <div class="user-tags pull-right">
+            <!-- ng-show: only show dot if this tag exists -->
+            <i ng-show="USER_TAGS.tags[tag]" ng-repeat="tag in tweet.user_tags" tooltip="{{USER_TAGS.tags[tag].tag_name}}" class="fa fa-stop user-tag" style="color: {{USER_TAGS.tags[tag].color}};"></i>
+	   </div>
     </div>
 </div>

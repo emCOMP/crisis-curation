@@ -53,12 +53,6 @@ hr {
   }
 }
 
-#tag-title {
-  margin: 0 0 0 0;
-  font-weight: 500;
-  color: @dark-gray;
-}
-
 .nav-stacked > li + li {
   margin-top: 0;
   padding-top: 0;
@@ -81,8 +75,8 @@ hr {
 }
 
 .input-group {
-
-  padding: 10px 0 0 0;
+  padding: 10px 0 10px 0;
+  border-bottom: @border;
 
   .fa-search {
     // margin-right: 15px;
@@ -112,6 +106,15 @@ input[type="search"]:focus, input[type="search"]:hover {
   background: none;
 }
 
+.add-column-area {
+  padding: 10px 10px 0 10px;
+
+  .add-column {
+    width: 218px;
+    height: 40px;
+  }
+}
+
 #user-info {
   border-bottom: @border;
   padding: 5px 0 5px 15px;
@@ -127,12 +130,18 @@ input[type="search"]:focus, input[type="search"]:hover {
   }
 }
 
-#tag-title {
+.left-menu-title {
   padding: 5px 0 5px 15px;
+  margin: 0 0 0 0;
   margin-top: 10px;
   border-top: @border;
   border-bottom: @border;
   font-weight: 700;
+  color: @dark-gray;
+
+  .fa-tag, .fa-list, .fa-user {
+    padding-right: 5px;
+  }
 
   .fa-plus {
     padding: 3px 15px 0 0;
@@ -141,6 +150,10 @@ input[type="search"]:focus, input[type="search"]:hover {
   .fa-plus:hover {
     text-decoration: none;
   }
+}
+
+// todo: add to layout.less instead; figure out to how make it stay at the bottom; vertical responsiveness issue; tags and user tags - expandable (make these collapsible accordion-style?)
+.collab {
 }
 
 // Tweet Queue
@@ -242,7 +255,7 @@ input[type="search"]:focus, input[type="search"]:hover {
 
   // tag tweet button - todo: on hover, change color
   .btn {
-    border: 0;
+    border: 1px solid @gray-3;
     // letter-spacing: 0.03em;
     margin-left: 5px;
     color: @gray-3;
@@ -258,6 +271,14 @@ input[type="search"]:focus, input[type="search"]:hover {
     background-color: @blue;
   }
 }
+
+#TagTweetButton, #TagUserButton {
+  margin-left: 0;
+}
+
+// .tweet-tags, .user-tags {
+
+// }
 
 .dropdown {
 
