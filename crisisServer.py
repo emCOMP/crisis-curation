@@ -47,7 +47,8 @@ def addCols(cols, tweet_list):
 	for tweet in tweet_list:
 		tweet["columns"] = []
 		for col in cols:
-			if findWholeWord(col['search'])(tweet["text"]):
+			searchText = col['search']['text']
+			if findWholeWord(searchText)(tweet["text"]):
 				tweet["columns"].append(col["name"])
 		
 
@@ -58,8 +59,7 @@ def tweetNum(num):
 	
 	cols = json.loads(request.body.read())["cols"]
 	tweet_list = list(tweets.find().sort("id", pymongo.DESCENDING).limit(num))
-	addCols(cols, tweet_list);
-
+	addCols(cols, tweet_list)
 	time = currentTime(); 		
 	return '{"tweets": ' + dumps(tweet_list) +  ', "created_at" :' + dumps(time) + ' }'
 
@@ -90,7 +90,8 @@ def tweetsBefore(tweetID):
 def newColumn():
 	col_name = json.loads(request.body.read())["col"]
 	user_id = json.loads(request.body.read())["user"]
-	col_document = {'colname': str(col_name), 'user': str(user_id)}
+	text = json.loads(request.body.read())["search"]["text"].decode('utf-8')
+	col_document = {'colname': str(col_name), 'user': str(user_id), 'text': text}
 	generated_id =  columns.insert(col_document)
 	if(generated_id > 0):
 		return '{"id": "' + str(generated_id) + '"}'

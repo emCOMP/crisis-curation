@@ -7,7 +7,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $route.reloadOnSearch = false;
 
         // Set up datastructures
-        $scope.CURRENT_COLS = [{'name': 'all', 'search': ''}];
+        $scope.CURRENT_COLS = [{'name': 'all', 'search': {'text': ''}}];
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
 
@@ -16,6 +16,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 		$scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
+		$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
+		$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
 
 
         ////////////////////////
@@ -63,19 +65,31 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Create a new column from search box
         $scope.newColumn = function() {
-            // Get new search term
-            var newColName = $scope.searchTerm;
-            $scope.searchTerm = "";
-            $location.search('column' + $scope.CURRENT_COLS.length, newColName);
-            var data = {'user': USER, 'col': newColName};
-            $http.post(WEBSERVER + '/newcolumn', data);
-            $scope.createColumn(newColName);
+			var userClickedToSubmitForm = !$scope.showColForm;
+			if(userClickedToSubmitForm) {
+				console.log($scope.search);
+
+				// Get new search term
+				var newColName = $scope.colNum + "";
+				$scope.colNum = $scope.colNum + 1;
+				$location.search('column' + $scope.CURRENT_COLS.length, newColName);
+				var data = {'col': newColName, 'user': USER, 'search': $scope.search};
+				$http.post(WEBSERVER + '/newcolumn', data);
+				$scope.createColumn(newColName, $scope.search);
+
+				// clear form
+				$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
+				$scope.search.textFilter = false;
+				$scope.search.usersFilter = false;
+				$scope.search.tagsFilter = false;
+				$scope.search.userTagsFilter = false;
+			}
         };
 
         // Generic create column with a given column search string
-        $scope.createColumn = function(newColName) {
+        $scope.createColumn = function(newColName, search) {
             // Make new column based on search term
-            $scope.CURRENT_COLS.push({'name': newColName, 'search': newColName});
+            $scope.CURRENT_COLS.push({'name': newColName, 'search': search});
             var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
             $(".content").append( el );
         };
@@ -109,6 +123,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.USER_TAGS.updateTags($http);
             $scope.USER_TAGS.updateTagInstances($scope.tweets);
             getTweets($http, $scope);
+
         }, 1 * 1000);
 
         // Set up new tag popover, tag edit popovers

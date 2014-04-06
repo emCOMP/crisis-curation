@@ -72,7 +72,23 @@ input[type="search"]:hover {
 }
 .add-column-area .add-column {
   width: 218px;
-  height: 40px;
+}
+.add-column-area ul {
+	list-style:none;
+	padding: 0;
+}
+.add-column-area input {
+	margin-right: 5px;
+}
+.add-column-area input[type="text"] {
+	margin-right: 0;
+	width: 130px;
+}
+.add-column-area .filter {
+	margin-top: 5px;
+}
+.add-column-area .filter ul {
+	margin-left: 20px;
 }
 #user-info {
   border-bottom: 1px solid #e1e8ed;
