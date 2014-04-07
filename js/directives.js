@@ -7,17 +7,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $route.reloadOnSearch = false;
 
         // Set up datastructures
-        $scope.CURRENT_COLS = [{'name': 'all', 'search': {'text': ''}}];
+        $scope.CURRENT_COLS = [];
+        $scope.CURRENT_COLS.push(columnTemplate())
         $scope.showCreateNewTag = false;
-        $scope.PAUSED_COL = {'colname': null, 'recentTweet': null, 'queued' : 0};
+        $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued' : 0};
 
         $scope.TAGS = TweetTags($http);
         $scope.USER_TAGS = UserTags($http);        
-		$scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+	$scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-		$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
-		$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
+	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
 
 
         ////////////////////////
@@ -33,15 +34,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
 
-        $scope.unpauseColumn = function(colname) {
-            $scope.PAUSED_COL = {'colname': undefined, 'recentTweet': undefined, 'queued': 0};
-            $("column-stream[colname='" +  colname + "']").css("opacity", 1.0);
-            $($("column-stream[colname='" +  colname + "']").find(".tweet-stream")).scrollTop(0);
+        $scope.unpauseColumn = function(colId) {
+            $scope.PAUSED_COL = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
+            $("column-stream[col-id=" +  colId + "]").css("opacity", 1.0);
+            $($("column-stream[col-id=" +  colId + "]").find(".tweet-stream")).scrollTop(0);
         }
 
-        $scope.pauseColumn = function(colname) {
-            $("column-stream[colname='" +  colname + "']").css("opacity", "0.5");
-            $scope.PAUSED_COL = {'colname': colname, 'recentTweet': RECENT_ID, 'queued': 0};
+        $scope.pauseColumn = function(colId) {
+            $("column-stream[col-id=" +  colId + "]").css("opacity", "0.5");
+            $scope.PAUSED_COL = {'colId': colId, 'recentTweet': RECENT_ID, 'queued': 0};
         }
 
 
@@ -70,12 +71,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				console.log($scope.search);
 
 				// Get new search term
-				var newColName = $scope.colNum + "";
+				var newcolId = $scope.colNum;
 				$scope.colNum = $scope.colNum + 1;
-				$location.search('column' + $scope.CURRENT_COLS.length, newColName);
-				var data = {'col': newColName, 'user': USER, 'search': $scope.search};
+				$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
+				var data = {'colId': newcolId, 'user': USER, 'search': $scope.search};
 				$http.post(WEBSERVER + '/newcolumn', data);
-				$scope.createColumn(newColName, $scope.search);
+				$scope.createColumn(newcolId, $scope.search);
 
 				// clear form
 				$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
@@ -86,22 +87,21 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			}
         };
 
-        // Generic create column with a given column search string
-        $scope.createColumn = function(newColName, search) {
-            // Make new column based on search term
-            $scope.CURRENT_COLS.push({'name': newColName, 'search': search});
-            var el = $compile( "<column-stream colname='" + newColName + "'></column-stream>" )( $scope );
+        $scope.createColumn = function(newcolId, search) {
+            // Make new column based on search
+            $scope.CURRENT_COLS.push({'colId': newcolId, 'search': search});
+            var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
             $(".content").append( el );
         };
 
-        $scope.deleteColumn = function(colName) {
-			if(colName == "all") { return; } // don't let them delete the first column
+        $scope.deleteColumn = function(colId) {
+			if(colId == 0) { return; } // don't let them delete the first column
             var cols = $scope.CURRENT_COLS;
             for(var i = 0; i < cols.length; i++){
-                if(cols[i].name == colName) {
+                if(cols[i].colId == colId) {
                     $scope.CURRENT_COLS.splice(i, 1);
-                    $("column-stream[colname='" + colName + "']").remove();
-                    var data = {'user': USER, 'col': colName};	
+                    $("column-stream[col-id=" + colId + "]").remove();
+                    var data = {'user': USER, 'colId': colId};	
                     $http.post(WEBSERVER + '/deletecolumn', data);
                     $location.search("column" + i, null);
                     break;			
@@ -164,28 +164,28 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             templateUrl: 'column.html',
             scope: true,
             link: function (scope, element, attrs) {
-                scope.name = attrs["colname"];        // Inheriting scopes - independent for each col
+                scope.colId = attrs["colId"];        // Inheriting scopes - independent for each col
                 element.on("click", function(e) {
                     if (e.srcElement.localName == "div") {
-                        if (scope.$parent.PAUSED_COL.colname) {
-                            scope.unpauseColumn(scope.name);
+                        if (scope.$parent.PAUSED_COL.colId) {
+                            scope.unpauseColumn(scope.colId);
                         } else {
-                            scope.pauseColumn(scope.name);
+                            scope.pauseColumn(scope.colId);
                         }
                     } else if (e.srcElement.id == "TagTweetButton") {
                         // if not paused, pause it!
-                        if (!scope.$parent.PAUSED_COL.colname) {
-                            scope.pauseColumn(scope.name);
+                        if (!scope.$parent.PAUSED_COL.colId) {
+                            scope.pauseColumn(scope.colId);
                         }
                     }
                 });
                 $(element).find(".tweet-stream").bind("scroll", function() {
                     if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
-                        if (scope.$parent.PAUSED_COL.colname ==  null) {
-                            scope.pauseColumn(scope.name);
+                        if (scope.$parent.PAUSED_COL.colId ==  null) {
+                            scope.pauseColumn(scope.colId);
                         }
                     } else {
-                        scope.unpauseColumn(scope.name);
+                        scope.unpauseColumn(scope.colId);
                     }
                     scope.$apply();
                 });
@@ -265,15 +265,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Filter tweets specific to each column, as well
     // as limit the number of tweets per column to 75.
     .filter('columnSpecific', function() {
-        return function(items, name, scope) {
+        return function(items, colId, scope) {
+			colId = parseInt(colId)
             var arrayToReturn = [];
             if (items) {
                 var count = 0;
                 for (var i=0; i<items.length; i++){
-                    if (items[i].columns.indexOf(name) != -1 ) { // this tweet should be in my column
-                        if (name != scope.PAUSED_COL.colname) {  //the column is not being paused
+                    if (items[i].columns.indexOf(colId) != -1 ) { // this tweet should be in my column
+                        if (colId != scope.PAUSED_COL.colId) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
-                        } else if (name == scope.PAUSED_COL.colname &&  // the column is paused
+                        } else if (colId == scope.PAUSED_COL.colId &&  // the column is paused
                                    items[i].id <= scope.PAUSED_COL.recentTweet) {  // enforce "pausing"
                             arrayToReturn.push(items[i]);
                         } else {
@@ -282,7 +283,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         }
                     }
                 }
-                if (name == scope.PAUSED_COL.colname) {
+                if (colId == scope.PAUSED_COL.colId) {
                     scope.PAUSED_COL.queued = count;
                 }
             }
@@ -302,6 +303,7 @@ function getCurrentCrisis($http, $scope) {
 }
 
 function getUsersColumns($http, $scope, $location) {
+	// TODO initialize $scope.colNum to max. col id + 1
     if ($location.search()) {
         // Use provided URL template
         console.log($location.search());
@@ -315,8 +317,18 @@ function getUsersColumns($http, $scope, $location) {
         $http.get(WEBSERVER + '/columns/' + USER).success(function(response) {
             for (var i = 0; i < response.columns.length; i++) {
                 console.log("response.columns[i] :" , response.columns[i]);
-                $scope.createColumn(response.columns[i].colname);
+                $scope.createColumn(response.columns[i].colId);
             }
         });
     }
+}
+
+// Template for unfiltered column
+function columnTemplate() {
+    return {'colId': 0, 
+            'search': {'textFilter': false, 'text': '',
+                       'usersFilter': false, 'users': '', 
+                       'tagsFilter': false, 'tags': {},
+                       'userTagsFilter': false, 'userTags': {}}
+	};
 }

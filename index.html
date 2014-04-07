@@ -52,7 +52,7 @@
 							</li>
 							<li class="filter">
 								<input type="checkbox" ng-model="search.usersFilter"/>
-								<input type="text" placeholder="@User" ng-model="search.user" ng-change="search.usersFilter=true"/>
+								<input type="text" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
 							</li>
 							<li class="filter">
 								<input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter"/>Tag
@@ -115,7 +115,7 @@
             </div>
         </div>
     <div class="content">
-      <column-stream colname="all"></column-stream>
+      <column-stream colname="all" col-id=0></column-stream>
     </div>
   </body>
 

@@ -47,9 +47,58 @@ def addCols(cols, tweet_list):
 	for tweet in tweet_list:
 		tweet["columns"] = []
 		for col in cols:
-			searchText = col['search']['text']
-			if findWholeWord(searchText)(tweet["text"]):
-				tweet["columns"].append(col["name"])
+			search = col['search']
+
+			# filter by text search
+			searchText = col['search']['text'].decode('utf-8')
+			if not findWholeWord(searchText)(tweet["text"]):
+				continue
+
+			# filter by user
+			if not tweetedByUser(search, tweet): # TODO allow filtering by multiple users
+				continue
+
+			# filter by Tags
+			if not containsTags(search, tweet):
+				continue
+
+			# filter by User Tags
+			if not containsUserTags(search, tweet):
+				continue
+
+			tweet["columns"].append(col["colId"])
+
+# Returns whether this tweet was tweeted by the user in the given search
+def tweetedByUser(search, tweet):
+	if search['usersFilter']:
+		user = tweet["user"]["screen_name"]
+		if len(user) < 1:
+			return True
+		searchUser  = search["users"][1:] if search["users"][0] == "@" else search["users"] # get rid of @ sign
+		return user == searchUser
+	return True
+
+# Returns whether this tweet contains the tags in the given search
+def containsTags(search, tweet):
+	if search['tagsFilter']:
+		searchTags = search['tags']
+		for searchTag in searchTags.keys():
+			if searchTags[searchTag]:
+				tweetTags = tweet.get("tags")
+				if tweetTags == None or searchTag not in tweetTags:
+					return False
+	return True
+
+# Returns whether this tweet contains the user tags in the given search
+def containsUserTags(search, tweet):
+	if search['userTagsFilter']:
+		searchTags = search['userTags']
+		for searchTag in searchTags.keys():
+			if searchTags[searchTag]:
+				tweetTags = tweet.get("user_tags")
+				if tweetTags == None or searchTag not in tweetTags:
+					return False
+	return True
 		
 
 @post('/tweets/<num:int>')
@@ -88,10 +137,10 @@ def tweetsBefore(tweetID):
 # Creates a new column search term to filter tweets by
 @post('/newcolumn')
 def newColumn():
-	col_name = json.loads(request.body.read())["col"]
+	col_id = json.loads(request.body.read())["colId"]
 	user_id = json.loads(request.body.read())["user"]
 	text = json.loads(request.body.read())["search"]["text"].decode('utf-8')
-	col_document = {'colname': str(col_name), 'user': str(user_id), 'text': text}
+	col_document = {'colId': str(col_id), 'user': str(user_id), 'text': text}
 	generated_id =  columns.insert(col_document)
 	if(generated_id > 0):
 		return '{"id": "' + str(generated_id) + '"}'
@@ -101,9 +150,9 @@ def newColumn():
 # deletes a column 
 @post('/deletecolumn')
 def newColumn():
-	col_name = json.loads(request.body.read())["col"]
+	col_id = json.loads(request.body.read())["colId"]
 	user_id = json.loads(request.body.read())["user"]
-	col_document = {'colname': str(col_name), 'user': str(user_id)}
+	col_document = {'colId': int(col_id), 'user': str(user_id)}
 	columns.remove(col_document)
 	
 
@@ -281,7 +330,7 @@ class TagsModel:
 		# Tag instance exists, and is active. Nothing to do.
 		tag_instance = self.tag_instances.find({'tag_id': tag_id, 'tagged_item_id': tagged_item_id, 'active': True})
 		if(tag_instance.count() > 0):
-		    return;
+		    return
 
 		tag_instance_id = None
 		# Tag instance exists, but is inactive. Activate.
