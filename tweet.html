@@ -27,14 +27,14 @@
                 <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
             </div>
 
-            <a href="#" id="TagUserButton" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Tag user <i class="fa fa-caret-down"></i></a>
+            <a href="#" id="TagUserButton" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Add user to list <i class="fa fa-caret-down"></i></a>
             <div ng-show="showUserTags">
                 <div ng-repeat="tag in USER_TAGS.tags" >
                     <label>
                         <input type="checkbox" ng-checked="tweet.user_tags.indexOf(tag._id.$oid) >= 0" ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked); $parent.showUserTags = !$parent.showUserTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div>
-                <a href="#" ng-click="showCreateNewUserTag=(!showCreateNewUserTag)">Create new user tag</a>
+                <a href="#" ng-click="showCreateNewUserTag=(!showCreateNewUserTag)">Create new user list</a>
                 <new-user-tag-popup ng-show="showCreateNewUserTag"></new-user-tag-popup>
             </div>
         </div>
