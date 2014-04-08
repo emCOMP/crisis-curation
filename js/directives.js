@@ -17,8 +17,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
-	$scope.search = searchTemplate();
+	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	    $scope.search = searchTemplate();
 
 
         ////////////////////////
