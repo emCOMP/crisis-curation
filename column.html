@@ -1,8 +1,7 @@
 <div class="column">
 	<p ng-click="unpauseColumn(colId)" ng-show="PAUSED_COL.colId == colId && PAUSED_COL.queued" class="queued"><span>{{PAUSED_COL.queued}} New Tweets</span></p>
     <div class="tweet-header">
-        <h4></i>{{CURRENT_COLS[colId].search.text || "All"}} <!--<small class="text-muted username">@realengz</small>--><i class="fa fa-caret-down pull-right"></i></h4>
-	<a ng-click="deleteColumn(colId)" ng-hide="colId == 0">delete</a>   
+        <h4>{{CURRENT_COLS[colId].search.text || "All"}}<i class="fa fa-caret-down pull-right"></i><a ng-click="deleteColumn(colId)" ng-hide="colId == 0"><p class="pull-right">x</p><!--<i class="xxxx"></i>--></a></h4>
  </div>
     <div class="tweet-stream" ng-style="style()" resize>
         <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:colId:this" >{{tweet}}</tweet>
