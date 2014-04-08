@@ -3,12 +3,10 @@
         <h3>Enter name</h3>
     </div>
     <div class="modal-body">
-        <form name="form" novalidate class="css-form">
-            <input required ng-model="userName" type="text" class="form-control" placeholder="Enter name" autofocus>
+        <form name="form" novalidate class="css-form" ng-submit="ok(userName)">
+            <input required ng-model="userName" type="text" class="form-control" placeholder="Enter name" autofocus><br/>
+            <button class="btn btn-primary" ng-disabled="form.$invalid || userName === ''">OK</button>
         </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="form.$invalid || userName === ''" ng-click="ok(userName)">OK</button>
     </div>
 </div>
 
