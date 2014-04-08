@@ -8,7 +8,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Set up datastructures
         $scope.CURRENT_COLS = [];
-        $scope.CURRENT_COLS.push(columnTemplate())
+        $scope.CURRENT_COLS.push(columnTemplate(0))
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued' : 0};
 
@@ -17,8 +17,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-	    $scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
-	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	$scope.search = searchTemplate();
 
 
         ////////////////////////
@@ -79,7 +79,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				$scope.createColumn(newcolId, $scope.search);
 
 				// clear form
-				$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
+				$scope.search = searchTemplate();
 				$scope.search.textFilter = false;
 				$scope.search.usersFilter = false;
 				$scope.search.tagsFilter = false;
@@ -324,11 +324,14 @@ function getUsersColumns($http, $scope, $location) {
 }
 
 // Template for unfiltered column
-function columnTemplate() {
-    return {'colId': 0,
-            'search': {'textFilter': false, 'text': '',
-                       'usersFilter': false, 'users': '',
-                       'tagsFilter': false, 'tags': {},
-                       'userTagsFilter': false, 'userTags': {}}
-	};
+function columnTemplate(colId) {
+    return {'colId': colId, 
+            'search': searchTemplate()};
+}
+
+function searchTemplate() {
+return {'textFilter': false, 'text': '',
+        'usersFilter': false, 'users': '', 
+        'tagsFilter': false, 'tags': {},
+        'userTagsFilter': false, 'userTags': {}};
 }
