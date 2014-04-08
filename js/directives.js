@@ -4,7 +4,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Controller
     /////////////////////////////////////////////////
     .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
-        $route.reloadOnSearch = false;
+        //$route.reloadOnSearch = false;
 
         // Set up datastructures
         $scope.CURRENT_COLS = [];
@@ -13,12 +13,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued' : 0};
 
         $scope.TAGS = TweetTags($http);
-        $scope.USER_TAGS = UserTags($http);        
-	$scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+        $scope.USER_TAGS = UserTags($http);
+	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-	$scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
-	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	    $scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
+	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
 
 
         ////////////////////////
@@ -73,7 +73,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				// Get new search term
 				var newcolId = $scope.colNum;
 				$scope.colNum = $scope.colNum + 1;
-				$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
+				//$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
 				var data = {'colId': newcolId, 'user': USER, 'search': $scope.search};
 				$http.post(WEBSERVER + '/newcolumn', data);
 				$scope.createColumn(newcolId, $scope.search);
@@ -101,11 +101,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 if(cols[i].colId == colId) {
                     $scope.CURRENT_COLS.splice(i, 1);
                     $("column-stream[col-id=" + colId + "]").remove();
-                    var data = {'user': USER, 'colId': colId};	
+                    var data = {'user': USER, 'colId': colId};
                     $http.post(WEBSERVER + '/deletecolumn', data);
-                    $location.search("column" + i, null);
-                    break;			
-                }		
+                    //$location.search("column" + i, null);
+                    break;
+                }
             }
         }
 
@@ -325,9 +325,9 @@ function getUsersColumns($http, $scope, $location) {
 
 // Template for unfiltered column
 function columnTemplate() {
-    return {'colId': 0, 
+    return {'colId': 0,
             'search': {'textFilter': false, 'text': '',
-                       'usersFilter': false, 'users': '', 
+                       'usersFilter': false, 'users': '',
                        'tagsFilter': false, 'tags': {},
                        'userTagsFilter': false, 'userTags': {}}
 	};
