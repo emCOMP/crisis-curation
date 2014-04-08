@@ -81,7 +81,7 @@
             </div>
 
             <div class="dropdown-relative">
-                <p class="left-menu-title"><i class="fa fa-tag"></i> Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
+                <p class="left-menu-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
             </div>
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
                 <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
@@ -94,7 +94,7 @@
                 </li>
             </ul>
             <div class="dropdown-relative">
-                <p class="left-menu-title"><i class="fa fa-list"></i> User Lists <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
+                <p class="left-menu-title">User Lists <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
             </div>
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
                 <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
@@ -107,10 +107,10 @@
                 </li>
             </ul>
             <div class="collab">
-                <p class="left-menu-title"><i class="fa fa-user"></i> Collaborators (2)</p>
+                <p class="left-menu-title">Collaborators (2)</p>
                 <ul class="nav nav-pills nav-stacked" id="collab-list">
-                    <li><a>Kate</a></li>
-                    <li><a>Camille</a></li>
+                    <li><a>Kate - online</a></li>
+                    <li><a>Camille - away</a></li>
                 </ul>
             </div>
         </div>
