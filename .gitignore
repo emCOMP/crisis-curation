@@ -8,3 +8,5 @@ nohup.out
 start.sh
 stop.sh
 environment.properties
+
+*.pyc

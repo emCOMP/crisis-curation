@@ -17,8 +17,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
-	$scope.search = searchTemplate();
+	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	    $scope.search = searchTemplate();
 
 
         ////////////////////////
@@ -52,14 +52,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Super hacky way to get focus on input box in tag editor
         // Also puts cursor at end of pre-filled text
-        $scope.editTagPopoverSetup = function() {
+        $scope.editTagPopoverSetup = function(tagname) {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
                 var element = document.getElementById("editTagInputBox");
-                var val = $scope.newTagName;
+                var val = tagname;//$scope.newTagName;
+                console.log("element", element);
+                console.log("val", val);
                 element.setSelectionRange(val.length,val.length);
                 element.focus();
                 $scope.editTagPopOverOpen = true;
             }
+            console.log("Scope.newTagName:", $scope.newTagName);
             return true;
         }
 
@@ -68,7 +71,20 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.newColumn = function() {
 			var userClickedToSubmitForm = !$scope.showColForm;
 			if(userClickedToSubmitForm) {
-				console.log($scope.search);
+                console.log('ohai', $scope.search);
+                // Prevent the user from submitting a blank
+                var actualSearch = false;
+                for (var key in $scope.search) {
+                  if ($scope.search[key]) {
+                    if (($scope.search[key] instanceof Object) &&  (Object.keys($scope.search[key]).length === 0)) {
+                        continue;
+                    }
+                    actualSearch = true;
+                  }
+                }
+                if (!actualSearch) {
+                    return;
+                }
 
 				// Get new search term
 				var newcolId = $scope.colNum;

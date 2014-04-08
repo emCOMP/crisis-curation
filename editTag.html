@@ -1,6 +1,6 @@
 <form ng-submit="TAGS.editTagText(tag, newTagName)">
 <i class="fa fa-circle fa-lg" style="color: {{tag.color}};" colorpicker ng-model="TAGS.tags[tag._id.$oid].color" ng-change="TAGS.editTagColor(tag, TAGS.tags[tag._id.$oid].color)"></i>
-<input ng-show="editTagPopoverSetup() id="editTagInputBox" type="text" class="form-control" placeholder="{{tag.tag_name}}" ng-model="newTagName"/>
+<input ng-data="{{editTagPopoverSetup(tag.tag_name)}}" id="editTagInputBox" type="text" class="form-control"  ng-model="newTagName"/>
 <br/>
 <a href="#" type="submit" class="help-block btn btn-default btn-xs" ng-click="TAGS.editTagText(tag, newTagName)">Change tag name</a>
 </form>
