@@ -69,6 +69,19 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			var userClickedToSubmitForm = !$scope.showColForm;
 			if(userClickedToSubmitForm) {
 				console.log($scope.search);
+                var actualSearch = false;
+                for (var key in $scope.search) {
+                  if ($scope.search[key]) {
+                    if (($scope.search[key] instanceof Object) &&  (Object.keys($scope.search[key]).length === 0)) {
+                        continue;
+                    }
+                    actualSearch = true;
+                    console.log("Found a value that's not falsey: ", $scope.search[key]);
+                  }
+                }
+                if (!actualSearch) {
+                    return;
+                }
 
 				// Get new search term
 				var newcolId = $scope.colNum;
