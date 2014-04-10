@@ -70,25 +70,21 @@ input[type="search"]:hover {
 .add-column-area {
   padding: 10px 10px 0 10px;
 }
-.add-column-area .add-column {
+.add-column-area .btn-huge {
   width: 218px;
+  height: 40px;
 }
-.add-column-area ul {
-	list-style:none;
-	padding: 0;
+.add-column-area .btn-huge .fa-search {
+  margin-right: 5px;
 }
-.add-column-area input {
-	margin-right: 5px;
+.no-bullet {
+  list-style: none;
 }
-.add-column-area input[type="text"] {
-	margin-right: 0;
-	width: 130px;
+.search-form {
+  padding: 20px 0;
 }
-.add-column-area .filter {
-	margin-top: 5px;
-}
-.add-column-area .filter ul {
-	margin-left: 20px;
+.no-display {
+  display: none;
 }
 #user-info {
   border-bottom: 1px solid #e1e8ed;

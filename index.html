@@ -41,43 +41,72 @@
                 <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
             </div>
             <div class="add-column-area">
-                <form class="add-column" >
-                    <button class="btn btn-primary add-column" ng-click="showColForm = !showColForm; newColumn()">Add Column</button>
-					<div ng-show="showColForm">
-						<ul>
-							<span class="title">Column Filters:</span>
-							<li class="filter">
-								<input type="checkbox" ng-model="search.textFilter"/>
-								<input type="text" placeholder="Text"  ng-model="search.text" ng-change="search.textFilter=true"/>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-model="search.usersFilter"/>
-								<input type="text" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter"/>Tag
-								<ul ng-show="showTagFilter">
-									<li ng-repeat="tag in TAGS.tags">
-										<input type="checkbox" ng-model="search.tags[tag._id.$oid]"/>
-									    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-									    {{tag.tag_name}}
-									</li>
-								</ul>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter"/>User Tag
-								<ul ng-show="showUserTagFilter">
-									<li ng-repeat="tag in USER_TAGS.tags">
-										<input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
-									    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-									    {{tag.tag_name}}
-									</li>
-								</ul>
-							</li>
-						</ul>
-                   		<button class="btn" ng-click="showColForm = !showColForm;">Cancel</button>
-					</div>
-                </form>
+                <button class="btn btn-primary btn-huge" ng-click="showColForm = !showColForm"><i class="fa fa-search"></i>Search</button> <!-- onclick: toggle text between search and done? -->
+				<div ng-show="showColForm">
+                    <form role="form" class="search-form">
+                        <div class="form-group filter">
+                            <input class="no-display" type="checkbox" ng-model="search.textFilter"/>
+                            <input type="text" class="form-control" placeholder="Enter search"  ng-model="search.text" ng-change="search.textFilter=true"/>
+                        </div>
+                        <div class="form-group filter">
+                            <input class="no-display" type="checkbox" ng-model="search.usersFilter"/>
+                            <input type="text" class="form-control" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
+                        </div>
+                        <div class="form-group filter">
+                            <a href="#" id="TagTweetButton" type="button" class="btn btn-default btn-xs" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter">Tags <i class="fa fa-caret-down"></i></a>
+
+                            <ul ng-show="showTagFilter" class="no-bullet">
+                                <li ng-repeat="tag in TAGS.tags">
+                                    <input type="checkbox" ng-model="search.tags[tag._id.$oid]"/>
+                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                    {{tag.tag_name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-group filter">
+                            <a href="#" id="TagUserButton" type="button" class="btn btn-default btn-xs" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter">User Lists <i class="fa fa-caret-down"></i></a>
+
+                            <ul ng-show="showUserTagFilter" class="no-bullet">
+                                <li ng-repeat="tag in USER_TAGS.tags">
+                                    <input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
+                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                    {{tag.tag_name}}
+                                </li>
+                            </ul>
+                        </div>
+<!--
+						<li class="filter">
+							<input type="checkbox" ng-model="search.textFilter"/>
+							<input type="text" placeholder="Text"  ng-model="search.text" ng-change="search.textFilter=true"/>
+						</li>
+						<li class="filter">
+							<input type="checkbox" ng-model="search.usersFilter"/>
+							<input type="text" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
+						</li>
+						<li class="filter">
+							<input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter"/>Tag
+							<ul ng-show="showTagFilter">
+								<li ng-repeat="tag in TAGS.tags">
+									<input type="checkbox" ng-model="search.tags[tag._id.$oid]"/>
+								    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+								    {{tag.tag_name}}
+								</li>
+							</ul>
+						</li>
+						<li class="filter">
+							<input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter"/>User Tag
+							<ul ng-show="showUserTagFilter">
+								<li ng-repeat="tag in USER_TAGS.tags">
+									<input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
+								    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+								    {{tag.tag_name}}
+								</li>
+							</ul>
+						</li> -->
+					   <button class="btn" ng-click="showColForm = !showColForm;">Cancel</button>
+                        <button class="btn btn-primary pull-right" ng-click="showColForm = !showColForm; newColumn()">Add Column</button>
+                    </form>
+				</div>
             </div>
 
             <div class="dropdown-relative">
