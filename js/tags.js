@@ -44,12 +44,12 @@ var Tags = function(spec, $http) {
 	}
 
 	// Get new tag instances
-	function updateTagInstances(tweets) {
+	function updateTagInstances(tweets, current_cols) {
 		// Seed tag updates by using the tag instance ID of the latest tag made in database
 		if( LAST_UPDATE != null) {
 			var date = {'date': LAST_UPDATE};
 			$http.post(WEBSERVER + URL.getInstancesSince, date).success(function(response) {
-				processTagInstanceUpdates(response, tweets);	
+				processTagInstanceUpdates(response, tweets, current_cols);	
 				LAST_UPDATE = response.created_at;
 			});
 		}
@@ -91,7 +91,7 @@ var Tags = function(spec, $http) {
 	}
 
 	// Adds or removes a tag instance
-	function applyTag(tag, tweet, checked){
+	function applyTag(tag, tweet, checked, all_tweets, CURRENT_COLS) {
 		if(!tweet[TAG_ARRAY_NAME]){
 			tweet[TAG_ARRAY_NAME] = [];
 		}
@@ -111,19 +111,22 @@ var Tags = function(spec, $http) {
 				$http.post(WEBSERVER + URL.deleteInstance, newTagObj);
 			}	
 		}
+
+		// update columns since changing this tag may affect which cols this tweet belongs to
+		updateColumns([tweet], all_tweets, CURRENT_COLS);
 		// TODO: if they try to apply a tag that doesn't exist (ie, someone deletes 
 		// it before their tag list updates, and they click apply), they might get
 		// confused.  Maybe display some sort of dialogue (e.g. 'woops! this tag no longer exists')
 	}
 
 	// Update view according to new tag instance data
-	function processTagInstanceUpdates(response, tweets) {
+	function processTagInstanceUpdates(response, all_tweets, current_cols) {
 		for(var i in response.tag_instances) {
 			var tag_instance = response.tag_instances[i];
 			// Add/Remove tag from tweet's list of tags
-			tweets = spec.getTweets(tag_instance, tweets);
-			for(tweet_index in tweets) {
-				var tweet = tweets[tweet_index];
+			tweets = spec.getTweets(tag_instance, all_tweets);
+			for(var tweet_index in tweets) {
+				var tweet = all_tweets[tweet_index];
 				if(tweet[TAG_ARRAY_NAME] == undefined) {
 					tweet[TAG_ARRAY_NAME] = [];			
 				}
@@ -140,9 +143,47 @@ var Tags = function(spec, $http) {
 					if(index >= 0) {
 						tweet[TAG_ARRAY_NAME].splice(index, 1);
 					}
-				}	
+				}
+			}
+			// force update of the columns for the altered tweets, since
+			// updating their tags may change which colums they belong to
+			updateColumns(tweets, all_tweets, current_cols);
+		}
+	}
+
+	// Update the columns arrays for the given tweets
+	function updateColumns(tweets_to_update, all_tweets, CURRENT_COLS){
+		var filterName = (TAG_ARRAY_NAME == 'tags') ? 'tags' : 'userTags';
+		for(var i = 0; i < tweets_to_update.length; i++){
+			var tweet = tweets_to_update[i];
+			// check if this tweet belongs in any of our cols
+			for(var colIndex in CURRENT_COLS) {
+				var belongsInColumn = true;
+				var col = CURRENT_COLS[colIndex];
+				// Check if the tag filter is set for this column. If so, this is a tag search.
+				if(col.search[filterName + "Filter"]){
+					var tags = col.search[filterName]
+					addCols(tweet, col, tags);
+				}
 			}
 		}
+	}
+
+	// Adds columns to tweet based on its tags.  If the tweet has any of 
+	// the tags in 'column_tags',  the corresponding column is added to the tweet's column array.
+	function addCols(tweet, col, column_tags) {
+		// Treating tag search as an 'OR' search
+		for(var tagId in column_tags){
+			if(column_tags[tagId]) {
+				if(!tweet[TAG_ARRAY_NAME]) { tweet[TAG_ARRAY_NAME] = [];}
+				if(tweet[TAG_ARRAY_NAME].indexOf(tagId) > -1) {
+					// tweet contains this column's tag, so add this column to the tweet
+					if(tweet["columns"].indexOf(col.colId) < 0) {
+						tweet["columns"].push(col.colId);
+					}
+				}						
+			}				
+		}	
 	}
 
 	function editTagText(tag, newTagName) {
@@ -171,6 +212,7 @@ var Tags = function(spec, $http) {
 		'editTagText':        editTagText,
 		'editTagColor':       editTagColor,
 		'setLastUpdate':      setLastUpdate,
+		'updateColumns':      updateColumns,
 		'tags':				  TAGS,
 		'tag':				  TAG // TODO remove global
 	};

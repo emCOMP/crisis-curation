@@ -20,7 +20,7 @@
             <div ng-show="showTags">
                 <div ng-repeat="tag in TAGS.tags" >
                     <label>
-                        <input type="checkbox" ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="TAGS.applyTag(tag, tweet, $event.target.checked); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
+                        <input type="checkbox"f ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div>
                 <a href="#" ng-click="showCreateNewTag=(!showCreateNewTag)">Create new tag</a>
@@ -31,7 +31,7 @@
             <div ng-show="showUserTags">
                 <div ng-repeat="tag in USER_TAGS.tags" >
                     <label>
-                        <input type="checkbox" ng-checked="tweet.user_tags.indexOf(tag._id.$oid) >= 0" ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked); $parent.showUserTags = !$parent.showUserTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
+                        <input type="checkbox" ng-checked="tweet.user_tags.indexOf(tag._id.$oid) >= 0" ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showUserTags = !$parent.showUserTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                     </label>
                 </div>
                 <a href="#" ng-click="showCreateNewUserTag=(!showCreateNewUserTag)">Create new user list</a>

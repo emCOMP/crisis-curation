@@ -17,8 +17,13 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
+<<<<<<< HEAD
+	    $scope.search = { "tags": {}, "userTags": {}, "text": "", "users": ""};
 	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
-	    $scope.search = searchTemplate();
+=======
+	$scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	$scope.search = searchTemplate();
+>>>>>>> 823f19d... bug fix
 
 
         ////////////////////////
@@ -52,12 +57,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Super hacky way to get focus on input box in tag editor
         // Also puts cursor at end of pre-filled text
-        $scope.editTagPopoverSetup = function(tagname) {
+        $scope.editTagPopoverSetup = function() {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
                 var element = document.getElementById("editTagInputBox");
-                var val = tagname;//$scope.newTagName;
-
-
+                var val = $scope.newTagName;
                 element.setSelectionRange(val.length,val.length);
                 element.focus();
                 $scope.editTagPopOverOpen = true;
@@ -70,20 +73,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.newColumn = function() {
 			var userClickedToSubmitForm = !$scope.showColForm;
 			if(userClickedToSubmitForm) {
-                console.log('ohai', $scope.search);
-                // Prevent the user from submitting a blank
-                var actualSearch = false;
-                for (var key in $scope.search) {
-                  if ($scope.search[key]) {
-                    if (($scope.search[key] instanceof Object) &&  (Object.keys($scope.search[key]).length === 0)) {
-                        continue;
-                    }
-                    actualSearch = true;
-                  }
-                }
-                if (!actualSearch) {
-                    return;
-                }
+				console.log($scope.search);
 
 				// Get new search term
 				var newcolId = $scope.colNum;
@@ -93,12 +83,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				$http.post(WEBSERVER + '/newcolumn', data);
 				$scope.createColumn(newcolId, $scope.search);
 
-				// force update of 'columns' of existing tweets
-				$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-				$scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-
 				// clear form
 				$scope.search = searchTemplate();
+				$scope.search.textFilter = false;
+				$scope.search.usersFilter = false;
+				$scope.search.tagsFilter = false;
+				$scope.search.userTagsFilter = false;
 			}
         };
 
@@ -134,9 +124,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Start timer to constantly pull from DB
         $interval(function(){
             $scope.TAGS.updateTags($http);
-            $scope.TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
+            $scope.TAGS.updateTagInstances($scope.tweets);
             $scope.USER_TAGS.updateTags($http);
-            $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateTagInstances($scope.tweets);
             getTweets($http, $scope);
 
         }, 1 * 1000);
@@ -339,6 +329,15 @@ function getUsersColumns($http, $scope, $location) {
 }
 
 // Template for unfiltered column
+<<<<<<< HEAD
+function columnTemplate() {
+    return {'colId': 0,
+            'search': {'textFilter': false, 'text': '',
+                       'usersFilter': false, 'users': '',
+                       'tagsFilter': false, 'tags': {},
+                       'userTagsFilter': false, 'userTags': {}}
+	};
+=======
 function columnTemplate(colId) {
     return {'colId': colId, 
             'search': searchTemplate()};
@@ -349,4 +348,5 @@ return {'textFilter': false, 'text': '',
         'usersFilter': false, 'users': '', 
         'tagsFilter': false, 'tags': {},
         'userTagsFilter': false, 'userTags': {}};
+>>>>>>> 823f19d... bug fix
 }
