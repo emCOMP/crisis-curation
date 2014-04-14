@@ -35,9 +35,6 @@ hr {
     width: 65%;
 }
 
-/*.left-menu .nav > li > a {*/
-    /*display: inline-block;*/
-/*}*/
 
 .left-menu li > a.modify-tag {
     display: none;
