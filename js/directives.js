@@ -142,7 +142,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }, 1 * 1000);
 
         // Set up new tag popover, tag edit popovers
-        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
+//        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
         setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
         setUpTagEditPopovers();
     })
