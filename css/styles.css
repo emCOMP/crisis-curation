@@ -1,231 +1,291 @@
 body {
-  -webkit-font-smoothing: antialiased !important;
-  background-color: #edf0f2;
+    -webkit-font-smoothing: antialiased !important;
+    background-color: #edf0f2;
 }
+
 p {
-  color: #292f33;
+    color: #292f33;
 }
+
 hr {
-  border-color: #e1e8ed;
-  margin: 0;
-  padding: 0;
+    border-color: #e1e8ed;
+    margin: 0;
+    padding: 0;
 }
+
 .left-menu {
-  border: 1px solid #e1e8ed;
-  border-radius: 5px 5px;
-  background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 5px 5px;
+    background-color: #ffffff;
 }
+
 .left-menu h4 {
-  padding: 4px 15px 12px 13px;
-  font-weight: 500;
-  color: #8899a6;
-  border-bottom: 1px solid #e1e8ed;
+    padding: 4px 15px 12px 13px;
+    font-weight: 500;
+    color: #8899a6;
+    border-bottom: 1px solid #e1e8ed;
 }
+
+.left-menu .form-group {
+    padding: 10px 15px;
+}
+
+.left-menu .form-control {
+    display: inline;
+    width: 65%;
+}
+
 .nav-stacked > li + li {
-  margin-top: 0;
-  padding-top: 0;
+    margin-top: 0;
+    padding-top: 0;
 }
+
 .nav-pills li a,
 .nav-pills li a:hover {
-  border-radius: 0;
-  margin-top: 0;
-  color: #000000;
-  border-bottom: 1px solid #e1e8ed;
+    border-radius: 0;
+    margin-top: 0;
+    color: #000000;
+    border-bottom: 1px solid #e1e8ed;
 }
+
 .nav-pills li a i,
 .nav-pills li a:hover i {
-  margin-right: 12px;
-  margin-top: 3px;
+    margin-right: 12px;
+    margin-top: 3px;
 }
+
 .nav-pills li a:hover {
-  background-color: #f5f8fa;
+    background-color: #f5f8fa;
 }
+
 .input-group {
-  padding: 10px 0 10px 0;
-  border-bottom: 1px solid #e1e8ed;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #e1e8ed;
 }
+
 .input-group .fa-search {
-  margin-left: 2px;
-  padding-bottom: 2px;
-  color: #8899a6;
+    margin-left: 2px;
+    padding-bottom: 2px;
+    color: #8899a6;
 }
+
 input[type="search"] {
-  border: none;
-  border-radius: 0px;
-  box-shadow: none;
-  padding-right: 10px;
-  padding-left: 0;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
+    padding-right: 10px;
+    padding-left: 0;
 }
+
 input[type="search"]:focus,
 input[type="search"]:hover {
-  border: none;
-  border-radius: 0px;
-  box-shadow: none;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
 }
+
 .input-group-addon {
-  border: none;
-  border-radius: 0px;
-  background: none;
+    border: none;
+    border-radius: 0px;
+    background: none;
 }
+
 .add-column-area {
-  padding: 10px 10px 0 10px;
+    padding: 10px 10px 0 10px;
 }
+
 .add-column-area .add-column {
-  width: 218px;
+    width: 218px;
 }
+
 .add-column-area ul {
-	list-style:none;
-	padding: 0;
+    list-style: none;
+    padding: 0;
 }
+
 .add-column-area input {
-	margin-right: 5px;
+    margin-right: 5px;
 }
+
 .add-column-area input[type="text"] {
-	margin-right: 0;
-	width: 130px;
+    margin-right: 0;
+    width: 130px;
 }
+
 .add-column-area .filter {
-	margin-top: 5px;
+    margin-top: 5px;
 }
+
 .add-column-area .filter ul {
-	margin-left: 20px;
+    margin-left: 20px;
 }
+
 #user-info {
-  border-bottom: 1px solid #e1e8ed;
-  padding: 5px 0 5px 15px;
+    border-bottom: 1px solid #e1e8ed;
+    padding: 5px 0 5px 15px;
 }
+
 #user-info p {
-  font-weight: 500;
-  color: #8899a6;
+    font-weight: 500;
+    color: #8899a6;
 }
+
 #user-info .logout {
-  margin-right: 12px;
-  cursor: pointer;
+    margin-right: 12px;
+    cursor: pointer;
 }
+
 .left-menu-title {
-  padding: 5px 0 5px 15px;
-  margin: 0 0 0 0;
-  margin-top: 10px;
-  border-top: 1px solid #e1e8ed;
-  border-bottom: 1px solid #e1e8ed;
-  font-weight: 700;
-  color: #292f33;
+    padding: 5px 0 5px 15px;
+    margin: 0 0 0 0;
+    margin-top: 10px;
+    border-top: 1px solid #e1e8ed;
+    border-bottom: 1px solid #e1e8ed;
+    font-weight: 700;
+    color: #292f33;
 }
+
 .left-menu-title .fa-tag,
 .left-menu-title .fa-list,
 .left-menu-title .fa-user {
-  padding-right: 5px;
+    padding-right: 5px;
 }
+
 .left-menu-title .fa-plus {
-  padding: 3px 15px 0 0;
+    padding: 3px 15px 0 0;
 }
+
 .left-menu-title .fa-plus:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
+
 .queued {
-  color: #ffffff;
-  position: fixed;
-  top: 55px;
-  margin-left: 100px;
-  background-color: #1f98c7;
-  padding: 5px 15px;
-  font-weight: 600;
-  border-radius: 30px;
+    color: #ffffff;
+    position: fixed;
+    top: 55px;
+    margin-left: 100px;
+    background-color: #1f98c7;
+    padding: 5px 15px;
+    font-weight: 600;
+    border-radius: 30px;
 }
+
 .tweet-header {
-  border: 1px solid #e1e8ed;
-  border-top-left-radius: 5px 5px;
-  border-top-right-radius: 5px 5px;
-  border-bottom: 0;
-  padding: 8px 5px 13px 5px;
-  background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    border-bottom: 0;
+    padding: 8px 5px 13px 5px;
+    background-color: #ffffff;
 }
+
 .tweet-header .fa-search {
-  margin-top: 1px;
-  margin-right: 10px;
+    margin-top: 1px;
+    margin-right: 10px;
 }
+
 .tweet-header h4 {
-  margin: 5px 0 0 5px;
-  color: #8899a6;
+    margin: 5px 0 0 5px;
+    color: #8899a6;
 }
+
 .tweet-header .fa-caret-down {
-  margin: 2px 5px 0 0;
+    margin: 2px 5px 0 0;
 }
+
 .tweet-stream {
-  border: 1px solid #e1e8ed;
-  border-bottom-left-radius: 5px 5px;
-  border-bottom-right-radius: 5px 5px;
-  background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    background-color: #ffffff;
 }
+
 .media {
-  padding: 10px;
-  border-bottom: 1px solid #e1e8ed;
-  margin-top: 0;
-  background-color: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #e1e8ed;
+    margin-top: 0;
+    background-color: #ffffff;
 }
+
 .media p {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
+
 .media .media-body .fullname a {
-  color: #000000;
+    color: #000000;
 }
+
 .media:last-child {
-  border-bottom: 0;
+    border-bottom: 0;
 }
+
 .media:hover {
-  background-color: #f5f8fa;
-  cursor: pointer;
+    background-color: #f5f8fa;
+    cursor: pointer;
 }
+
 .username,
 .timestamp {
-  color: #8899a6;
-  font-weight: 500;
+    color: #8899a6;
+    font-weight: 500;
 }
+
 .help-block {
-  margin: 0 0 0 58px;
+    margin: 0 0 0 58px;
 }
+
 .help-block .tweet-info {
-  color: #ccd6dd;
+    color: #ccd6dd;
 }
+
 .help-block .tweet-info small:nth-of-type(2) {
-  margin-left: 10px;
+    margin-left: 10px;
 }
+
 .help-block .btn {
-  border: 1px solid #ccd6dd;
-  margin-left: 5px;
-  color: #8899a6;
-  font-weight: 500;
+    border: 1px solid #ccd6dd;
+    margin-left: 5px;
+    color: #8899a6;
+    font-weight: 500;
 }
+
 .help-block .btn .fa-caret-down {
-  margin: 0 0 2px 4px;
+    margin: 0 0 2px 4px;
 }
+
 .help-block .btn:hover {
-  color: #f5f8fa;
-  background-color: #55acee;
+    color: #f5f8fa;
+    background-color: #55acee;
 }
+
 #TagTweetButton,
 #TagUserButton {
-  margin-left: 0;
+    margin-left: 0;
 }
+
 .dropdown .dropdown-menu {
-  padding: 5px 0;
+    padding: 5px 0;
 }
+
 .dropdown .dropdown-menu input[type="checkbox"] {
-  margin: 0;
-  cursor: pointer;
-  height: 13px;
-  float: left;
-  margin-top: 3px;
+    margin: 0;
+    cursor: pointer;
+    height: 13px;
+    float: left;
+    margin-top: 3px;
 }
+
 .dropdown .dropdown-menu i {
-  margin-left: 8px;
+    margin-left: 8px;
 }
+
 .dropdown .dropdown-menu label {
-  font-weight: 400;
-  margin-bottom: 0;
-  padding: 5px 10px 5px 10px;
+    font-weight: 400;
+    margin-bottom: 0;
+    padding: 5px 10px 5px 10px;
 }
+
 .dropdown .dropdown-menu label:hover {
-  background-color: #eee;
-  color: #000000;
+    background-color: #eee;
+    color: #000000;
 }
