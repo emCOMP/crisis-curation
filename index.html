@@ -120,7 +120,7 @@
     </div>
 
 
-    <ul class="nav nav-pills nav-stacked dropdown-relative" id="user-tag-list">
+    <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
         <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
 
             <a href="#">
@@ -135,10 +135,11 @@
     </ul>
 
 
-    <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName)" role='form'>
+    <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''" role='form'>
         <div class='form-group'>
             <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
                ng-model="USER_TAGS.tag.color"></i>
+
             <label class='sr-only' for='tag-name'>User List Name</label>
             <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='tag-name'
                    placeholder='Enter list name'>
