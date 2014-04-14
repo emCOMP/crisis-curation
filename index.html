@@ -89,21 +89,19 @@
     </div>
 
     <div class="dropdown-relative">
-        <p class="left-menu-title">Tags
-            <!--<a class="fa fa-plus pull-right" id="newTagButton" href="#"></a>-->
-        </p>
+        <p class="left-menu-title">Tags</p>
     </div>
     <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-        <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
-            popover-template="editTag.html" popover-placement="right">
+        <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
             <a href="#">
                 <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                 {{tag.tag_name}}
                 <span class="badge pull-right">{{ tag.num_instances }}</span>
             </a>
+            <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
+            <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
         </li>
     </ul>
-
 
     <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
         <div class='form-group'>
@@ -112,29 +110,30 @@
 
             <label class='sr-only' for='tag-name'>Tag Name</label>
             <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name'
-                   placeholder='Enter tag name' >
+                   placeholder='Enter tag name'>
             <button type='submit' class='btn btn-default'>Add</button>
         </div>
-
-
     </form>
 
-
     <div class="dropdown-relative">
-        <p class="left-menu-title">User Lists
-            <!--<a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a>-->
-        </p>
+        <p class="left-menu-title">User Lists</p>
     </div>
-    <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-        <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
-            popover-template="editUserTag.html" popover-placement="right">
+
+
+    <ul class="nav nav-pills nav-stacked dropdown-relative" id="user-tag-list">
+        <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
+
             <a href="#">
                 <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                 {{tag.tag_name}}
                 <span class="badge pull-right">{{ tag.num_instances }}</span>
             </a>
+
+            <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
+            <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
         </li>
     </ul>
+
 
     <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName)" role='form'>
         <div class='form-group'>
