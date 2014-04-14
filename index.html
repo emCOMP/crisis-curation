@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="twitterCrisis">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -32,91 +32,134 @@
     <script type="text/javascript" src="js/tags.js"></script>
     <script type="text/javascript" src="js/directives.js"></script>
     <script type="text/javascript" src="js/colorpicker.js"></script>
-  </head>
+</head>
 
-  <body ng-controller="Ctrl">
-        <div class="left-menu">
-            <h4>{{currentCrisis}}</h4>
-            <div id="user-info">
-                <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
-            </div>
-            <div class="add-column-area">
-                <form class="add-column" >
-                    <button class="btn btn-primary add-column" ng-click="showColForm = !showColForm; showTagFilter = false; newColumn()">Add Column</button>
-					<div ng-show="showColForm">
-						<ul>
-							<span class="title">Column Filters:</span>
-							<li class="filter">
-								<input type="checkbox" ng-model="search.textFilter"/>
-								<input type="text" placeholder="Text"  ng-model="search.text" ng-change="search.textFilter=true"/>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-model="search.usersFilter"/>
-								<input type="text" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter"/>Tag
-								<ul ng-show="showTagFilter">
-									<li ng-repeat="tag in TAGS.tags">
-										<input type="checkbox" ng-model="search.tags[tag._id.$oid]" ng-click="search.tagsFilter=true"/>
-									    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-									    {{tag.tag_name}}
-									</li>
-								</ul>
-							</li>
-							<li class="filter">
-								<input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter"/>User Tag
-								<ul ng-show="showUserTagFilter">
-									<li ng-repeat="tag in USER_TAGS.tags">
-										<input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
-									    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-									    {{tag.tag_name}}
-									</li>
-								</ul>
-							</li>
-						</ul>
-                   		<button class="btn" ng-click="showColForm = !showColForm;">Cancel</button>
-					</div>
-                </form>
-            </div>
+<body ng-controller="Ctrl">
+<div class="left-menu">
+    <h4>{{currentCrisis}}</h4>
 
-            <div class="dropdown-relative">
-                <p class="left-menu-title">Tags <a class="fa fa-plus pull-right" id="newTagButton" href="#"></a></p>
-            </div>
-            <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-                <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
-                    popover-template="editTag.html" popover-placement="right">
-                    <a href="#"  >
-                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                        {{tag.tag_name}}
-                        <span class="badge pull-right">{{ tag.num_instances }}</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="dropdown-relative">
-                <p class="left-menu-title">User Lists <a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a></p>
-            </div>
-            <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-                <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
-                    popover-template="editUserTag.html" popover-placement="right">
-                    <a href="#"  >
-                        <i class="fa fa-stop" style="color:{{tag.color}};"></i>
-                        {{tag.tag_name}}
-                        <span class="badge pull-right">{{ tag.num_instances }}</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="collab">
-                <p class="left-menu-title">Collaborators (2)</p>
-                <ul class="nav nav-pills nav-stacked" id="collab-list">
-                    <li><a>[name1] - [status]</a></li>
-                    <li><a>[name2] - [status]</a></li>
-                </ul>
-            </div>
-        </div>
-    <div class="content">
-      <column-stream colname="all" col-id=0></column-stream>
+    <div id="user-info">
+        <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
     </div>
-  </body>
+    <div class="add-column-area">
+        <form class="add-column">
+            <button class="btn btn-primary add-column"
+                    ng-click="showColForm = !showColForm; showTagFilter = false; newColumn()">Add Column
+            </button>
+            <div ng-show="showColForm">
+                <ul>
+                    <span class="title">Column Filters:</span>
+                    <li class="filter">
+                        <input type="checkbox" ng-model="search.textFilter"/>
+                        <input type="text" placeholder="Text" ng-model="search.text"
+                               ng-change="search.textFilter=true"/>
+                    </li>
+                    <li class="filter">
+                        <input type="checkbox" ng-model="search.usersFilter"/>
+                        <input type="text" placeholder="@User" ng-model="search.users"
+                               ng-change="search.usersFilter=true"/>
+                    </li>
+                    <li class="filter">
+                        <input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}"
+                               ng-model="search.tagsFilter"/>Tag
+                        <ul ng-show="showTagFilter">
+                            <li ng-repeat="tag in TAGS.tags">
+                                <input type="checkbox" ng-model="search.tags[tag._id.$oid]"
+                                       ng-click="search.tagsFilter=true"/>
+                                <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                {{tag.tag_name}}
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="filter">
+                        <input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}"
+                               ng-model="search.userTagsFilter"/>User Tag
+                        <ul ng-show="showUserTagFilter">
+                            <li ng-repeat="tag in USER_TAGS.tags">
+                                <input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
+                                <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                {{tag.tag_name}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn" ng-click="showColForm = !showColForm;">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="dropdown-relative">
+        <p class="left-menu-title">Tags
+            <!--<a class="fa fa-plus pull-right" id="newTagButton" href="#"></a>-->
+        </p>
+    </div>
+    <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+        <li ng-repeat="tag in TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
+            popover-template="editTag.html" popover-placement="right">
+            <a href="#">
+                <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                {{tag.tag_name}}
+                <span class="badge pull-right">{{ tag.num_instances }}</span>
+            </a>
+        </li>
+    </ul>
+
+
+    <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
+        <div class='form-group'>
+            <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
+               ng-model="TAGS.tag.color"></i>
+
+            <label class='sr-only' for='tag-name'>Tag Name</label>
+            <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name'
+                   placeholder='Enter tag name' >
+            <button type='submit' class='btn btn-default'>Add</button>
+        </div>
+
+
+    </form>
+
+
+    <div class="dropdown-relative">
+        <p class="left-menu-title">User Lists
+            <!--<a class="fa fa-plus pull-right" id="newUserTagButton" href="#"></a>-->
+        </p>
+    </div>
+    <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+        <li ng-repeat="tag in USER_TAGS.tags" ng-click="editTagPopover(tag)" tag-id="{{tag._id.$oid}}"
+            popover-template="editUserTag.html" popover-placement="right">
+            <a href="#">
+                <i class="fa fa-stop" style="color:{{tag.color}};"></i>
+                {{tag.tag_name}}
+                <span class="badge pull-right">{{ tag.num_instances }}</span>
+            </a>
+        </li>
+    </ul>
+
+    <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName)" role='form'>
+        <div class='form-group'>
+            <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
+               ng-model="USER_TAGS.tag.color"></i>
+            <label class='sr-only' for='tag-name'>User List Name</label>
+            <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='tag-name'
+                   placeholder='Enter list name'>
+            <button type='submit' class='btn btn-default'>Add</button>
+        </div>
+
+
+    </form>
+
+    <div class="collab">
+        <p class="left-menu-title">Collaborators (2)</p>
+        <ul class="nav nav-pills nav-stacked" id="collab-list">
+            <li><a>[name1] - [status]</a></li>
+            <li><a>[name2] - [status]</a></li>
+        </ul>
+    </div>
+</div>
+<div class="content">
+    <column-stream colname="all" col-id=0></column-stream>
+</div>
+</body>
 
 </html>
