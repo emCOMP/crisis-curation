@@ -35,6 +35,22 @@ hr {
     width: 65%;
 }
 
+/*.left-menu .nav > li > a {*/
+    /*display: inline-block;*/
+/*}*/
+
+.left-menu li > a.modify-tag {
+    display: none;
+}
+
+.left-menu li:hover > a {
+    display: inline-block;
+}
+
+.left-menu li:hover > a.modify-tag {
+    display: inline-block;
+}
+
 .nav-stacked > li + li {
     margin-top: 0;
     padding-top: 0;
