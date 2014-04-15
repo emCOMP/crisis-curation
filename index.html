@@ -91,17 +91,25 @@
     <div class="dropdown-relative">
         <p class="left-menu-title">Tags</p>
     </div>
-    <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-        <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
-            <a href="#">
-                <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                {{tag.tag_name}}
-                <span class="badge pull-right">{{ tag.num_instances }}</span>
-            </a>
-            <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
-            <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
-        </li>
-    </ul>
+    <div ng-app="editer" ng-controller="inlineEdit">
+        <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+            <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+                <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
+                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                    {{tag.tag_name}}
+                    <span class="badge pull-right">{{ tag.num_instances }}</span>
+                </a>
+
+                <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
+                    <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag, newTagName)" ng-focus="item == editedItem" ng-data="{{editTagPopoverSetup(tag.tag_name)}}" id="editTagInputBox" type="text"
+                           class="form-control">
+                </form>
+
+                <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
+                <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
+            </li>
+        </ul>
+    </div>
 
     <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
         <div class='form-group'>
