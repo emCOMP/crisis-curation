@@ -10,12 +10,12 @@
     <title>{{currentCrisis}}</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/jquery.dropdown.css" rel="stylesheet">
+<!--     <link href="css/jquery.dropdown.css" rel="stylesheet"> this breaks dropdown for search refinement menu-->
 
-    <link rel="stylesheet" type="text/css" href="css/layout.css">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link href="css/popover.css" rel="stylesheet">
     <link href="css/colorpicker.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/angular-route.js"></script>
@@ -41,7 +41,14 @@
     <div id="user-info">
         <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
     </div>
+
     <div class="add-column-area">
+        <form class="add-column">
+            <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()">Add Column</button>
+        </form>
+    </div>
+
+    <!-- <div class="add-column-area">
         <form class="add-column">
             <button class="btn btn-primary add-column"
                     ng-click="showColForm = !showColForm; showTagFilter = false; newColumn()">Add Column
@@ -86,7 +93,7 @@
                 <button class="btn" ng-click="showColForm = !showColForm;">Cancel</button>
             </div>
         </form>
-    </div>
+    </div> -->
 
     <div class="dropdown-relative">
         <p class="left-menu-title">Tags</p>

@@ -37,6 +37,10 @@ hr {
   padding: 0;
 }
 
+a {
+  cursor: pointer;
+}
+
 // Left Menu Bar
 
 .left-menu {
@@ -108,23 +112,30 @@ input[type="search"]:focus, input[type="search"]:hover {
 
 .add-column-area {
   padding: 10px 10px 0 10px;
+}
 
-  .btn-huge {
-    width: 218px;
-    height: 40px;
+.btn-huge {
+  height: 40px;
+}
 
-    .fa-search {
-      margin-right: 5px;
-    }
-  }
+.btn-half {
+  width: 146px;
+  padding-right: 0;
+  padding-left: 0;
+  margin-top: 5px;
+}
+
+.btn-half + .btn-half {
+  margin-left: 2px;
+}
+
+.fa-search, .fa-trash-o {
+  margin-right: 5px;
 }
 
 .no-bullet {
   list-style: none;
-}
-
-.search-form {
-  padding: 20px 0;
+  list-style-type: none;
 }
 
 .no-display {
@@ -211,6 +222,22 @@ input[type="search"]:focus, input[type="search"]:hover {
   }
 }
 
+// Column: Search refine menu
+
+.dropdown-menu {
+  width: 320px;
+  margin: 13px 0 0 -11px;
+  -webkit-border-radius: 0px 0px 5px 5px;
+  border-radius: 0px 0px 5px 5px;
+  -webkit-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.175);
+  border: @border;
+}
+
+.search-form {
+  padding: 6px 10px;
+}
+
 // Tweet Stream
 
 .tweet-stream {
@@ -251,11 +278,6 @@ input[type="search"]:focus, input[type="search"]:hover {
   color: @gray-4;
   font-weight: 500;
 }
-
-// .timestamp:before {
-//   content: "\00b7";
-//   margin-right: 4px;
-// }
 
 //tweet actions
 .help-block {
@@ -325,62 +347,3 @@ input[type="search"]:focus, input[type="search"]:hover {
     }
   }
 }
-
-
-
-// Layout CSS without using Flex
-// -----------------------------
-
-// .left-menu {
-//   display: inline-block;
-//   vertical-align: top;
-//   width: 200px;
-//   height: 100%;
-//   z-index: 1;
-// }
-
-// .content {
-//   display: inline-block;
-//   vertical-align: top;
-//   width: 600px;
-//   height: 100%;
-//   overflow-x: scroll;
-//   overflow-y: hidden;
-//   padding-left: 20px;
-// }
-
-// .column {
-//   display: inline-block;
-//   width: 400px;
-//   min-height: 95%;
-//   max-height: 95%;
-//   overflow-y: hidden;
-//   overflow-x: hidden;
-//   margin-right: 10px;
-//   margin-top: 20px;
-//   margin-bottom: 20px;
-//   position: relative;
-// }
-
-// .tweet-header {
-//   height:50px;
-// }
-
-// .tweet-stream {
-//   position: relative;
-//   min-height: 95%;
-//   overflow-y: scroll;
-//   box-sizing: border-box;
-//   -moz-box-sizing: border-box; /* Firefox */
-//   position: absolute;
-// }
-
-// .tweet {
-
-// }
-
-// .content:after {
-//     content: "";
-//     display: table;
-//     clear: both;
-// }

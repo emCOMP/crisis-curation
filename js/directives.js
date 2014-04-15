@@ -102,6 +102,30 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			}
         };
 
+        // Todo: search and update within the same column
+        // Todo: (still incomplete) click add column on the left menu to open a new column and open the dropdown toggle
+        $scope.newColumnSearch = function() {
+            // Get new search term
+            var newcolId = $scope.colNum;
+            $scope.colNum = $scope.colNum + 1;
+            //$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
+            var data = {'colId': newcolId, 'user': USER, 'search': $scope.search};
+            $http.post(WEBSERVER + '/newcolumn', data);
+            $scope.createColumn(newcolId, $scope.search);
+
+            // force update of 'columns' of existing tweets
+            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+
+            // clear form
+            $scope.search = searchTemplate();
+
+            // open search dropdown
+            $("column-stream[col-id=" +  newcolId + "] > div > div > h4").css("color", "red");
+            $("column-stream > div > div > h4").css("background-color", "red");
+            $("column-stream").css("background-color", "blue");
+        };
+
         $scope.createColumn = function(newcolId, search) {
             // Make new column based on search
             $scope.CURRENT_COLS.push({'colId': newcolId, 'search': search});
@@ -266,6 +290,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
     })
 
+    // Stop search refinement dropdown from closing
+    .directive('stopEvent', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                element.bind(attr.stopEvent, function (e) {
+                    e.stopPropagation();
+                });
+            }
+        };
+    })
+
     ////////////////////////////////////////////
     // Filters
     ////////////////////////////////////////////
@@ -340,13 +376,13 @@ function getUsersColumns($http, $scope, $location) {
 
 // Template for unfiltered column
 function columnTemplate(colId) {
-    return {'colId': colId, 
+    return {'colId': colId,
             'search': searchTemplate()};
 }
 
 function searchTemplate() {
-return {'textFilter': false, 'text': '',
-        'usersFilter': false, 'users': '', 
+    return {'textFilter': false, 'text': '',
+        'usersFilter': false, 'users': '',
         'tagsFilter': false, 'tags': {},
         'userTagsFilter': false, 'userTags': {}};
 }

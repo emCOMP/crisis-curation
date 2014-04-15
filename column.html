@@ -2,7 +2,51 @@
 	<p ng-click="unpauseColumn(colId)" ng-show="PAUSED_COL.colId == colId && PAUSED_COL.queued" class="queued"><span>{{PAUSED_COL.queued}} New Tweets</span></p>
     <div class="tweet-header">
 
-        <h4>{{CURRENT_COLS[colId].search.text || "All"}}<a ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-times pull-right"></i></a><i class="fa fa-caret-down pull-right"></i></h4>
+        <h4 class="dropdown" >{{CURRENT_COLS[colId].search.text || "All"}}
+          <i class="fa fa-times pull-right"></i></a>
+          <a class="dropdown-toggle"><i class="fa fa-caret-down pull-right"></i></a>
+
+          <div class="dropdown-menu" stop-event="click">
+              <div ng-class="showColForm">
+                <form role="form" class="search-form">
+                    <div class="form-group filter">
+                      <input type="checkbox" ng-model="search.textFilter" class="no-display"/>
+                      <input type="text" class="form-control" placeholder="Enter search" ng-model="search.text" ng-change="search.textFilter=true"/>
+                    </div>
+                    <div class="form-group filter">
+                      <input type="checkbox" ng-model="search.usersFilter" class="no-display"/>
+                      <input type="text" class="form-control" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
+                    </div>
+                    <div class="form-group filter">
+                      <input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter" id="{{CURRENT_COLS[colId].colId}} + tag-tweet" class="no-display"/>
+                      <label for="{{CURRENT_COLS[colId].colId}} + tag-tweet" class="btn btn-default btn-xs">Tag <i class="fa fa-caret-down"></i></label>
+                      <ul ng-show="showTagFilter" class="no-bullet">
+                        <li ng-repeat="tag in TAGS.tags">
+                          <input type="checkbox" ng-model="search.tags[tag._id.$oid]" ng-click="search.tagsFilter=true"/>
+                          <i class="fa fa-circle" style="color:{{tag.color}};"></i>{{tag.tag_name}}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="form-group filter">
+                      <input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter" id="{{CURRENT_COLS[colId].colId}} + tag-user" class="no-display"/>
+                      <label for="{{CURRENT_COLS[colId].colId}} + tag-user" class="btn btn-default btn-xs">User Tag <i class="fa fa-caret-down"></i></label>
+                      <ul ng-show="showUserTagFilter" class="no-bullet">
+                        <li ng-repeat="tag in USER_TAGS.tags">
+                          <input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
+                          <i class="fa fa-circle" style="color:{{tag.color}};"></i>{{tag.tag_name}}
+                        </li>
+                      </ul>
+                    </div>
+                 <button class="btn btn-primary btn-huge btn-block" ng-click="newColumn()"><i class="fa fa-search"></i>Search
+                </button>
+                <!-- <button class="btn btn-primary btn-huge btn-block" ng-click="refineSearch()">Refine Search
+                </button> -->
+                <button class="btn btn-half" ng-click="searchTemplate()">Clear</button>
+                <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-trash-o"></i>Delete Column</button>
+              </form>
+            </div>
+          </div>
+        </h4>
  </div>
     <div class="tweet-stream" ng-style="style()" resize>
         <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:colId:this" >{{tweet}}</tweet>
