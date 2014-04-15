@@ -104,7 +104,7 @@
                 <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
                     <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                     {{tag.tag_name}}
-                    <span class="badge pull-right">{{ tag.num_instances }}</span>
+                    <span class="badge">{{ tag.num_instances }}</span>
                 </a>
 
                 <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
@@ -141,7 +141,7 @@
             <a href="#">
                 <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                 {{tag.tag_name}}
-                <span class="badge pull-right">{{ tag.num_instances }}</span>
+                <span class="badge">{{ tag.num_instances }}</span>
             </a>
 
             <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
