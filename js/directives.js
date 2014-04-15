@@ -8,7 +8,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Set up datastructures
         $scope.CURRENT_COLS = [];
-        $scope.CURRENT_COLS.push(columnTemplate(0))
+        $scope.CURRENT_COLS[0] = columnTemplate(0);
         $scope.showCreateNewTag = false;
         $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued' : 0};
 
@@ -126,25 +126,19 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.createColumn = function(newcolId, search) {
             // Make new column based on search
-            $scope.CURRENT_COLS.push({'colId': newcolId, 'search': search, 'showDropdown': true});
+            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': search, 'showDropdown': true};
             var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
             $(".content").append( el );
         };
 
         $scope.deleteColumn = function(colId) {
-			if(colId == 0) { return; } // don't let them delete the first column
+	    if(colId == 0) { return; } // don't let them delete the first column
             var cols = $scope.CURRENT_COLS;
-            for(var i = 0; i < cols.length; i++){
-                if(cols[i].colId == colId) {
-                    $scope.CURRENT_COLS.splice(i, 1);
-                    $("column-stream[col-id=" + colId + "]").remove();
-                    var data = {'user': USER, 'colId': colId};
-                    $http.post(WEBSERVER + '/deletecolumn', data);
-                    //$location.search("column" + i, null);
-                    break;
-                }
-            }
-        }
+	    delete $scope.CURRENT_COLS[colId]
+            $("column-stream[col-id=" + colId + "]").remove();
+            var data = {'user': USER, 'colId': colId};
+            $http.post(WEBSERVER + '/deletecolumn', data);
+        } 
 
 
 
