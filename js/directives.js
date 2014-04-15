@@ -67,7 +67,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
 
         // Create a new column from search box
-        $scope.newColumn = function() {
+       /* $scope.newColumn = function() {
 			var userClickedToSubmitForm = !$scope.showColForm;
 			if(userClickedToSubmitForm) {
                 console.log('ohai', $scope.search);
@@ -100,7 +100,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				// clear form
 				$scope.search = searchTemplate();
 			}
-        };
+        };*/
 
         // Todo: search and update within the same column
         // Todo: (still incomplete) click add column on the left menu to open a new column and open the dropdown toggle
@@ -126,10 +126,23 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.createColumn = function(newcolId, search) {
             // Make new column based on search
-            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': search, 'showDropdown': true};
+            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': search, 'showDropdown': true, 'started': false};
             var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
             $(".content").append( el );
         };
+
+	$scope.saveSearch = function(colId) {
+		console.log("saving search for col " + colId);
+		console.log($scope.CURRENT_COLS[colId].search);
+
+		// force update of 'columns' of existing tweets
+		$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+		$scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+
+		// start this stream.
+		$scope.CURRENT_COLS[colId].started = true;
+		$scope.CURRENT_COLS[colId].showDropdown = false;
+	}
 
         $scope.deleteColumn = function(colId) {
 	    if(colId == 0) { return; } // don't let them delete the first column
@@ -311,6 +324,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         return function(items, colId, scope) {
 			colId = parseInt(colId)
             var arrayToReturn = [];
+	    if(!scope.CURRENT_COLS[colId].started) { return arrayToReturn; };
             if (items) {
                 var count = 0;
                 for (var i=0; i<items.length; i++){
@@ -370,7 +384,8 @@ function getUsersColumns($http, $scope, $location) {
 function columnTemplate(colId) {
     return {'colId': colId,
             'search': searchTemplate(),
-	    'showDropdown': false};
+	    'showDropdown': false,
+	    'started': true};
 }
 
 function searchTemplate() {

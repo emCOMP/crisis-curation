@@ -370,13 +370,13 @@ function inlineEdit($scope) {
     }
 
     $scope.doneEditing = function (type, tag, newTagName) {
-        item.editing = false;
+        /*item.editing = false;
         $scope.editedItem = null;
         if (type == 'tag') {
             TAGS.editTagText(tag, newTagName);
         } else {
             USER_TAGS.editTagText(tag, newTagName)
-        }
+        }*/
 
     }
 }

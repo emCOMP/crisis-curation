@@ -50,7 +50,7 @@ def addCols(cols, tweet_list):
 			search = col['search']
 
 			# filter by text search
-			searchText = col['search']['text'].decode('utf-8')
+			searchText = search['text'].decode('utf-8')
 			if not findWholeWord(searchText)(tweet["text"]):
 				continue
 
@@ -119,6 +119,7 @@ def tweetsSince(tweetID):
 		return '{"error": { "message": "Tweet id does not exist"}}'
 	
 	cols = json.loads(request.body.read())["cols"]
+	print cols
 	t_since = list(tweets.find({'id_str' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING))
 	addCols(cols, t_since)
 

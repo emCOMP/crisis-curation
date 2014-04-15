@@ -3,7 +3,6 @@
     <div class="tweet-header">
 
         <h4 class="dropdown" >{{CURRENT_COLS[colId].search.text || "All"}}
-          <i class="fa fa-times pull-right"></i></a>
           <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
 
           <div ng-show="CURRENT_COLS[colId].showDropdown">
@@ -11,7 +10,7 @@
                 <form role="form" class="search-form">
                     <div class="form-group filter">
                       <input type="checkbox" ng-model="search.textFilter" class="no-display"/>
-                      <input type="text" class="form-control" placeholder="Enter search" ng-model="search.text" ng-change="search.textFilter=true"/>
+                      <input type="text" class="form-control" placeholder="Enter search" ng-model="CURRENT_COLS[colId].search.text" ng-change="CURRENT_COLS[colId].search.textFilter=true"/>
                     </div>
                     <div class="form-group filter">
                       <input type="checkbox" ng-model="search.usersFilter" class="no-display"/>
@@ -37,7 +36,7 @@
                         </li>
                       </ul>
                     </div>
-                 <button class="btn btn-primary btn-huge btn-block" ng-click="newColumn()"><i class="fa fa-search"></i>Search
+                 <button class="btn btn-primary btn-huge btn-block" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
                 </button>
                 <!-- <button class="btn btn-primary btn-huge btn-block" ng-click="refineSearch()">Refine Search
                 </button> -->
