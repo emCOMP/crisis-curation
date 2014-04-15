@@ -4,9 +4,9 @@
 
         <h4 class="dropdown" >{{CURRENT_COLS[colId].search.text || "All"}}
           <i class="fa fa-times pull-right"></i></a>
-          <a class="dropdown-toggle"><i class="fa fa-caret-down pull-right"></i></a>
+          <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
 
-          <div class="dropdown-menu" stop-event="click">
+          <div ng-show="CURRENT_COLS[colId].showDropdown">
               <div ng-class="showColForm">
                 <form role="form" class="search-form">
                     <div class="form-group filter">

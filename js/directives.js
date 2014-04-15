@@ -121,14 +121,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.search = searchTemplate();
 
             // open search dropdown
-            $("column-stream[col-id=" +  newcolId + "] > div > div > h4").css("color", "red");
-            $("column-stream > div > div > h4").css("background-color", "red");
-            $("column-stream").css("background-color", "blue");
+	    $("column-stream[col-id='" +  newcolId + "'] .dropdown-link").click(); 
         };
 
         $scope.createColumn = function(newcolId, search) {
             // Make new column based on search
-            $scope.CURRENT_COLS.push({'colId': newcolId, 'search': search});
+            $scope.CURRENT_COLS.push({'colId': newcolId, 'search': search, 'showDropdown': true});
             var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
             $(".content").append( el );
         };
@@ -377,7 +375,8 @@ function getUsersColumns($http, $scope, $location) {
 // Template for unfiltered column
 function columnTemplate(colId) {
     return {'colId': colId,
-            'search': searchTemplate()};
+            'search': searchTemplate(),
+	    'showDropdown': false};
 }
 
 function searchTemplate() {
