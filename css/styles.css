@@ -24,6 +24,30 @@ a {
   color: #8899a6;
   border-bottom: 1px solid #e1e8ed;
 }
+
+
+.left-menu .form-group {
+    padding: 10px 15px;
+}
+
+.left-menu .form-control {
+    display: inline;
+    width: 65%;
+}
+
+
+.left-menu li > a.modify-tag {
+    display: none;
+}
+
+.left-menu li:hover > a {
+    display: inline-block;
+}
+
+.left-menu li:hover > a.modify-tag {
+    display: inline-block;
+}
+
 .nav-stacked > li + li {
   margin-top: 0;
   padding-top: 0;
