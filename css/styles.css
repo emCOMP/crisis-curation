@@ -27,6 +27,8 @@ a {
 }
 .left-menu .form-group {
   padding: 10px 15px;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 0px;
 }
 .left-menu .form-control {
   display: inline;
@@ -88,7 +90,7 @@ input[type="search"]:hover {
   background: none;
 }
 .add-column-area {
-  padding: 10px 10px 0 10px;
+  padding: 10px 10px 10px 10px;
 }
 .btn-huge {
   height: 40px;
@@ -128,11 +130,11 @@ input[type="search"]:hover {
 .left-menu-title {
   padding: 5px 0 5px 15px;
   margin: 0 0 0 0;
-  margin-top: 10px;
   border-top: 1px solid #e1e8ed;
   border-bottom: 1px solid #e1e8ed;
   font-weight: 700;
   color: #292f33;
+  background-color: #f5f8fa;
 }
 .left-menu-title .fa-tag,
 .left-menu-title .fa-list,
