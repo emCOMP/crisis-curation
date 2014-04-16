@@ -48,56 +48,53 @@ def addCols(cols, tweet_list):
 		tweet["columns"] = []
 		for col in cols:
 			search = col['search']
-
-			# filter by text search
-			searchText = search['text'].decode('utf-8')
-			if not findWholeWord(searchText)(tweet["text"]):
+			searchType = col['search']['searchType'].decode('utf-8')
+			if(not col['started']):
 				continue
+			if(searchType   == 'text'):
+				searchText = col['search']['text'].decode('utf-8')
+				if not findWholeWord(searchText)(tweet["text"]):
+					continue
+			elif(searchType == 'users'):
+				if not tweetedByUser(search, tweet): # TODO allow filtering by multiple users
+					continue
+			elif(searchType == 'tags'):
+				if not containsTags(search, tweet):
+					continue
 
-			# filter by user
-			if not tweetedByUser(search, tweet): # TODO allow filtering by multiple users
-				continue
-
-			# filter by Tags
-			if not containsTags(search, tweet):
-				continue
-
-			# filter by User Tags
-			if not containsUserTags(search, tweet):
-				continue
-
+			elif(searchType == 'user_tags'):
+				# filter by User Tags
+				if not containsUserTags(search, tweet):
+					continue
 			tweet["columns"].append(col["colId"])
 
 # Returns whether this tweet was tweeted by the user in the given search
 def tweetedByUser(search, tweet):
-	if search['usersFilter']:
-		user = tweet["user"]["screen_name"]
-		if len(user) < 1:
-			return True
-		searchUser  = search["users"][1:] if search["users"][0] == "@" else search["users"] # get rid of @ sign
-		return user == searchUser
-	return True
+	user = tweet["user"]["screen_name"]
+	if len(search["users"]) < 1:
+		return False
+	searchUser  = search["users"][1:] if search["users"][0] == "@" else search["users"] # get rid of @ sign
+	return user == searchUser
 
 # Returns whether this tweet contains the tags in the given search
 def containsTags(search, tweet):
-	if search['tagsFilter']:
-		searchTags = search['tags']
-		for searchTag in searchTags.keys():
-			if searchTags[searchTag]:
-				tweetTags = tweet.get("tags")
-				if tweetTags == None or searchTag not in tweetTags:
-					return False
+	searchTags = search['tags']
+	for searchTag in searchTags.keys():
+		if searchTags[searchTag]:
+			tweetTags = tweet.get("tags")
+			if tweetTags == None or searchTag not in tweetTags:
+				return False
 	return True
+
 
 # Returns whether this tweet contains the user tags in the given search
 def containsUserTags(search, tweet):
-	if search['userTagsFilter']:
-		searchTags = search['userTags']
-		for searchTag in searchTags.keys():
-			if searchTags[searchTag]:
-				tweetTags = tweet.get("user_tags")
-				if tweetTags == None or searchTag not in tweetTags:
-					return False
+	searchTags = search['userTags']
+	for searchTag in searchTags.keys():
+		if searchTags[searchTag]:
+			tweetTags = tweet.get("user_tags")
+			if tweetTags == None or searchTag not in tweetTags:
+				return False
 	return True
 		
 
@@ -119,7 +116,6 @@ def tweetsSince(tweetID):
 		return '{"error": { "message": "Tweet id does not exist"}}'
 	
 	cols = json.loads(request.body.read())["cols"]
-	print cols
 	t_since = list(tweets.find({'id_str' : {'$gt': tweetID}}).sort("id", pymongo.DESCENDING))
 	addCols(cols, t_since)
 

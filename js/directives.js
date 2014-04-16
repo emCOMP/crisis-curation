@@ -18,7 +18,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.editTagPopOverOpen = false;
 	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
-	    $scope.search = searchTemplate();
 
 
         ////////////////////////
@@ -65,95 +64,39 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             return true;
         }
 
-
-        // Create a new column from search box
-       /* $scope.newColumn = function() {
-			var userClickedToSubmitForm = !$scope.showColForm;
-			if(userClickedToSubmitForm) {
-                console.log('ohai', $scope.search);
-                // Prevent the user from submitting a blank
-                var actualSearch = false;
-                for (var key in $scope.search) {
-                  if ($scope.search[key]) {
-                    if (($scope.search[key] instanceof Object) &&  (Object.keys($scope.search[key]).length === 0)) {
-                        continue;
-                    }
-                    actualSearch = true;
-                  }
-                }
-                if (!actualSearch) {
-                    return;
-                }
-
-				// Get new search term
-				var newcolId = $scope.colNum;
-				$scope.colNum = $scope.colNum + 1;
-				//$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
-				var data = {'colId': newcolId, 'user': USER, 'search': $scope.search};
-				$http.post(WEBSERVER + '/newcolumn', data);
-				$scope.createColumn(newcolId, $scope.search);
-
-				// force update of 'columns' of existing tweets
-				$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-				$scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-
-				// clear form
-				$scope.search = searchTemplate();
-			}
-        };*/
-
-        // Todo: search and update within the same column
-        // Todo: (still incomplete) click add column on the left menu to open a new column and open the dropdown toggle
+		// opens up a new column, with a search box
         $scope.newColumnSearch = function() {
-            // Get new search term
-            var newcolId = $scope.colNum;
-            $scope.colNum = $scope.colNum + 1;
-            //$location.search('column' + $scope.CURRENT_COLS.length, newcolId);
-            var data = {'colId': newcolId, 'user': USER, 'search': $scope.search};
-            $http.post(WEBSERVER + '/newcolumn', data);
-            $scope.createColumn(newcolId, $scope.search);
-
-            // force update of 'columns' of existing tweets
-            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-
-            // clear form
-            $scope.search = searchTemplate();
-
+            $scope.createColumn($scope.colNum);
             // open search dropdown
-	    $("column-stream[col-id='" +  newcolId + "'] .dropdown-link").click(); 
+            $("column-stream[col-id='" +  $scope.colNum + "'] .dropdown-link").click(); 
+            $scope.colNum = $scope.colNum + 1;
         };
 
-        $scope.createColumn = function(newcolId, search) {
+        $scope.createColumn = function(newcolId) {
             // Make new column based on search
-            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': search, 'showDropdown': true, 'started': false};
+            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': searchTemplate(), 'showDropdown': true, 'started': false};
             var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
             $(".content").append( el );
         };
 
-	$scope.saveSearch = function(colId) {
-		console.log("saving search for col " + colId);
-		console.log($scope.CURRENT_COLS[colId].search);
+		// saves a column's search
+		$scope.saveSearch = function(colId) {
+            // start this stream.
+            $scope.CURRENT_COLS[colId].started = true;
+            $scope.CURRENT_COLS[colId].showDropdown = false;
 
-		// force update of 'columns' of existing tweets
-		$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-		$scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-
-		// start this stream.
-		$scope.CURRENT_COLS[colId].started = true;
-		$scope.CURRENT_COLS[colId].showDropdown = false;
-	}
+            // force update of 'columns' of existing tweets
+            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+		}
 
         $scope.deleteColumn = function(colId) {
 	    if(colId == 0) { return; } // don't let them delete the first column
-            var cols = $scope.CURRENT_COLS;
-	    delete $scope.CURRENT_COLS[colId]
+            delete $scope.CURRENT_COLS[colId]
             $("column-stream[col-id=" + colId + "]").remove();
             var data = {'user': USER, 'colId': colId};
             $http.post(WEBSERVER + '/deletecolumn', data);
         } 
-
-
 
         // Set up initial user
         getUser($http, $modal, localStorageService);
@@ -324,7 +267,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         return function(items, colId, scope) {
 			colId = parseInt(colId)
             var arrayToReturn = [];
-	    if(!scope.CURRENT_COLS[colId].started) { return arrayToReturn; };
+	   		if(!scope.CURRENT_COLS[colId] || !scope.CURRENT_COLS[colId].started) { return arrayToReturn; }
             if (items) {
                 var count = 0;
                 for (var i=0; i<items.length; i++){
@@ -392,5 +335,5 @@ function searchTemplate() {
     return {'textFilter': false, 'text': '',
         'usersFilter': false, 'users': '',
         'tagsFilter': false, 'tags': {},
-        'userTagsFilter': false, 'userTags': {}};
+        'userTagsFilter': false, 'userTags': {}, 'searchType': 'text'};
 }

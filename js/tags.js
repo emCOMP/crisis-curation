@@ -151,23 +151,35 @@ var Tags = function (spec, $http) {
         }
     }
 
-    // Update the columns arrays for the given tweets
-    function updateColumns(tweets_to_update, all_tweets, CURRENT_COLS) {
-        var filterName = (TAG_ARRAY_NAME == 'tags') ? 'tags' : 'userTags';
-        for (var i = 0; i < tweets_to_update.length; i++) {
-            var tweet = tweets_to_update[i];
-            // check if this tweet belongs in any of our cols
-            for (var colIndex in CURRENT_COLS) {
-                var belongsInColumn = true;
-                var col = CURRENT_COLS[colIndex];
-                // Check if the tag filter is set for this column. If so, this is a tag search.
-                if (col.search[filterName + "Filter"]) {
-                    var tags = col.search[filterName]
-                    addCols(tweet, col, tags);
-                }
-            }
-        }
-    }
+	// Update the columns arrays for the given tweets
+	function updateColumns(tweets_to_update, all_tweets, CURRENT_COLS){
+		var filterName = (TAG_ARRAY_NAME == 'tags') ? 'tags' : 'userTags';
+		for(var i = 0; i < tweets_to_update.length; i++){
+			var tweet = tweets_to_update[i];
+			// check if this tweet belongs in any of our cols
+			for(var colIndex in CURRENT_COLS) {
+				var belongsInColumn = true;
+				var col = CURRENT_COLS[colIndex];
+				// Check if the tag filter is set for this column. If so, this is a tag search.
+				if(col.search.searchType == TAG_ARRAY_NAME){
+					var tags = col.search[filterName]
+					addCols(tweet, col, tags);
+				} else if (col.search.searchType == 'text') {
+					if(tweet.text.indexOf(col.search.text) >= 0) {			
+						if (tweet["columns"].indexOf(col.colId) < 0) { tweet["columns"].push(col.colId); }
+					}
+				} else if (col.search.searchType == 'users') {
+					var userSearch = col.search.users;
+					if(userSearch.length > 0 && userSearch[0] == '@') {
+						userSearch = userSearch.substring(1);					
+					}
+					if(tweet.user.screen_name == userSearch) {
+						if (tweet["columns"].indexOf(col.colId) < 0) { tweet["columns"].push(col.colId); }
+					}
+				}
+			}
+		}
+	}
 
     // Adds columns to tweet based on its tags.  If the tweet has any of
     // the tags in 'column_tags',  the corresponding column is added to the tweet's column array.

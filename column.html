@@ -9,38 +9,32 @@
               <div ng-class="showColForm">
                 <form role="form" class="search-form">
                     <div class="form-group filter">
-                      <input type="checkbox" ng-model="search.textFilter" class="no-display"/>
-                      <input type="text" class="form-control" placeholder="Enter search" ng-model="CURRENT_COLS[colId].search.text" ng-change="CURRENT_COLS[colId].search.textFilter=true"/>
-                    </div>
-                    <div class="form-group filter">
-                      <input type="checkbox" ng-model="search.usersFilter" class="no-display"/>
-                      <input type="text" class="form-control" placeholder="@User" ng-model="search.users" ng-change="search.usersFilter=true"/>
-                    </div>
-                    <div class="form-group filter">
-                      <input type="checkbox" ng-click="showTagFilter=!showTagFilter; search.tags={}" ng-model="search.tagsFilter" id="{{CURRENT_COLS[colId].colId}} + tag-tweet" class="no-display"/>
-                      <label for="{{CURRENT_COLS[colId].colId}} + tag-tweet" class="btn btn-default btn-xs">Tag <i class="fa fa-caret-down"></i></label>
-                      <ul ng-show="showTagFilter" class="no-bullet">
-                        <li ng-repeat="tag in TAGS.tags">
-                          <input type="checkbox" ng-model="search.tags[tag._id.$oid]" ng-click="search.tagsFilter=true"/>
-                          <i class="fa fa-circle" style="color:{{tag.color}};"></i>{{tag.tag_name}}
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="form-group filter">
-                      <input type="checkbox" ng-click="showUserTagFilter=!showUserTagFilter; search.userTags={}" ng-model="search.userTagsFilter" id="{{CURRENT_COLS[colId].colId}} + tag-user" class="no-display"/>
-                      <label for="{{CURRENT_COLS[colId].colId}} + tag-user" class="btn btn-default btn-xs">User Tag <i class="fa fa-caret-down"></i></label>
-                      <ul ng-show="showUserTagFilter" class="no-bullet">
-                        <li ng-repeat="tag in USER_TAGS.tags">
-                          <input type="checkbox" ng-model="search.userTags[tag._id.$oid]"/>
-                          <i class="fa fa-circle" style="color:{{tag.color}};"></i>{{tag.tag_name}}
-                        </li>
-                      </ul>
-                    </div>
-                 <button class="btn btn-primary btn-huge btn-block" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
+                            Search By:
+                          <select ng-model="CURRENT_COLS[colId].search.searchType">
+                               <option value="text">Text</option>
+                               <option value="users">User</option>
+                               <option value="tags">Tags</option>
+                               <option value="user_tags">User Tags</option>
+                          </select>
+                          <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
+                          <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
+                          <ul ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
+                               <li ng-repeat="tag in TAGS.tags">
+                                    <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
+                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                    {{tag.tag_name}}
+                               </li>
+                          </ul>
+                          <ul ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
+                                <li ng-repeat="tag in USER_TAGS.tags">
+                                    <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
+                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                    {{tag.tag_name}}
+                                </li>
+                          </ul>
+                     </div>
+                 <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
                 </button>
-                <!-- <button class="btn btn-primary btn-huge btn-block" ng-click="refineSearch()">Refine Search
-                </button> -->
-                <button class="btn btn-half" ng-click="searchTemplate()">Clear</button>
                 <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-trash-o"></i>Delete Column</button>
               </form>
             </div>

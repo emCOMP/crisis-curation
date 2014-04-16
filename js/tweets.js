@@ -14,9 +14,10 @@ RECENT_ID = null;
 // Pulls tweets from the back end database 
 // and stores them in our front end model of known tweets.
 function getTweets($http, $scope) {
+	var cols = removeNull($scope.CURRENT_COLS);
 	// First time contacting the DB for tweets
 	if (RECENT_ID == null) {
-		$http.post(WEBSERVER + '/tweets/1', {'cols':  $scope.CURRENT_COLS}).success(function(response) {
+		$http.post(WEBSERVER + '/tweets/1', {'cols':  cols}).success(function(response) {
 		    if (response.tweets.length != 0) {
 			    RECENT_ID = response.tweets[0].id_str;
 			    $scope.tweets = response.tweets;
@@ -27,12 +28,26 @@ function getTweets($http, $scope) {
 		});
 	} else {
 		// Every other time send the most recent tweet you've seen
-		$http.post(WEBSERVER + '/tweets/since/' + RECENT_ID,  {"cols":  $scope.CURRENT_COLS }).success(function(response) {
+		$http.post(WEBSERVER + '/tweets/since/' + RECENT_ID,  {"cols":  cols }).success(function(response) {
 		    if (response.tweets.length != 0 && 
 		    	!(response.tweets.length == 1 && response.tweets[0].id_str == RECENT_ID)) {
 			    RECENT_ID = response.tweets[0].id_str;
 			    $scope.tweets = response.tweets.concat($scope.tweets);
+				if($scope.tweets.length > 160){
+			         $scope.tweets = $scope.tweets.slice(80);				
+			    }
 			 }
 		});
 	}    
+}
+
+function removeNull(current_cols){
+	// fix for null (deleted) columns being sent
+	cols = []
+	for(var c in current_cols){
+		if(current_cols[c]) {
+			cols.push(current_cols[c]);	
+		}		
+	}
+	return cols;
 }
