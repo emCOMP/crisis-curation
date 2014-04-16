@@ -128,13 +128,14 @@ input[type="search"]:hover {
   cursor: pointer;
 }
 .left-menu-title {
-  padding: 5px 0 5px 15px;
+  padding: 5px 0 5px 0px;
   margin: 0 0 0 0;
   border-top: 1px solid #e1e8ed;
   border-bottom: 1px solid #e1e8ed;
   font-weight: 700;
   color: #292f33;
   background-color: #f5f8fa;
+  text-align: center;
 }
 .left-menu-title .fa-tag,
 .left-menu-title .fa-list,
