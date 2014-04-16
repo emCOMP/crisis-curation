@@ -1,116 +1,74 @@
-// ----------------------
-//
-// STYLES
-//
-// ----------------------
-
-// Variables
-@blue:          #55acee; // twitter blue
-@blue-1:        #1f98c7;
-@light-blue:    #edf0f2;
-@dark-blue:     #246fbb;
-@black:         #000;
-@white:         #fff;
-@dark-gray:     #292f33;
-@gray-5:        #66757f;
-@gray-4:        #8899a6;
-@gray-3:        #ccd6dd;
-@gray-2:        #e1e8ed;
-@gray-1:        #f5f8fa;
-@border: 1px solid @gray-2;
-@border-radius: 5px 5px;
-
-// General
-
 body {
   -webkit-font-smoothing: antialiased !important;
-  background-color: @light-blue;
+  background-color: #edf0f2;
 }
-
 p {
-  color: @dark-gray;
+  color: #292f33;
 }
-
 hr {
-  border-color: @gray-2;
+  border-color: #e1e8ed;
   margin: 0;
   padding: 0;
 }
-
 a {
   cursor: pointer;
 }
-
-// Left Menu Bar
-
 .left-menu {
-  border: @border;
-  border-radius: @border-radius;
-  background-color: @white;
-
-  h4 {
-    padding: 4px 15px 12px 13px;
-    font-weight: 500;
-    letter-spacing: .04em;
-    color: @gray-4;
-    border-bottom: @border;
-  }
+  border: 1px solid #e1e8ed;
+  border-radius: 5px 5px;
+  background-color: #ffffff;
 }
-
+.left-menu h4 {
+  padding: 4px 15px 12px 13px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: #8899a6;
+  border-bottom: 1px solid #e1e8ed;
+}
 .left-menu .form-group {
   padding: 10px 15px;
 }
-
 .left-menu .form-control {
   display: inline;
   width: 65%;
 }
-
 .left-menu li > a.modify-tag {
   display: none;
 }
-
 .left-menu li:hover > a {
   display: inline-block;
 }
-
 .left-menu li:hover > a.modify-tag {
   display: inline-block;
 }
-
 .nav-stacked > li + li {
   margin-top: 0;
   padding-top: 0;
 }
-
-.nav-pills li a, .nav-pills li a:hover {
+.nav-pills li a,
+.nav-pills li a:hover {
   border-radius: 0;
   margin-top: 0;
-  color: @black;
-  border-bottom: @border;
-
-  i {
-    margin-right: 12px;
-    margin-top: 3px;
-  }
+  color: #000000;
+  border-bottom: 1px solid #e1e8ed;
 }
-
+.nav-pills li a i,
+.nav-pills li a:hover i {
+  margin-right: 12px;
+  margin-top: 3px;
+}
 .nav-pills li a:hover {
-  background-color: @gray-1;
+  background-color: #f5f8fa;
 }
-
 .input-group {
   padding: 10px 0 10px 0;
-  border-bottom: @border;
-
-  .fa-search {
-    // margin-right: 15px;
-    margin-left: 2px;
-    padding-bottom: 2px;
-    color: @gray-4;
-  }
+  border-bottom: 1px solid #e1e8ed;
 }
-
+.input-group .fa-search {
+  margin-left: 2px;
+  padding-bottom: 2px;
+  color: #8899a6;
+}
 input[type="search"] {
   border: none;
   border-radius: 0px;
@@ -118,133 +76,104 @@ input[type="search"] {
   padding-right: 10px;
   padding-left: 0;
 }
-
-input[type="search"]:focus, input[type="search"]:hover {
+input[type="search"]:focus,
+input[type="search"]:hover {
   border: none;
   border-radius: 0px;
   box-shadow: none;
 }
-
 .input-group-addon {
   border: none;
   border-radius: 0px;
   background: none;
 }
-
 .add-column-area {
   padding: 10px 10px 0 10px;
 }
-
 .btn-huge {
   height: 40px;
 }
-
 .btn-half {
   width: 146px;
   padding-right: 0;
   padding-left: 0;
   margin-top: 5px;
 }
-
 .btn-half + .btn-half {
   margin-left: 2px;
 }
-
-.fa-search, .fa-trash-o {
+.fa-search,
+.fa-trash-o {
   margin-right: 5px;
 }
-
 .no-bullet {
   list-style: none;
   list-style-type: none;
 }
-
 .no-display {
   display: none;
 }
-
 #user-info {
-  border-bottom: @border;
+  border-bottom: 1px solid #e1e8ed;
   padding: 5px 0 5px 15px;
-
-  p {
-    font-weight: 500;
-    color: @gray-4;
-  }
-
-  .logout {
-    margin-right: 12px;
-    cursor: pointer;
-  }
 }
-
+#user-info p {
+  font-weight: 500;
+  color: #8899a6;
+}
+#user-info .logout {
+  margin-right: 12px;
+  cursor: pointer;
+}
 .left-menu-title {
   padding: 5px 0 5px 15px;
   margin: 0 0 0 0;
   margin-top: 10px;
-  border-top: @border;
-  border-bottom: @border;
+  border-top: 1px solid #e1e8ed;
+  border-bottom: 1px solid #e1e8ed;
   font-weight: 700;
-  color: @dark-gray;
-
-  .fa-tag, .fa-list, .fa-user {
-    padding-right: 5px;
-  }
-
-  .fa-plus {
-    padding: 3px 15px 0 0;
-  }
-
-  .fa-plus:hover {
-    text-decoration: none;
-  }
+  color: #292f33;
 }
-
-// todo: add to layout.less instead; figure out to how make it stay at the bottom; vertical responsiveness issue; tags and user tags - expandable (make these collapsible accordion-style?)
-.collab {
+.left-menu-title .fa-tag,
+.left-menu-title .fa-list,
+.left-menu-title .fa-user {
+  padding-right: 5px;
 }
-
-// Tweet Queue
-
+.left-menu-title .fa-plus {
+  padding: 3px 15px 0 0;
+}
+.left-menu-title .fa-plus:hover {
+  text-decoration: none;
+}
 .queued {
-  color: @white;
+  color: #ffffff;
   position: fixed;
   top: 55px;
   margin-left: 100px;
-  // left: 340px;
-  background-color: @blue-1;
+  background-color: #1f98c7;
   padding: 5px 15px;
   font-weight: 600;
   border-radius: 30px;
 }
-
-// Tweet Header
-
 .tweet-header {
-  border: @border;
-  border-top-left-radius: @border-radius;
-  border-top-right-radius: @border-radius;
+  border: 1px solid #e1e8ed;
+  border-top-left-radius: 5px 5px;
+  border-top-right-radius: 5px 5px;
   border-bottom: 0;
   padding: 8px 5px 13px 5px;
-  background-color: @white;
-
-  .fa-search {
-    margin-top: 1px;
-    margin-right: 10px;
-  }
-
-  h4 {
-    margin: 5px 0 0 5px;
-    color: @gray-4;
-  }
-
-  .fa-caret-down {
-    margin: 2px 5px 0 0;
-  }
+  background-color: #ffffff;
 }
-
-// Column: Search refine menu
-
+.tweet-header .fa-search {
+  margin-top: 1px;
+  margin-right: 10px;
+}
+.tweet-header h4 {
+  margin: 5px 0 0 5px;
+  color: #8899a6;
+}
+.tweet-header .fa-caret-down {
+  margin: 2px 5px 0 0;
+}
 .dropdown-menu {
   width: 320px;
   margin: 13px 0 0 -11px;
@@ -252,119 +181,86 @@ input[type="search"]:focus, input[type="search"]:hover {
   border-radius: 0px 0px 5px 5px;
   -webkit-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.175);
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.175);
-  border: @border;
+  border: 1px solid #e1e8ed;
 }
-
 .search-form {
   padding: 6px 10px;
 }
-
-// Tweet Stream
-
 .tweet-stream {
-  border: @border;
-  border-bottom-left-radius: @border-radius;
-  border-bottom-right-radius: @border-radius;
-  background-color: @white;
+  border: 1px solid #e1e8ed;
+  border-bottom-left-radius: 5px 5px;
+  border-bottom-right-radius: 5px 5px;
+  background-color: #ffffff;
 }
-
 .media {
   padding: 10px;
-  border-bottom: @border;
+  border-bottom: 1px solid #e1e8ed;
   margin-top: 0;
-  background-color: @white;
-
-  p {
-    margin-bottom: 5px;
-  }
-
-  .media-body {
-
-    .fullname a {
-      color: @black;
-    }
-  }
+  background-color: #ffffff;
 }
-
+.media p {
+  margin-bottom: 5px;
+}
+.media .media-body .fullname a {
+  color: #000000;
+}
 .media:last-child {
   border-bottom: 0;
 }
-
-.media:hover { // todo: on hover, darken .help-block and .btn colors
-  background-color: @gray-1;
+.media:hover {
+  background-color: #f5f8fa;
   cursor: pointer;
 }
-
-.username, .timestamp {
-  color: @gray-4;
+.username,
+.timestamp {
+  color: #8899a6;
   font-weight: 500;
 }
-
-//tweet actions
 .help-block {
   margin: 0 0 0 58px;
-
-  .tweet-info {
-  color: @gray-3; // todo: on hover, make it darker -- fix retweet color in HTML (if change now, it affects JS somehow)
-
-    small:nth-of-type(2) {
-      margin-left: 10px;
-    }
-  }
-
-  // tag tweet button - todo: on hover, change color
-  .btn {
-    border: 1px solid @gray-3;
-    // letter-spacing: 0.03em;
-    margin-left: 5px;
-    color: @gray-4;
-    font-weight: 500;
-
-    .fa-caret-down {
-      margin: 0 0 2px 4px;
-    }
-  }
-
-  .btn:hover {
-    color: @gray-1;
-    background-color: @blue;
-  }
 }
-
-#TagTweetButton, #TagUserButton {
+.help-block .tweet-info {
+  color: #ccd6dd;
+}
+.help-block .tweet-info small:nth-of-type(2) {
+  margin-left: 10px;
+}
+.help-block .btn {
+  border: 1px solid #ccd6dd;
+  margin-left: 5px;
+  color: #8899a6;
+  font-weight: 500;
+}
+.help-block .btn .fa-caret-down {
+  margin: 0 0 2px 4px;
+}
+.help-block .btn:hover {
+  color: #f5f8fa;
+  background-color: #55acee;
+}
+#TagTweetButton,
+#TagUserButton {
   margin-left: 0;
 }
-
-// .tweet-tags, .user-tags {
-
-// }
-
-.dropdown {
-
-  .dropdown-menu {
-    padding: 5px 0;
-
-    input[type="checkbox"] {
-      margin: 0;
-      cursor: pointer;
-      height: 13px;
-      float: left;
-      margin-top: 3px;
-    }
-
-    i {
-      margin-left: 8px;
-    }
-
-    label {
-      font-weight: 400;
-      margin-bottom: 0;
-      padding: 5px 10px 5px 10px;
-    }
-
-    label:hover {
-      background-color: #eee;
-      color: @black;
-    }
-  }
+.dropdown .dropdown-menu {
+  padding: 5px 0;
+}
+.dropdown .dropdown-menu input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+  height: 13px;
+  float: left;
+  margin-top: 3px;
+}
+.dropdown .dropdown-menu i {
+  margin-left: 8px;
+}
+.dropdown .dropdown-menu label {
+  font-weight: 400;
+  margin-bottom: 0;
+  padding: 5px 10px 5px 10px;
+}
+.dropdown .dropdown-menu label:hover {
+  background-color: #eee;
+  color: #000000;
 }
