@@ -10,3 +10,10 @@ stop.sh
 environment.properties
 
 *.pyc
+
+
+#ignore webstorm config file
+.idea/*
+
+#ignore merge backup file
+*.orig
