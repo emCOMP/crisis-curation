@@ -90,6 +90,21 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
         }
 
+	// Create a column that filters by the given tag
+	$scope.newSearchByTagColumn = function(tag, searchType) {
+	    var search = searchTemplate();
+	    search.searchType = searchType;
+	    if(searchType == 'tags') {
+		search.tags[tag._id.$oid] = true;
+            } else {
+		search.userTags[tag._id.$oid] = true;
+	    }
+	    $scope.CURRENT_COLS[$scope.colNum] = {'colId': $scope.colNum, 'search': search, 'showDropdown': false, 'started': true};
+            var el = $compile("<column-stream col-id=" + $scope.colNum + " ></column-stream>")($scope);
+            $(".content").append(el);
+            $scope.colNum = $scope.colNum + 1;
+	}
+
         $scope.deleteColumn = function (colId) {
             if (colId == 0) {
                 return;
