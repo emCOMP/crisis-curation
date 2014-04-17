@@ -54,16 +54,16 @@ a {
   padding-right: 5px;
   padding-left: 5px;
 }
+.left-menu li:hover span.badge {
+  display: none;
+}
+.left-menu li:hover > a.right-23 {
+  right: 23px;
+}
 .right {
   position: absolute;
   right: 5px;
   top: 11px;
-}
-.left-menu li:hover span.badge {
-  display: none;
-}
-.right-25:hover {
-  right: 25px;
 }
 .nav-stacked > li + li {
   margin-top: 0;

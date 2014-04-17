@@ -65,49 +65,47 @@ a {
     max-height: 600px;
   }
 
-}
+  .form-group {
+    padding: 10px 15px;
+    border-bottom: @border;
+    margin-bottom: 0px;
+  }
 
-.left-menu .form-group {
-  padding: 10px 15px;
-  border-bottom: @border;
-  margin-bottom: 0px;
-}
+  .form-control {
+    display: inline;
+    width: 65%;
+  }
+  li {
+    > a.modify-tag {
+      display: none;
+    }
+  }
 
-.left-menu .form-control {
-  display: inline;
-  width: 65%;
-}
-
-.left-menu li > a.modify-tag {
-  display: none;
-}
-
-.left-menu li:hover > a {
-  display: inline-block;
-}
-
-.left-menu li:hover > a.modify-tag {
-  display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding-right: 5px;
-  padding-left: 5px;
-
+  li:hover {
+    > a {
+      display: inline-block;
+    }
+    > a.modify-tag {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+    span.badge {
+      display: none;
+    }
+    > a.right-23 {
+      right: 23px;
+    }
+  }
 }
 
 .right {
   position: absolute;
   right: 5px;
   top: 11px;
-}
-
-.left-menu li:hover span.badge {
-  display: none;
-}
-
-.right-25:hover {
-  right: 25px;
 }
 
 .nav-stacked > li + li {
