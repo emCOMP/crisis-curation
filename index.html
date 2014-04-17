@@ -76,7 +76,7 @@
                         <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
                             <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                             {{tag.tag_name}}
-                            <span class="badge">{{ tag.num_instances }}</span>
+                            <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
 
                         <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
@@ -86,9 +86,10 @@
                                    class="form-control">
                         </form>
                         <!--<div class="right">-->
-                            <a class="modify-tag right-25" href="#" ng-click="newSearchByTagColumn(tag, 'tags')" style="right: 23px">Search</a>
-                            <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
-                                    class="fa fa-times"></i></a>
+                        <a class="modify-tag right-25" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
+                           style="right: 23px">Search</a>
+                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
+                                class="fa fa-times"></i></a>
                         <!--</div>-->
                     </li>
                 </ul>
@@ -121,10 +122,11 @@
                     <a href="#">
                         <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                         {{tag.tag_name}}
-                        <span class="badge">{{ tag.num_instances }}</span>
+                        <span class="badge right">{{ tag.num_instances }}</span>
                     </a>
 
-                    <a class="modify-tag right-25" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')" style="right: 23px">Search</a>
+                    <a class="modify-tag right-25" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')"
+                       style="right: 23px">Search</a>
                     <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
                 </li>
             </ul>

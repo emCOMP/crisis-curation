@@ -54,6 +54,14 @@ a {
   padding-right: 5px;
   padding-left: 5px;
 }
+.right {
+  position: absolute;
+  right: 5px;
+  top: 11px;
+}
+.left-menu li:hover span.badge {
+  display: none;
+}
 .right-25:hover {
   right: 25px;
 }
