@@ -46,8 +46,13 @@ a {
 .left-menu li:hover > a {
   display: inline-block;
 }
-.left-menu li:hover > a.modify-tag {
+.left-menu li:hover a.modify-tag {
   display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 .nav-stacked > li + li {
   margin-top: 0;
@@ -62,7 +67,6 @@ a {
 }
 .nav-pills li a i,
 .nav-pills li a:hover i {
-  margin-right: 12px;
   margin-top: 3px;
 }
 .nav-pills li a:hover {
