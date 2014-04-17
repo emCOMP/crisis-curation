@@ -37,7 +37,7 @@
 <body ng-controller="Ctrl">
 <div class="left-menu">
     <div class="fix-banner">
-        <h4>Hello{{currentCrisis}}</h4>
+        <h4>{{currentCrisis}}</h4>
 
         <div id="user-info">
             <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
@@ -99,9 +99,10 @@
         </form>
     </div> -->
 
-    <!--Tags-->
+
 
     <div class="pre-scrollable" resize-left-column>
+        <!--Tags-->
         <div class="tag-list">
             <p class="left-menu-title">Tags</p>
 
