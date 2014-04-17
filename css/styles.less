@@ -5,18 +5,19 @@
 // ----------------------
 
 // Variables
-@blue:          #55acee; // twitter blue
-@blue-1:        #1f98c7;
-@light-blue:    #edf0f2;
-@dark-blue:     #246fbb;
-@black:         #000;
-@white:         #fff;
-@dark-gray:     #292f33;
-@gray-5:        #66757f;
-@gray-4:        #8899a6;
-@gray-3:        #ccd6dd;
-@gray-2:        #e1e8ed;
-@gray-1:        #f5f8fa;
+@blue: #55acee;
+// twitter blue
+@blue-1: #1f98c7;
+@light-blue: #edf0f2;
+@dark-blue: #246fbb;
+@black: #000;
+@white: #fff;
+@dark-gray: #292f33;
+@gray-5: #66757f;
+@gray-4: #8899a6;
+@gray-3: #ccd6dd;
+@gray-2: #e1e8ed;
+@gray-1: #f5f8fa;
 @border: 1px solid @gray-2;
 @border-radius: 5px 5px;
 
@@ -55,6 +56,15 @@ a {
     color: @gray-4;
     border-bottom: @border;
   }
+
+  .fix-banner {
+    height: 147px;
+  }
+
+  .pre-scrollable {
+    max-height: 600px;
+  }
+
 }
 
 .left-menu .form-group {
@@ -183,14 +193,13 @@ input[type="search"]:focus, input[type="search"]:hover {
 .left-menu-title {
   padding: 5px 0 5px 0px;
   margin: 0 0 0 0;
-//  margin-top: 10px;
+  //  margin-top: 10px;
   border-top: @border;
   border-bottom: @border;
   font-weight: 700;
   color: @dark-gray;
   background-color: @gray-1;
   text-align: center;
-
 
   .fa-tag, .fa-list, .fa-user {
     padding-right: 5px;
@@ -204,7 +213,6 @@ input[type="search"]:focus, input[type="search"]:hover {
     text-decoration: none;
   }
 }
-
 
 // todo: add to layout.less instead; figure out to how make it stay at the bottom; vertical responsiveness issue; tags and user tags - expandable (make these collapsible accordion-style?)
 .collab {
@@ -296,7 +304,8 @@ input[type="search"]:focus, input[type="search"]:hover {
   border-bottom: 0;
 }
 
-.media:hover { // todo: on hover, darken .help-block and .btn colors
+.media:hover {
+  // todo: on hover, darken .help-block and .btn colors
   background-color: @gray-1;
   cursor: pointer;
 }
@@ -311,7 +320,7 @@ input[type="search"]:focus, input[type="search"]:hover {
   margin: 0 0 0 58px;
 
   .tweet-info {
-  color: @gray-3; // todo: on hover, make it darker -- fix retweet color in HTML (if change now, it affects JS somehow)
+    color: @gray-3; // todo: on hover, make it darker -- fix retweet color in HTML (if change now, it affects JS somehow)
 
     small:nth-of-type(2) {
       margin-left: 10px;

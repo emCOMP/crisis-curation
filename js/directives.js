@@ -3,44 +3,44 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     /////////////////////////////////////////////////
     // Controller
     /////////////////////////////////////////////////
-    .controller('Ctrl', function($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
+    .controller('Ctrl', function ($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
         //$route.reloadOnSearch = false;
 
         // Set up datastructures
         $scope.CURRENT_COLS = [];
         $scope.CURRENT_COLS[0] = columnTemplate(0);
         $scope.showCreateNewTag = false;
-        $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued' : 0};
+        $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued': 0};
 
         $scope.TAGS = TweetTags($http);
         $scope.USER_TAGS = UserTags($http);
-	    $scope.tag = {"newTagName": "", "color": '#'+Math.floor(Math.random()*16777215).toString(16)};
+        $scope.tag = {"newTagName": "", "color": '#' + Math.floor(Math.random() * 16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
-	    $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+        $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
 
 
         ////////////////////////
         // Functions
         /////////////////////////
-        $scope.getUsername = function() {
+        $scope.getUsername = function () {
             return displayUsername(localStorageService);
         }
 
-        $scope.logout = function() {
+        $scope.logout = function () {
             destroyUser(localStorageService);
             getUser($http, $modal, localStorageService);
         }
 
 
-        $scope.unpauseColumn = function(colId) {
+        $scope.unpauseColumn = function (colId) {
             $scope.PAUSED_COL = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
-            $("column-stream[col-id=" +  colId + "]").css("opacity", 1.0);
-            $($("column-stream[col-id=" +  colId + "]").find(".tweet-stream")).scrollTop(0);
+            $("column-stream[col-id=" + colId + "]").css("opacity", 1.0);
+            $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
         }
 
-        $scope.pauseColumn = function(colId) {
-            $("column-stream[col-id=" +  colId + "]").css("opacity", "0.5");
+        $scope.pauseColumn = function (colId) {
+            $("column-stream[col-id=" + colId + "]").css("opacity", "0.5");
             $scope.PAUSED_COL = {'colId': colId, 'recentTweet': RECENT_ID, 'queued': 0};
         }
 
@@ -51,36 +51,36 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Super hacky way to get focus on input box in tag editor
         // Also puts cursor at end of pre-filled text
-        $scope.editTagPopoverSetup = function(tagname) {
+        $scope.editTagPopoverSetup = function (tagname) {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
                 var element = document.getElementById("editTagInputBox");
                 var val = tagname;//$scope.newTagName;
 
 
-                element.setSelectionRange(val.length,val.length);
+                element.setSelectionRange(val.length, val.length);
                 element.focus();
                 $scope.editTagPopOverOpen = true;
             }
             return true;
         }
 
-		// opens up a new column, with a search box
-        $scope.newColumnSearch = function() {
+        // opens up a new column, with a search box
+        $scope.newColumnSearch = function () {
             $scope.createColumn($scope.colNum);
             // open search dropdown
-            $("column-stream[col-id='" +  $scope.colNum + "'] .dropdown-link").click(); 
+            $("column-stream[col-id='" + $scope.colNum + "'] .dropdown-link").click();
             $scope.colNum = $scope.colNum + 1;
         };
 
-        $scope.createColumn = function(newcolId) {
+        $scope.createColumn = function (newcolId) {
             // Make new column based on search
             $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': searchTemplate(), 'showDropdown': true, 'started': false};
-            var el = $compile( "<column-stream col-id=" + newcolId + " ></column-stream>" )( $scope );
-            $(".content").append( el );
+            var el = $compile("<column-stream col-id=" + newcolId + " ></column-stream>")($scope);
+            $(".content").append(el);
         };
 
-		// saves a column's search
-		$scope.saveSearch = function(colId) {
+        // saves a column's search
+        $scope.saveSearch = function (colId) {
             // start this stream.
             $scope.CURRENT_COLS[colId].started = true;
             $scope.CURRENT_COLS[colId].showDropdown = false;
@@ -88,15 +88,17 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             // force update of 'columns' of existing tweets
             $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-		}
+        }
 
-        $scope.deleteColumn = function(colId) {
-	    if(colId == 0) { return; } // don't let them delete the first column
+        $scope.deleteColumn = function (colId) {
+            if (colId == 0) {
+                return;
+            } // don't let them delete the first column
             delete $scope.CURRENT_COLS[colId]
             $("column-stream[col-id=" + colId + "]").remove();
             var data = {'user': USER, 'colId': colId};
             $http.post(WEBSERVER + '/deletecolumn', data);
-        } 
+        }
 
         // Set up initial user
         getUser($http, $modal, localStorageService);
@@ -104,7 +106,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         getCurrentCrisis($http, $scope);
 
         // Start timer to constantly pull from DB
-        $interval(function(){
+        $interval(function () {
             $scope.TAGS.updateTags($http);
             $scope.TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateTags($http);
@@ -125,7 +127,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     /////////////////////////////////////
 
     // Popup dialog for creating a new tag
-    .directive("newTagPopup", function() {
+    .directive("newTagPopup", function () {
         return {
             restrict: 'EA',
             transclude: false,    // Has to have the root scope
@@ -134,7 +136,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
     })
 
-    .directive("newUserTagPopup", function() {
+    .directive("newUserTagPopup", function () {
         return {
             restrict: 'EA',
             transclude: false,    // Has to have the root scope
@@ -144,7 +146,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     })
 
     // Template for one column of tweets
-    .directive("columnStream", function() {
+    .directive("columnStream", function () {
         return {
             transclude: true,
             restrict: 'EA',
@@ -152,7 +154,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             scope: true,
             link: function (scope, element, attrs) {
                 scope.colId = attrs["colId"];        // Inheriting scopes - independent for each col
-                element.on("click", function(e) {
+                element.on("click", function (e) {
                     if (e.srcElement.localName == "div") {
                         if (scope.$parent.PAUSED_COL.colId) {
                             scope.unpauseColumn(scope.colId);
@@ -166,9 +168,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         }
                     }
                 });
-                $(element).find(".tweet-stream").bind("scroll", function() {
+                $(element).find(".tweet-stream").bind("scroll", function () {
                     if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
-                        if (scope.$parent.PAUSED_COL.colId ==  null) {
+                        if (scope.$parent.PAUSED_COL.colId == null) {
                             scope.pauseColumn(scope.colId);
                         }
                     } else {
@@ -184,56 +186,83 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Makes the window take up as much height as it can, and a width of 320px
     .directive('resize', function () {
         return function (scope, element) {
-                var w = $(window);
-                scope.getWindowDimensions = function () {
-                        return { 'h': w.height(), 'w': w.width() };
+            var w = $(window);
+            scope.getWindowDimensions = function () {
+                return { 'h': w.height(), 'w': w.width() };
+            };
+            scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
+                scope.windowHeight = newValue.h;
+                scope.windowWidth = newValue.w;
+
+                scope.style = function () {
+                    var windowHeight = $(window).height();
+                    var headerHeight = $(".tweet-header").height();
+                    return {
+                        'height': (windowHeight - headerHeight - 32) + 'px',
+                        'width': 320 + 'px'
+                    };
                 };
-                scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
-                        scope.windowHeight = newValue.h;
-                        scope.windowWidth = newValue.w;
 
-                        scope.style = function () {
-                                var windowHeight = $(window).height();
-                                var headerHeight = $(".tweet-header").height();
-                                            return {
-                                                'height': (windowHeight - headerHeight - 32) + 'px',
-                                                'width': 320 + 'px'
-                                            };
-                            };
+            }, true);
 
-                }, true);
+            w.bind('resize', function () {
+                scope.$apply();
+            });
+        }
+    })
 
-                w.bind('resize', function () {
-                        scope.$apply();
-                });
+    .directive('resize-left-column', function () {
+        return function (scope, element) {
+            var w = $(window);
+            scope.getWindowDimensions = function () {
+                return { 'h': w.height(), 'w': w.width() };
+            };
+            scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
+                scope.windowHeight = newValue.h;
+                scope.windowWidth = newValue.w;
+
+                scope.style = function () {
+                    var windowHeight = $(window).height();
+                    var headerHeight = $(".fix-banner").height();
+                    return {
+                        'max-height': (windowHeight - headerHeight) + 'px'
+                    };
+                };
+
+            }, true);
+
+            w.bind('resize-left-column', function () {
+                scope.$apply();
+            });
         }
     })
 
     // Directive to handle missing profile pictures
-    .directive('errSrc', function() {
-      return {
-        link: function(scope, element, attrs) {
-          element.bind('error', function() {
-            element.attr('src', attrs.errSrc);
-          });
+    .directive('errSrc', function () {
+        return {
+            link: function (scope, element, attrs) {
+                element.bind('error', function () {
+                    element.attr('src', attrs.errSrc);
+                });
+            }
         }
-      }
     })
 
     // Template for one single tweet
-    .directive("tweet", function() {
+    .directive("tweet", function () {
         return {
             restrict: 'EA',
             transclue: true,
             scope: true,
             replace: true,
             templateUrl: 'tweet.html',
-            link: function(scope, element, attrs) {
-                attrs.$observe('tweet', function(tweet) {
+            link: function (scope, element, attrs) {
+                attrs.$observe('tweet', function (tweet) {
                     if (scope.$parent) {
-                     scope.tweet = scope.$parent.tweet;
+                        scope.tweet = scope.$parent.tweet;
                     }
-                });;
+                });
+                ;
             }
         };
     })
@@ -255,27 +284,29 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     ////////////////////////////////////////////
 
     // Reverse items in an array.
-    .filter('reverse', function() {
-        return function(items) {
+    .filter('reverse', function () {
+        return function (items) {
             return items.slice().reverse();
         };
     })
 
     // Filter tweets specific to each column, as well
     // as limit the number of tweets per column to 75.
-    .filter('columnSpecific', function() {
-        return function(items, colId, scope) {
-			colId = parseInt(colId)
+    .filter('columnSpecific', function () {
+        return function (items, colId, scope) {
+            colId = parseInt(colId)
             var arrayToReturn = [];
-	   		if(!scope.CURRENT_COLS[colId] || !scope.CURRENT_COLS[colId].started) { return arrayToReturn; }
+            if (!scope.CURRENT_COLS[colId] || !scope.CURRENT_COLS[colId].started) {
+                return arrayToReturn;
+            }
             if (items) {
                 var count = 0;
-                for (var i=0; i<items.length; i++){
-                    if (items[i].columns.indexOf(colId) != -1 ) { // this tweet should be in my column
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].columns.indexOf(colId) != -1) { // this tweet should be in my column
                         if (colId != scope.PAUSED_COL.colId) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
                         } else if (colId == scope.PAUSED_COL.colId &&  // the column is paused
-                                   items[i].id <= scope.PAUSED_COL.recentTweet) {  // enforce "pausing"
+                            items[i].id <= scope.PAUSED_COL.recentTweet) {  // enforce "pausing"
                             arrayToReturn.push(items[i]);
                         } else {
                             // Column paused, tweet is being filtered
@@ -288,8 +319,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 }
             }
             // limit number of tweets in a column
-            if(arrayToReturn.length > MAX_TWEETS_PER_COLUMN) {
-               arrayToReturn.splice(MAX_TWEETS_PER_COLUMN);
+            if (arrayToReturn.length > MAX_TWEETS_PER_COLUMN) {
+                arrayToReturn.splice(MAX_TWEETS_PER_COLUMN);
             }
             return arrayToReturn;
         }
@@ -297,26 +328,26 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
 
 function getCurrentCrisis($http, $scope) {
-    $http.get(WEBSERVER + '/eventTitle').success(function(response) {
-            $scope.currentCrisis = response;
-        });
+    $http.get(WEBSERVER + '/eventTitle').success(function (response) {
+        $scope.currentCrisis = response;
+    });
 }
 
 function getUsersColumns($http, $scope, $location) {
-	// TODO initialize $scope.colNum to max. col id + 1
+    // TODO initialize $scope.colNum to max. col id + 1
     if ($location.search()) {
         // Use provided URL template
         console.log($location.search());
         var object = $location.search();
-        angular.forEach(object, function(value, key){
+        angular.forEach(object, function (value, key) {
             if (key.indexOf("column") >= 0)
                 $scope.createColumn(value);
         });
     } else {
         // Pull from DB
-        $http.get(WEBSERVER + '/columns/' + USER).success(function(response) {
+        $http.get(WEBSERVER + '/columns/' + USER).success(function (response) {
             for (var i = 0; i < response.columns.length; i++) {
-                console.log("response.columns[i] :" , response.columns[i]);
+                console.log("response.columns[i] :", response.columns[i]);
                 $scope.createColumn(response.columns[i].colId);
             }
         });
@@ -326,9 +357,9 @@ function getUsersColumns($http, $scope, $location) {
 // Template for unfiltered column
 function columnTemplate(colId) {
     return {'colId': colId,
-            'search': searchTemplate(),
-	    'showDropdown': false,
-	    'started': true};
+        'search': searchTemplate(),
+        'showDropdown': false,
+        'started': true};
 }
 
 function searchTemplate() {

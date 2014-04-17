@@ -36,17 +36,19 @@
 
 <body ng-controller="Ctrl">
 <div class="left-menu">
-    <h4>{{currentCrisis}}</h4>
+    <div class="fix-banner">
+        <h4>Hello{{currentCrisis}}</h4>
 
-    <div id="user-info">
-        <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
-    </div>
+        <div id="user-info">
+            <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
+        </div>
 
-    <div class="add-column-area">
-        <form class="add-column">
-            <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()">Add Column
-            </button>
-        </form>
+        <div class="add-column-area">
+            <form class="add-column">
+                <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()">Add Column
+                </button>
+            </form>
+        </div>
     </div>
 
 
@@ -99,91 +101,94 @@
 
     <!--Tags-->
 
+    <div class="pre-scrollable" resize-left-column>
+        <div class="tag-list">
+            <p class="left-menu-title">Tags</p>
 
-    <div class="tag-list">
-        <p class="left-menu-title">Tags</p>
 
+            <!--Form for add tags-->
+            <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
+                <div class='form-group'>
+                    <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
+                       ng-model="TAGS.tag.color"></i>
 
-        <!--Form for add tags-->
-        <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
-            <div class='form-group'>
-                <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
-                   ng-model="TAGS.tag.color"></i>
+                    <label class='sr-only' for='tag-name'>Tag Name</label>
+                    <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name'
+                           placeholder='Enter tag name'>
+                    <button type='submit' class='btn btn-default'>Add</button>
+                </div>
+            </form>
 
-                <label class='sr-only' for='tag-name'>Tag Name</label>
-                <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name'
-                       placeholder='Enter tag name'>
-                <button type='submit' class='btn btn-default'>Add</button>
+            <div ng-app="editer" ng-controller="inlineEdit">
+                <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+                    <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+                        <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
+                            <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                            {{tag.tag_name}}
+                            <span class="badge">{{ tag.num_instances }}</span>
+                        </a>
+
+                        <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
+                            <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag, newTagName)"
+                                   ng-focus="item == editedItem" ng-data="{{editTagPopoverSetup(tag.tag_name)}}"
+                                   id="editTagInputBox" type="text"
+                                   class="form-control">
+                        </form>
+
+                        <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
+                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
+                    </li>
+                </ul>
             </div>
-        </form>
+        </div>
 
-        <div ng-app="editer" ng-controller="inlineEdit">
+
+        <!--User list-->
+
+        <div class="user-list">
+            <p class="left-menu-title">User Lists</p>
+
+
+            <!--Form to add user lists-->
+            <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''" role='form'>
+                <div class='form-group'>
+                    <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
+                       ng-model="USER_TAGS.tag.color"></i>
+
+                    <label class='sr-only' for='tag-name'>User List Name</label>
+                    <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='tag-name'
+                           placeholder='Enter list name'>
+                    <button type='submit' class='btn btn-default'>Add</button>
+                </div>
+            </form>
+
             <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-                <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
-                    <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
-                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
+
+                    <a href="#">
+                        <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                         {{tag.tag_name}}
                         <span class="badge">{{ tag.num_instances }}</span>
                     </a>
 
-                    <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
-                        <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag, newTagName)"
-                               ng-focus="item == editedItem" ng-data="{{editTagPopoverSetup(tag.tag_name)}}"
-                               id="editTagInputBox" type="text"
-                               class="form-control">
-                    </form>
-
                     <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
-                    <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
+                    <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
                 </li>
             </ul>
         </div>
+
+
+        <div class="collab">
+            <p class="left-menu-title">Collaborators (2)</p>
+            <ul class="nav nav-pills nav-stacked" id="collab-list">
+                <li><a>[name1] - [status]</a></li>
+                <li><a>[name2] - [status]</a></li>
+            </ul>
+        </div>
     </div>
-
-
-    <!--User list-->
-
-    <div class="user-list">
-        <p class="left-menu-title">User Lists</p>
-
-
-        <!--Form to add user lists-->
-        <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''" role='form'>
-            <div class='form-group'>
-                <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
-                   ng-model="USER_TAGS.tag.color"></i>
-
-                <label class='sr-only' for='tag-name'>User List Name</label>
-                <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='tag-name'
-                       placeholder='Enter list name'>
-                <button type='submit' class='btn btn-default'>Add</button>
-            </div>
-        </form>
-
-        <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-            <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
-
-                <a href="#">
-                    <i class="fa fa-stop" style="color:{{tag.color}};"></i>
-                    {{tag.tag_name}}
-                    <span class="badge">{{ tag.num_instances }}</span>
-                </a>
-
-                <a class="modify-tag" href="#" ng-click="createColumn(tag.tag_name)">Search</a>
-                <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
-            </li>
-        </ul>
-    </div>
-
-
-    <div class="collab">
-        <p class="left-menu-title">Collaborators (2)</p>
-        <ul class="nav nav-pills nav-stacked" id="collab-list">
-            <li><a>[name1] - [status]</a></li>
-            <li><a>[name2] - [status]</a></li>
-        </ul>
-    </div>
+    <!--end of scrollable div-->
 </div>
+<!--end of left column-->
 <div class="content">
     <column-stream colname="all" col-id=0></column-stream>
 </div>

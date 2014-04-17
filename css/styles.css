@@ -25,6 +25,12 @@ a {
   color: #8899a6;
   border-bottom: 1px solid #e1e8ed;
 }
+.left-menu .fix-banner {
+  height: 147px;
+}
+.left-menu .pre-scrollable {
+  max-height: 600px;
+}
 .left-menu .form-group {
   padding: 10px 15px;
   border-bottom: 1px solid #e1e8ed;
