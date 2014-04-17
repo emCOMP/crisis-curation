@@ -103,6 +103,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var el = $compile("<column-stream col-id=" + $scope.colNum + " ></column-stream>")($scope);
             $(".content").append(el);
             $scope.colNum = $scope.colNum + 1;
+
+            // force update of 'columns' of existing tweets
+            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
 	}
 
         $scope.deleteColumn = function (colId) {
