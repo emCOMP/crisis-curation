@@ -63,25 +63,25 @@
                     <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
                        ng-model="TAGS.tag.color"></i>
 
-                    <label class='sr-only' for='tag-name'>Tag Name</label>
-                    <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='tag-name'
+                    <label class='sr-only' for='new-tag-name'>Tag Name</label>
+                    <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='new-tag-name'
                            placeholder='Enter tag name'>
                     <button type='submit' class='btn btn-default'>Add</button>
                 </div>
             </form>
 
-            <div ng-app="editer" ng-controller="inlineEdit">
-                <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
-                    <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
-                        <a href="#" ng-dblclick="startEditing(item);" ng-hide="item.editing">
+            <div ng-app="editer">
+                <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
+                    <li ng-init="addEditingAttr()" ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+                        <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
                             <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                             {{tag.tag_name}}
                             <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
 
-                        <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="item.editing">
+                        <form ng-submit="doneEditing('tag',tag, newTagName)" ng-show="tag.editing">
                             <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag, newTagName)"
-                                   ng-focus="item == editedItem" ng-data="{{editTagPopoverSetup(tag.tag_name)}}"
+                                   ng-focus="tag == editedItem" ng-data="{{editTagPopoverSetup(tag.tag_name)}}"
                                    id="editTagInputBox" type="text"
                                    class="form-control">
                         </form>
@@ -109,14 +109,14 @@
                     <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
                        ng-model="USER_TAGS.tag.color"></i>
 
-                    <label class='sr-only' for='tag-name'>User List Name</label>
-                    <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='tag-name'
+                    <label class='sr-only' for='new-userlist-name'>User List Name</label>
+                    <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='new-userlist-name'
                            placeholder='Enter list name'>
                     <button type='submit' class='btn btn-default'>Add</button>
                 </div>
             </form>
 
-            <ul class="nav nav-pills nav-stacked dropdown-relative" id="tag-list">
+            <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
                 <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
 
                     <a href="#">

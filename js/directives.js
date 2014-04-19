@@ -90,16 +90,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
         }
 
-	// Create a column that filters by the given tag
-	$scope.newSearchByTagColumn = function(tag, searchType) {
-	    var search = searchTemplate();
-	    search.searchType = searchType;
-	    if(searchType == 'tags') {
-		search.tags[tag._id.$oid] = true;
+        // Create a column that filters by the given tag
+        $scope.newSearchByTagColumn = function (tag, searchType) {
+            var search = searchTemplate();
+            search.searchType = searchType;
+            if (searchType == 'tags') {
+                search.tags[tag._id.$oid] = true;
             } else {
-		search.userTags[tag._id.$oid] = true;
-	    }
-	    $scope.CURRENT_COLS[$scope.colNum] = {'colId': $scope.colNum, 'search': search, 'showDropdown': false, 'started': true};
+                search.userTags[tag._id.$oid] = true;
+            }
+            $scope.CURRENT_COLS[$scope.colNum] = {'colId': $scope.colNum, 'search': search, 'showDropdown': false, 'started': true};
             var el = $compile("<column-stream col-id=" + $scope.colNum + " ></column-stream>")($scope);
             $(".content").append(el);
             $scope.colNum = $scope.colNum + 1;
@@ -107,7 +107,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             // force update of 'columns' of existing tweets
             $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-	}
+        }
 
         $scope.deleteColumn = function (colId) {
             if (colId == 0) {
@@ -117,6 +117,31 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $("column-stream[col-id=" + colId + "]").remove();
             var data = {'user': USER, 'colId': colId};
             $http.post(WEBSERVER + '/deletecolumn', data);
+        }
+
+        $scope.addEditingAttr = function () {
+            for (tag in TAGS.tags) {
+                tag.editing = false;
+            }
+        }
+
+        $scope.editedItem = null;
+
+        $scope.startEditing = function (tag) {
+            tag.editing = true;
+            $scope.editedItem = tag;
+        }
+
+        $scope.doneEditing = function (type, tag, newTagName) {
+            tag.editing = false;
+            $scope.editedItem = null;
+
+            if (type == 'tag') {
+                TAGS.editTagText(tag, newTagName);
+            } else {
+                USER_TAGS.editTagText(tag, newTagName)
+            }
+
         }
 
         // Set up initial user
