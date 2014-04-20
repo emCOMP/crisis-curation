@@ -34,7 +34,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             getUser($http, $modal, localStorageService);
         }
 
-        $scope.togglePause = function(colId) {
+        $scope.togglePause = function (colId) {
             if ($scope.PAUSED_COL.colId === colId) {
                 // already paused, unpause
                 $scope.unpauseColumn(colId);
@@ -42,7 +42,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 // pause it
                 $scope.pauseColumn(colId);
             }
-           
+
 
         }
 
@@ -51,7 +51,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
             $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
-            
+
             // Toggle icon
             var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
             pausePlayIcon.removeClass("fa-pause");
@@ -145,6 +145,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $http.post(WEBSERVER + '/deletecolumn', data);
         }
 
+        $scope.deleteLocalTag = function (type, tag) {
+            if (type == 'tag') {
+                delete $scope.displayedTags[tag._id.$oid];
+            } else {
+                delete $scope.displayedUserTags[tag._id.$oid];
+            }
+        }
+
         $scope.updateDisplayTags = function () {
             for (tagKey in $scope.TAGS.tags) {
                 if (tagKey in $scope.displayedTags) {
@@ -223,15 +231,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
             $scope.userList = userList;
 
-            $scope.deleteUser = function(user) {
+            $scope.deleteUser = function (user) {
                 // serverDeleteUser(user)
             }
 
-            $scope.addUser = function(user) {
+            $scope.addUser = function (user) {
                 // serverAddUser(user)
             }
 
-            $scope.getUserList = function(userListName) {
+            $scope.getUserList = function (userListName) {
                 //$scope.users = serverGetUserList(userListName);
                 // get user list from server
             }
@@ -240,7 +248,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 $modalInstance.dismiss('cancle');
             };
         };
-
 
 
         $scope.tagsIsCollapse = false;

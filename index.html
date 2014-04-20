@@ -93,7 +93,7 @@
                         </form>
                         <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
                                 >Search</a>
-                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag); deleteLocalTag('tag',tag)"><i
                                 class="fa fa-times"></i></a>
                         <!--</div>-->
                     </li>
@@ -142,7 +142,7 @@
                         <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
-                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag); deleteLocalTag('userList',tag)"><i
                                 class="fa fa-times"></i></a>
                     </li>
                 </ul>
