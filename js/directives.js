@@ -315,13 +315,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             link: function (scope, element, attrs) {
                 scope.colId = attrs["colId"];        // Inheriting scopes - independent for each col
                 element.on("click", function (e) {
-                    if (e.srcElement.localName == "div") {
-                        if (scope.$parent.PAUSED_COL.colId) {
-                            scope.unpauseColumn(scope.colId);
-                        } else {
-                            scope.pauseColumn(scope.colId);
-                        }
-                    } else if (e.srcElement.id == "TagTweetButton") {
+                    if (e.srcElement.id == "TagTweetButton") {
                         // if not paused, pause it!
                         if (!scope.$parent.PAUSED_COL.colId) {
                             scope.pauseColumn(scope.colId);
