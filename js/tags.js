@@ -57,6 +57,9 @@ var Tags = function (spec, $http) {
 
     // Save a tag to the database, and update front end's set of known tags.
     function saveTag(tagname, apply) {
+        if (!tagname) {
+            return;
+        }
         var newTagName = tagname;
         var colorHex = TAG.color;
         TAG.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
