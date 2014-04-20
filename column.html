@@ -8,50 +8,52 @@
 
         <!-- Column title, Search terms-->
         <h4 class="dropdown">{{CURRENT_COLS[colId].search.text || "All"}}
-
+          <!-- Play/Pause Button -->
+          <a><i class="fa fa-play pull-left play-pause-button" ng-click="togglePause(colId)"></i></a>
           <!-- Caret button: expands search filter menu -->
           <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
-
-          <!-- Collapsible search filter menu -->
-          <div ng-show="CURRENT_COLS[colId].showDropdown">
-              <div ng-class="showColForm">
-                <form role="form" class="search-form">
-                    <div class="form-group filter">
-                            Search By:
-                          <select ng-model="CURRENT_COLS[colId].search.searchType">
-                               <option value="text">Text</option>
-                               <option value="users">User</option>
-                               <option value="tags">Tags</option>
-                               <option value="user_tags">User Tags</option>
-                          </select>
-                          <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
-                          <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
-                          <ul ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
-                               <li ng-repeat="tag in TAGS.tags">
-                                    <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
-                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                                    {{tag.tag_name}}
-                               </li>
-                          </ul>
-                          <ul ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
-                                <li ng-repeat="tag in USER_TAGS.tags">
-                                    <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
-                                    <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                                    {{tag.tag_name}}
-                                </li>
-                          </ul>
-                     </div>
-                 <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
-                </button>
-                <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-trash-o"></i>Delete Column</button>
-              </form>
-            </div>
-          </div>
         </h4>
- </div>
+
+
+        <!-- Collapsible search filter menu -->
+        <div ng-show="CURRENT_COLS[colId].showDropdown">
+            <div ng-class="showColForm">
+              <form role="form" class="search-form">
+                  <div class="form-group filter">
+                          Search By:
+                        <select ng-model="CURRENT_COLS[colId].search.searchType">
+                             <option value="text">Text</option>
+                             <option value="users">User</option>
+                             <option value="tags">Tags</option>
+                             <option value="user_tags">User Tags</option>
+                        </select>
+                        <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
+                        <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
+                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
+                             <li ng-repeat="tag in TAGS.tags">
+                                  <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
+                                  <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                  {{tag.tag_name}}
+                             </li>
+                        </ul>
+                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
+                              <li ng-repeat="tag in USER_TAGS.tags">
+                                  <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
+                                  <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                  {{tag.tag_name}}
+                              </li>
+                        </ul>
+                   </div>
+               <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
+              </button>
+              <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-trash-o"></i>Delete Column</button>
+            </form>
+          </div>
+        </div>
+    </div>
 
     <!-- Tweet stream, check tweet.html -->
     <div class="tweet-stream" ng-style="style()" resize>
-        <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:colId:this" >{{tweet}}</tweet>
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:colId:this" >{{tweet}}</tweet>
     </div>
 </div>

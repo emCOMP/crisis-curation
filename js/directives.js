@@ -34,16 +34,40 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             getUser($http, $modal, localStorageService);
         }
 
+        $scope.togglePause = function(colId) {
+            console.log("here");
+            if ($scope.PAUSED_COL.colId === colId) {
+                // already paused, unpause
+                $scope.unpauseColumn(colId);
+            } else {
+                // pause it
+                $scope.pauseColumn(colId);
+            }
+           
+
+        }
 
         $scope.unpauseColumn = function (colId) {
             $scope.PAUSED_COL = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
-            $("column-stream[col-id=" + colId + "]").css("opacity", 1.0);
+            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
+            $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
+            
+            // Toggle icon
+            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
+            pausePlayIcon.removeClass("fa-pause");
+            pausePlayIcon.addClass("fa-play");
         }
 
         $scope.pauseColumn = function (colId) {
-            $("column-stream[col-id=" + colId + "]").css("opacity", "0.5");
+            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", "0.5");
+            $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
             $scope.PAUSED_COL = {'colId': colId, 'recentTweet': RECENT_ID, 'queued': 0};
+
+            // Toggle icon
+            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
+            pausePlayIcon.removeClass("fa-play");
+            pausePlayIcon.addClass("fa-pause");
         }
 
 
@@ -324,18 +348,16 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         return function (scope, element) {
             var w = $(window);
             scope.getWindowDimensions = function () {
-                return { 'h': w.height(), 'w': w.width() };
+                return { 'h': w.height() };
             };
             scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
                 scope.windowHeight = newValue.h;
-                scope.windowWidth = newValue.w;
 
                 scope.style = function () {
                     var windowHeight = $(window).height();
                     var headerHeight = $(".tweet-header").height();
                     return {
-                        'height': (windowHeight - headerHeight - 32) + 'px',
-                        'width': 320 + 'px'
+                        'height': (windowHeight - headerHeight - 32) + 'px'
                     };
                 };
 
