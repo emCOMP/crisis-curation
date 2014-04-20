@@ -177,9 +177,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 templateUrl: 'user-list-modal.html',
                 controller: ModalInstanceCtrl,
                 resolve: {
-                    userListName: function () {
+                    userList: function () {
+//                        use line below when implemented getUserList
+                        //return ModalInstanceCtrl.$scope.getUserList(userListName);
                         return userListName;
                     }
+
                 }
             });
 
@@ -190,17 +193,21 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 //            });
         };
 
-        var ModalInstanceCtrl = function ($scope, $modalInstance, userListName) {
+        var ModalInstanceCtrl = function ($scope, $modalInstance, userList) {
 
             $scope.users = ['user1', 'user2', 'user3'];
 
-            $scope.userListName = userListName;
+            $scope.userList = userList;
 
             $scope.deleteUser = function(user) {
                 // serverDeleteUser(user)
             }
 
-            $scope.getUserList = function() {
+            $scope.addUser = function(user) {
+                // serverAddUser(user)
+            }
+
+            $scope.getUserList = function(userListName) {
                 //$scope.users = serverGetUserList(userListName);
                 // get user list from server
             }

@@ -1,8 +1,10 @@
 <div class="modal-header">
-    <h3><i class="fa fa-stop" style="color:{{userListName.color}};"></i> {{ userListName.tag_name }}</h3>
+
+    <h3><i class="fa fa-stop" style="color:{{userList.color}};"></i> {{ userList.tag_name }}</h3>
 </div>
 <div class="modal-body">
 
+    <!--print user in the userlist-->
     <ul class="nav nav-pills nav-stacked dropdown-relative" id="modal-user-list">
         <li ng-repeat="user in users">
 
@@ -12,6 +14,17 @@
         </li>
     </ul>
 
+    <!--add user to the list-->
+    <!--addUser() need to be implemented in directives.js-->
+    <form ng-submit="addUser(user, userListName.tag_name)" role='form'>
+        <div class='form-group' >
+            <!--ng-model below need to be change-->
+            <input type='text' ng-model="user.name" class='form-control'
+                   id='new-user-name'
+                   placeholder='Enter user name'>
+            <button type='submit' class='btn btn-default'>Add</button>
+        </div>
+    </form>
 
 </div>
 <div class="modal-footer">

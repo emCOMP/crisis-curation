@@ -100,6 +100,13 @@ a {
 .modal-body .nav > li > a {
   display: inline-block;
 }
+.modal-body .form-control {
+  display: inline-block;
+  width: 70%;
+}
+.modal-body .form-group {
+  margin-top: 10px;
+}
 .nav-pills li a:hover {
   background-color: #f5f8fa;
 }
