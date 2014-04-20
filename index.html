@@ -77,7 +77,7 @@
 
                 <!--<div ng-app="editer">-->
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
-                    <li ng-init="addEditingAttr()" ng-repeat="tag in displayedTags" tag-id="{{tag._id.$oid}}">
+                    <li ng-repeat="tag in displayedTags" tag-id="{{tag._id.$oid}}">
                         <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
                             <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                             {{tag.tag_name}}
@@ -89,9 +89,7 @@
                                    ng-focus="tag.editing"
                                    id="editTagInputBox" type="text"
                                    class="form-control">
-                            <!--ng-data="{{editTagPopoverSetup(tag.tag_name)}}"-->
                         </form>
-                        <!--<div class="right">-->
                         <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
                                 >Search</a>
                         <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
@@ -105,7 +103,6 @@
 
 
         <!--User list-->
-
         <div class="user-list">
             <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
 
@@ -128,12 +125,18 @@
 
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
                     <li ng-repeat="tag in displayedUserTags" tag-id="{{tag._id.$oid}}">
-
-                        <a href="#">
+                        <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
                             <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                             {{tag.tag_name}}
                             <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
+
+                        <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing">
+                            <input ng-model="tag.tag_name" ng-blur="doneEditing('userList', tag)"
+                                   ng-focus="tag.editing"
+                                   id="editUserListInputBox" type="text"
+                                   class="form-control">
+                        </form>
 
                         <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>
                         <a class="modify-tag right-23" href="#"
@@ -150,10 +153,10 @@
             <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators (2)</p></a>
 
             <div ng-hide="CollabIsCollapse">
-            <ul class="nav nav-pills nav-stacked" id="collab-list">
-                <li><a>[name1] - [status]</a></li>
-                <li><a>[name2] - [status]</a></li>
-            </ul>
+                <ul class="nav nav-pills nav-stacked" id="collab-list">
+                    <li><a>[name1] - [status]</a></li>
+                    <li><a>[name2] - [status]</a></li>
+                </ul>
             </div>
         </div>
     </div>
