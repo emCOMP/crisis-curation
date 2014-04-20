@@ -56,7 +56,7 @@ var Tags = function (spec, $http) {
     }
 
     // Save a tag to the database, and update front end's set of known tags.
-    function saveTag(tagname) {
+    function saveTag(tagname, apply) {
         var newTagName = tagname;
         var colorHex = TAG.color;
         TAG.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
@@ -75,9 +75,13 @@ var Tags = function (spec, $http) {
             } else {
                 tag._id.$oid = response.id;
                 TAGS[response.id] = tag;
+                if(apply) {
+                    applyTag(tag, apply.tweet, true, apply.tweet, apply.CURRENT_COLS);
+                } 
             }
             delete(TAGS[newTagName]);
         });
+        return tag;
 //        hidepop();
     }
 
