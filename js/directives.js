@@ -35,7 +35,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.togglePause = function(colId) {
-            console.log("here");
             if ($scope.PAUSED_COL.colId === colId) {
                 // already paused, unpause
                 $scope.unpauseColumn(colId);
@@ -119,6 +118,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Create a column that filters by the given tag
         $scope.newSearchByTagColumn = function (tag, searchType) {
             var search = searchTemplate();
+            search.text = "" + tag.tag_name;
             search.searchType = searchType;
             if (searchType == 'tags') {
                 search.tags[tag._id.$oid] = true;
@@ -489,7 +489,6 @@ function getUsersColumns($http, $scope, $location) {
     // TODO initialize $scope.colNum to max. col id + 1
     if ($location.search()) {
         // Use provided URL template
-        console.log($location.search());
         var object = $location.search();
         angular.forEach(object, function (value, key) {
             if (key.indexOf("column") >= 0)
@@ -499,7 +498,6 @@ function getUsersColumns($http, $scope, $location) {
         // Pull from DB
         $http.get(WEBSERVER + '/columns/' + USER).success(function (response) {
             for (var i = 0; i < response.columns.length; i++) {
-                console.log("response.columns[i] :", response.columns[i]);
                 $scope.createColumn(response.columns[i].colId);
             }
         });

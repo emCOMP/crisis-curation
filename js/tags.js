@@ -87,7 +87,7 @@ var Tags = function (spec, $http) {
         $http.post(WEBSERVER + URL.deleteTag, {"created_by": USER, "tag_id": tag._id.$oid, });
         // TODO verify deletion success before deleting from view
         delete(TAGS[tag._id.$oid]);
-        hidepop();
+        //hidepop();
     }
 
     // Adds or removes a tag instance
