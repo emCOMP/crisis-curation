@@ -212,6 +212,9 @@ a {
 .tweet-header .fa-caret-down {
   margin: 2px 5px 0 0;
 }
+.newColumn {
+  border: 3px solid lightblue;
+}
 .pausedColumn {
   border: 3px solid lightgray;
 }
