@@ -169,6 +169,47 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         }
 
+
+
+        $scope.openUserListModal = function (userListName) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'user-list-modal.html',
+                controller: ModalInstanceCtrl,
+                resolve: {
+                    userListName: function () {
+                        return userListName;
+                    }
+                }
+            });
+
+//            modalInstance.result.then(function (selectedItem) {
+//                $scope.selected = selectedItem;
+//            }, function () {
+//                $log.info('Modal dismissed at: ' + new Date());
+//            });
+        };
+
+        var ModalInstanceCtrl = function ($scope, $modalInstance, userListName) {
+
+            $scope.users = ['user1', 'user2', 'user3'];
+
+            $scope.userListName = userListName;
+
+            $scope.deleteUser = function(user) {
+                // serverDeleteUser(user)
+            }
+
+            $scope.getUserList = function() {
+                //$scope.users = serverGetUserList(userListName);
+                // get user list from server
+            }
+
+            $scope.close = function () {
+                $modalInstance.dismiss('cancle');
+            };
+        };
+
         // Set up initial user
         getUser($http, $modal, localStorageService);
         getUsersColumns($http, $scope, $location);
@@ -185,10 +226,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         }, 1 * 1000);
 
-        // Set up new tag popover, tag edit popovers
-        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
-        setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
-        setUpTagEditPopovers();
+//        // Set up new tag popover, tag edit popovers
+//        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
+//        setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
+//        setUpTagEditPopovers();
     })
 
 

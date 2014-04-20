@@ -60,6 +60,9 @@ a {
 .left-menu li:hover > a.right-23 {
   right: 23px;
 }
+.left-menu li:hover > a.right-80 {
+  right: 80px;
+}
 .right {
   position: absolute;
   right: 5px;

@@ -128,8 +128,8 @@
                         <span class="badge right">{{ tag.num_instances }}</span>
                     </a>
 
-                    <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')"
-                            >Search</a>
+                    <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag.tag_name)">See List</a>
+                    <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
                     <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
                 </li>
             </ul>
