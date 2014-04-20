@@ -69,10 +69,18 @@ a {
 .left-menu a:hover {
   text-decoration: none;
 }
-.right {
+.left-menu .right {
   position: absolute;
   right: 5px;
   top: 11px;
+}
+.modal-dialog {
+  width: 300px;
+}
+.right {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 .nav-stacked > li + li {
   margin-top: 0;
@@ -88,6 +96,9 @@ a {
 .nav-pills li a i,
 .nav-pills li a:hover i {
   margin-top: 3px;
+}
+.modal-body .nav > li > a {
+  display: inline-block;
 }
 .nav-pills li a:hover {
   background-color: #f5f8fa;

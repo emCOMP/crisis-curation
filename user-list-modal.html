@@ -1,34 +1,19 @@
 <div class="modal-header">
-    <h3>{{ userListName }}</h3>
+    <h3><i class="fa fa-stop" style="color:{{userListName.color}};"></i> {{ userListName.tag_name }}</h3>
 </div>
 <div class="modal-body">
-    <ul>
+
+    <ul class="nav nav-pills nav-stacked dropdown-relative" id="modal-user-list">
         <li ng-repeat="user in users">
-            {{ user }} <a ng-click="deleteUser(user)">X</a>
+
+            <a href="#">{{ user }}</a>
+            <a class="right" href="#" ng-click="deleteUser(user)"><i class="fa fa-times"></i></a>
+            <!-- function deleteUser(user) need to be implemented in directives.js-->
         </li>
     </ul>
-
-
-
-    <!--<ul class="nav nav-pills nav-stacked dropdown-relative" id="modal-user-list">-->
-        <!--<li ng-repeat="user in users">-->
-
-            <!--<a href="#">-->
-                <!--<i class="fa fa-stop" style="color:{{tag.color}};"></i>-->
-                <!--{{tag.tag_name}}-->
-                <!--<span class="badge right">{{ tag.num_instances }}</span>-->
-            <!--</a>-->
-
-            <!--<a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag.tag_name)">See List</a>-->
-            <!--<a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>-->
-            <!--<a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>-->
-        <!--</li>-->
-    <!--</ul>-->
-
 
 
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="close()">Close</button>
-    <!--<button class="btn btn-warning" ng-click="cancel()">Cancel</button>-->
 </div>

@@ -6,7 +6,8 @@
 
 // Variables
 
-@blue: #55acee; // twitter blue
+@blue: #55acee;
+// twitter blue
 @blue-1: #1f98c7;
 @light-blue: #edf0f2;
 @dark-blue: #246fbb;
@@ -112,12 +113,23 @@ a {
   a:hover {
     text-decoration: none;
   }
+  .right {
+    position: absolute;
+    right: 5px;
+    top: 11px;
+  }
+
 }
+
+.modal-dialog {
+  width: 300px;
+}
+
 
 .right {
   position: absolute;
-  right: 5px;
-  top: 11px;
+  right: 0px;
+  top: 0px;
 }
 
 .nav-stacked > li + li {
@@ -134,6 +146,10 @@ a {
   i {
     margin-top: 3px;
   }
+}
+
+.modal-body .nav > li > a {
+  display: inline-block;
 }
 
 .nav-pills li a:hover {

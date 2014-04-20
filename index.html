@@ -108,7 +108,7 @@
 
         <div class="user-list">
             <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
-            
+
             <!--Form to add user lists-->
             <div ng-hide="UserlistIsCollapse">
                 <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''"
@@ -135,7 +135,7 @@
                             <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
 
-                        <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag.tag_name)">See List</a>
+                        <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
                         <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
