@@ -269,6 +269,10 @@ input[type="search"]:hover {
 #TagUserButton {
   margin-left: 0;
 }
+.tweet-tags .fa-circle,
+.user-tags .fa-stop {
+  margin-left: 3px;
+}
 .dropdown .dropdown-menu {
   padding: 5px 0;
 }
