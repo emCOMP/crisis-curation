@@ -211,10 +211,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
         $scope.tagsIsCollapse = false;
         $scope.UserlistIsCollapse = false;
-        $scope.CollaIsCollapse = false;
+        $scope.CollabIsCollapse = false;
 
         $scope.collapseTag = function () {
             $scope.tagsIsCollapse = !$scope.tagsIsCollapse;
+        }
+
+        $scope.collapseUserlist = function () {
+            $scope.UserlistIsCollapse = !$scope.UserlistIsCollapse;
+        }
+
+        $scope.collapseCollab = function () {
+            $scope.CollabIsCollapse = !$scope.CollabIsCollapse;
         }
 
         // Set up initial user

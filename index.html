@@ -60,8 +60,9 @@
         <div class="tag-list">
             <a href="#" ng-click="collapseTag()"><p class="left-menu-title">Tags</p></a>
 
+
+            <!--Form for add tags-->
             <div ng-hide="tagsIsCollapse">
-                <!--Form for add tags-->
                 <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
                     <div class='form-group'>
                         <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
@@ -106,45 +107,54 @@
         <!--User list-->
 
         <div class="user-list">
-            <p class="left-menu-title">User Lists</p>
-
-
+            <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
+            
             <!--Form to add user lists-->
-            <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''" role='form'>
-                <div class='form-group'>
-                    <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2" type="text"
-                       ng-model="USER_TAGS.tag.color"></i>
+            <div ng-hide="UserlistIsCollapse">
+                <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''"
+                      role='form'>
+                    <div class='form-group'>
+                        <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2"
+                           type="text"
+                           ng-model="USER_TAGS.tag.color"></i>
 
-                    <label class='sr-only' for='new-userlist-name'>User List Name</label>
-                    <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control' id='new-userlist-name'
-                           placeholder='Enter list name'>
-                    <button type='submit' class='btn btn-default'>Add</button>
-                </div>
-            </form>
+                        <label class='sr-only' for='new-userlist-name'>User List Name</label>
+                        <input type='text' ng-model="USER_TAGS.tag.newTagName" class='form-control'
+                               id='new-userlist-name'
+                               placeholder='Enter list name'>
+                        <button type='submit' class='btn btn-default'>Add</button>
+                    </div>
+                </form>
 
-            <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
-                <li ng-repeat="tag in displayedUserTags" tag-id="{{tag._id.$oid}}">
+                <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
+                    <li ng-repeat="tag in displayedUserTags" tag-id="{{tag._id.$oid}}">
 
-                    <a href="#">
-                        <i class="fa fa-stop" style="color:{{tag.color}};"></i>
-                        {{tag.tag_name}}
-                        <span class="badge right">{{ tag.num_instances }}</span>
-                    </a>
+                        <a href="#">
+                            <i class="fa fa-stop" style="color:{{tag.color}};"></i>
+                            {{tag.tag_name}}
+                            <span class="badge right">{{ tag.num_instances }}</span>
+                        </a>
 
-                    <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag.tag_name)">See List</a>
-                    <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
-                    <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i class="fa fa-times"></i></a>
-                </li>
-            </ul>
+                        <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag.tag_name)">See List</a>
+                        <a class="modify-tag right-23" href="#"
+                           ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
+                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
+                                class="fa fa-times"></i></a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Collaborator List -->
         <div class="collab">
-            <p class="left-menu-title">Collaborators (2)</p>
+            <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators (2)</p></a>
+
+            <div ng-hide="CollabIsCollapse">
             <ul class="nav nav-pills nav-stacked" id="collab-list">
                 <li><a>[name1] - [status]</a></li>
                 <li><a>[name2] - [status]</a></li>
             </ul>
+            </div>
         </div>
     </div>
     <!--end of scrollable div-->
@@ -153,7 +163,8 @@
 
 <!-- Content: Tweet stream columns -->
 <div class="content">
-    <column-stream colname="all" col-id=0></column-stream> <!-- Check column.html and tweet.html -->
+    <column-stream colname="all" col-id=0></column-stream>
+    <!-- Check column.html and tweet.html -->
 </div>
 
 <!-- End of: Tweet stream columns -->

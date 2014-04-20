@@ -78,7 +78,7 @@ var Tags = function (spec, $http) {
             }
             delete(TAGS[newTagName]);
         });
-        hidepop();
+//        hidepop();
     }
 
     // Deletes a tag.  This will remove all the tag instances for this tag.

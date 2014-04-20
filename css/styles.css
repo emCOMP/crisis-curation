@@ -63,6 +63,9 @@ a {
 .left-menu li:hover > a.right-80 {
   right: 80px;
 }
+.left-menu a:hover {
+  text-decoration: none;
+}
 .right {
   position: absolute;
   right: 5px;
