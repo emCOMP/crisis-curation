@@ -56,46 +56,47 @@
 
         <!--Tags-->
         <div class="tag-list">
-            <p class="left-menu-title">Tags</p>
+            <a href="#" ng-click="collapseTag()"><p class="left-menu-title">Tags</p></a>
 
+            <div ng-hide="tagsIsCollapse">
+                <!--Form for add tags-->
+                <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
+                    <div class='form-group'>
+                        <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
+                           ng-model="TAGS.tag.color"></i>
 
-            <!--Form for add tags-->
-            <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
-                <div class='form-group'>
-                    <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
-                       ng-model="TAGS.tag.color"></i>
+                        <label class='sr-only' for='new-tag-name'>Tag Name</label>
+                        <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='new-tag-name'
+                               placeholder='Enter tag name'>
+                        <button type='submit' class='btn btn-default'>Add</button>
+                    </div>
+                </form>
 
-                    <label class='sr-only' for='new-tag-name'>Tag Name</label>
-                    <input type='text' ng-model="TAGS.tag.newTagName" class='form-control' id='new-tag-name'
-                           placeholder='Enter tag name'>
-                    <button type='submit' class='btn btn-default'>Add</button>
-                </div>
-            </form>
+                <!--<div ng-app="editer">-->
+                <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
+                    <li ng-init="addEditingAttr()" ng-repeat="tag in displayedTags" tag-id="{{tag._id.$oid}}">
+                        <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
+                            <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                            {{tag.tag_name}}
+                            <span class="badge right">{{ tag.num_instances }}</span>
+                        </a>
 
-            <!--<div ng-app="editer">-->
-            <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
-                <li ng-init="addEditingAttr()" ng-repeat="tag in displayedTags" tag-id="{{tag._id.$oid}}">
-                    <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
-                        <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                        {{tag.tag_name}}
-                        <span class="badge right">{{ tag.num_instances }}</span>
-                    </a>
-
-                    <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing">
-                        <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
-                               ng-focus="tag.editing"
-                               id="editTagInputBox" type="text"
-                               class="form-control">
-                        <!--ng-data="{{editTagPopoverSetup(tag.tag_name)}}"-->
-                    </form>
-                    <!--<div class="right">-->
-                    <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
-                            >Search</a>
-                    <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
-                            class="fa fa-times"></i></a>
-                    <!--</div>-->
-                </li>
-            </ul>
+                        <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing">
+                            <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
+                                   ng-focus="tag.editing"
+                                   id="editTagInputBox" type="text"
+                                   class="form-control">
+                            <!--ng-data="{{editTagPopoverSetup(tag.tag_name)}}"-->
+                        </form>
+                        <!--<div class="right">-->
+                        <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
+                                >Search</a>
+                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
+                                class="fa fa-times"></i></a>
+                        <!--</div>-->
+                    </li>
+                </ul>
+            </div>
             <!--</div>-->
         </div>
 

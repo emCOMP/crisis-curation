@@ -209,6 +209,13 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 $modalInstance.dismiss('cancle');
             };
         };
+        $scope.tagsIsCollapse = false;
+        $scope.UserlistIsCollapse = false;
+        $scope.CollaIsCollapse = false;
+
+        $scope.collapseTag = function () {
+            $scope.tagsIsCollapse = !$scope.tagsIsCollapse;
+        }
 
         // Set up initial user
         getUser($http, $modal, localStorageService);
