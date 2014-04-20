@@ -28,13 +28,8 @@
             <new-tag-popup ng-show="showCreateNewTag"></new-tag-popup>
         </div>
 
-        <!-- List of tags -->
-        <div class="tweet-tags pull-right">
-            <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle tweet-tag" style="color: {{TAGS.tags[tag].color}};"></i>
-        </div>
-
         <!-- Tag user list button -->
+        <br/>
         <a href="#" id="TagUserButton" type="button" class="btn btn-default btn-xs" ng-click="showUserTags =  !showUserTags">Add user to list <i class="fa fa-caret-down"></i></a>
         <div ng-show="showUserTags">
             <div ng-repeat="tag in USER_TAGS.tags" >
@@ -46,6 +41,13 @@
             <new-user-tag-popup ng-show="showCreateNewUserTag"></new-user-tag-popup>
         </div>
 
+        <!-- List of tags -->
+        <div class="tweet-tags pull-right">
+            <!-- ng-show: only show dot if this tag exists -->
+            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle tweet-tag" style="color: {{TAGS.tags[tag].color}};"></i>
+        </div>
+
+        <br />
         <!-- List of user list tags-->
         <div class="user-tags pull-right">
             <!-- ng-show: only show dot if this tag exists -->

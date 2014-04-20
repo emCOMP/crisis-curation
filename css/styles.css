@@ -13,6 +13,9 @@ hr {
 a {
   cursor: pointer;
 }
+#TagUserButton {
+  margin-top: 3px;
+}
 .left-menu {
   border: 1px solid #e1e8ed;
   border-radius: 5px 5px;
