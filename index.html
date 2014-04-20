@@ -10,8 +10,6 @@
     <title>{{currentCrisis}}</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <!--     <link href="css/jquery.dropdown.css" rel="stylesheet"> this breaks dropdown for search refinement menu-->
-
     <link href="css/popover.css" rel="stylesheet">
     <link href="css/colorpicker.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/layout.css">
@@ -35,14 +33,18 @@
 </head>
 
 <body ng-controller="Ctrl">
+
+<!-- Left menu bar -->
 <div class="left-menu">
     <div class="fix-banner">
+        <!-- App Name -->
         <h4>{{currentCrisis}}</h4>
 
         <div id="user-info">
             <p>Welcome {{getUsername()}}!<a ng-click="logout()" class="pull-right logout">Logout</a></p>
         </div>
 
+        <!-- Add Column button-->
         <div class="add-column-area">
             <form class="add-column">
                 <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()">Add Column
@@ -136,7 +138,7 @@
             </ul>
         </div>
 
-
+        <!-- Collaborator List -->
         <div class="collab">
             <p class="left-menu-title">Collaborators (2)</p>
             <ul class="nav nav-pills nav-stacked" id="collab-list">
@@ -147,10 +149,14 @@
     </div>
     <!--end of scrollable div-->
 </div>
-<!--end of left column-->
+<!-- End of: Left menu bar-->
+
+<!-- Content: Tweet stream columns -->
 <div class="content">
-    <column-stream colname="all" col-id=0></column-stream>
+    <column-stream colname="all" col-id=0></column-stream> <!-- Check column.html and tweet.html -->
 </div>
+
+<!-- End of: Tweet stream columns -->
 </body>
 
 </html>

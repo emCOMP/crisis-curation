@@ -73,3 +73,7 @@ column-stream {
   flex: none;
   width: 320px;
 }
+/*
+If you find any browser-compatibility issues with using Flexbox,
+try using the code. You might have to modify it a little bit.
+*/
