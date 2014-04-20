@@ -204,17 +204,13 @@ var Tags = function (spec, $http) {
         }
     }
 
-    function editTagText(tag, newTagName) {
-        if (newTagName) {
-            TAGS[tag._id.$oid].tag_name = newTagName;
-            $http.post(WEBSERVER + URL.changeText, {"tag_id": tag._id.$oid, "text": newTagName });
-        }
-        hidepop();
+    function editTagText(tag) {
+            TAGS[tag._id.$oid].tag_name = tag.tag_name;
+            $http.post(WEBSERVER + URL.changeText, {"tag_id": tag._id.$oid, "text": tag.tag_name });
     }
 
     function editTagColor(tag, color) {
         $http.post(WEBSERVER + URL.changeColor, {"tag_id": tag._id.$oid, "color": color});
-        hidepop();
     }
 
     function setLastUpdate(time) {

@@ -13,7 +13,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued': 0};
 
         $scope.TAGS = TweetTags($http);
+        $scope.displayedTags = {};
         $scope.USER_TAGS = UserTags($http);
+        $scope.displayedUserTags = {};
         $scope.tag = {"newTagName": "", "color": '#' + Math.floor(Math.random() * 16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
@@ -119,10 +121,29 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $http.post(WEBSERVER + '/deletecolumn', data);
         }
 
-        $scope.addEditingAttr = function () {
-            for (tag in TAGS.tags) {
-                tag.editing = false;
+        $scope.updateDisplayTags = function () {
+            for (tagKey in $scope.TAGS.tags) {
+                if (tagKey in $scope.displayedTags) {
+                    if (!$scope.displayedTags[tagKey].editing) {
+                        $scope.displayedTags[tagKey] = $scope.TAGS.tags[tagKey];
+                    }
+                } else {
+                    $scope.displayedTags[tagKey] = $scope.TAGS.tags[tagKey];
+                    $scope.displayedTags[tagKey].editing = false;
+                }
             }
+
+            for (tagKey in $scope.USER_TAGS.tags) {
+                if (tagKey in $scope.displayedUserTags) {
+                    if (!$scope.displayedUserTags[tagKey].editing) {
+                        $scope.displayedUserTags[tagKey] = $scope.USER_TAGS.tags[tagKey];
+                    }
+                } else {
+                    $scope.displayedUserTags[tagKey] = $scope.USER_TAGS.tags[tagKey];
+                    $scope.displayedUserTags[tagKey].editing = false;
+                }
+            }
+
         }
 
         $scope.editedItem = null;
@@ -132,14 +153,18 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.editedItem = tag;
         }
 
-        $scope.doneEditing = function (type, tag, newTagName) {
+        $scope.doneEditing = function (type, tag) {
             tag.editing = false;
             $scope.editedItem = null;
 
+
             if (type == 'tag') {
-                TAGS.editTagText(tag, newTagName);
+                if (tag.tag_name != "" && tag.tag_name != null) {
+                    $scope.TAGS.editTagText(tag);
+//                    $scope.displayedTags[tag]['tag_name'] = tag.tag_name;
+                }
             } else {
-                USER_TAGS.editTagText(tag, newTagName)
+                $scope.USER_TAGS.editTagText(tag)
             }
 
         }
@@ -156,6 +181,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.USER_TAGS.updateTags($http);
             $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             getTweets($http, $scope);
+            $scope.updateDisplayTags();
 
         }, 1 * 1000);
 
