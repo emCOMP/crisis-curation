@@ -170,8 +170,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
 
-
-        $scope.openUserListModal = function (userListName) {
+//Modal function call
+        re = function (userListName) {
 
             var modalInstance = $modal.open({
                 templateUrl: 'user-list-modal.html',
@@ -192,7 +192,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 //                $log.info('Modal dismissed at: ' + new Date());
 //            });
         };
-
+//Modal controller
         var ModalInstanceCtrl = function ($scope, $modalInstance, userList) {
 
             $scope.users = ['user1', 'user2', 'user3'];
@@ -216,6 +216,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 $modalInstance.dismiss('cancle');
             };
         };
+
+
+
         $scope.tagsIsCollapse = false;
         $scope.UserlistIsCollapse = false;
         $scope.CollabIsCollapse = false;
