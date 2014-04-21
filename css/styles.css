@@ -312,3 +312,7 @@ a {
   background-color: #eee;
   color: #000000;
 }
+.tag-list .btn,
+.user-list .btn {
+  padding: 6px 10px;
+}
