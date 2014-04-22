@@ -46,6 +46,13 @@ a {
 .left-menu li > a.modify-tag {
   display: none;
 }
+.left-menu form.edit-tag {
+  display: inline;
+  width: 100px;
+}
+.left-menu form.edit-tag .form-control {
+  width: 50%;
+}
 .left-menu li:hover > a {
   display: inline-block;
 }
@@ -311,4 +318,8 @@ a {
 .dropdown .dropdown-menu label:hover {
   background-color: #eee;
   color: #000000;
+}
+.tag-list .btn,
+.user-list .btn {
+  padding: 6px 10px;
 }

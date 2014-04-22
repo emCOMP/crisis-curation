@@ -13,13 +13,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued': 0};
 
         $scope.TAGS = TweetTags($http);
-        $scope.displayedTags = {};
         $scope.USER_TAGS = UserTags($http);
-        $scope.displayedUserTags = {};
         $scope.tag = {"newTagName": "", "color": '#' + Math.floor(Math.random() * 16777215).toString(16)};
 
         $scope.editTagPopOverOpen = false;
         $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	getClients($http, $scope);
 
 
         ////////////////////////
@@ -167,31 +166,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
         }
 
-        $scope.updateDisplayTags = function () {
-            for (tagKey in $scope.TAGS.tags) {
-                if (tagKey in $scope.displayedTags) {
-                    if (!$scope.displayedTags[tagKey].editing) {
-                        $scope.displayedTags[tagKey] = $scope.TAGS.tags[tagKey];
-                    }
-                } else {
-                    $scope.displayedTags[tagKey] = $scope.TAGS.tags[tagKey];
-                    $scope.displayedTags[tagKey].editing = false;
-                }
-            }
-
-            for (tagKey in $scope.USER_TAGS.tags) {
-                if (tagKey in $scope.displayedUserTags) {
-                    if (!$scope.displayedUserTags[tagKey].editing) {
-                        $scope.displayedUserTags[tagKey] = $scope.USER_TAGS.tags[tagKey];
-                    }
-                } else {
-                    $scope.displayedUserTags[tagKey] = $scope.USER_TAGS.tags[tagKey];
-                    $scope.displayedUserTags[tagKey].editing = false;
-                }
-            }
-
-        }
-
         $scope.editedItem = null;
 
         $scope.startEditing = function (tag) {
@@ -210,7 +184,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 //                    $scope.displayedTags[tag]['tag_name'] = tag.tag_name;
                 }
             } else {
-                $scope.USER_TAGS.editTagText(tag)
+                $scope.USER_TAGS.editTagText(tag);
             }
 
         }
@@ -287,12 +261,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         // Start timer to constantly pull from DB
         $interval(function () {
-            $scope.TAGS.updateTags($http);
+            $scope.TAGS.updateTags($scope.editedItem);
             $scope.TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
-            $scope.USER_TAGS.updateTags($http);
+            $scope.USER_TAGS.updateTags($scope.editedItem);
             $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             getTweets($http, $scope);
-            $scope.updateDisplayTags();
 
         }, 1 * 1000);
 
@@ -451,6 +424,29 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
         };
     })
+
+
+	//Credit for ngBlur and ngFocus to https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
+	.directive('ngBlur', function() {
+	  return function( scope, elem, attrs ) {
+		elem.bind('blur', function() {
+		  scope.$apply(attrs.ngBlur);
+		});
+	  };
+	})
+
+	.directive('ngFocus', function( $timeout ) {
+	  return function( scope, elem, attrs ) {
+		scope.$watch(attrs.ngFocus, function( newval ) {
+		  if ( newval ) {
+		    $timeout(function() {
+		      elem[0].focus();
+		    }, 0, false);
+		  }
+		});
+	  };
+	})
+
 
     ////////////////////////////////////////////
     // Filters

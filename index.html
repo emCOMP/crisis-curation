@@ -78,22 +78,23 @@
 
                 <!--<div ng-app="editer">-->
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
-                    <li ng-repeat="tag in displayedTags" tag-id="{{tag._id.$oid}}">
-                        <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
+                    <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+                        <a href="#" ng-dblclick="startEditing(tag);">
                             <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                            {{tag.tag_name}}
+                            <span ng-hide="tag.editing">{{tag.tag_name}}</span>
+		                    <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing" class="edit-tag">
+		                        <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
+		                               ng-focus="tag == editedItem"
+		                               id="editTagInputBox" type="text"
+		                               class="form-control">
+		                    </form>
                             <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
 
-                        <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing">
-                            <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
-                                   ng-focus="tag.editing"
-                                   id="editTagInputBox" type="text"
-                                   class="form-control">
-                        </form>
+
                         <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
                                 >Search</a>
-                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag); deleteLocalTag('tag',tag)"><i
+                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
                                 class="fa fa-times"></i></a>
                         <!--</div>-->
                     </li>
@@ -125,24 +126,24 @@
                 </form>
 
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
-                    <li ng-repeat="tag in displayedUserTags" tag-id="{{tag._id.$oid}}">
-                        <a href="#" ng-dblclick="startEditing(tag);" ng-hide="tag.editing">
+                    <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
+                        <a href="#" ng-dblclick="startEditing(tag);">
                             <i class="fa fa-stop" style="color:{{tag.color}};"></i>
-                            {{tag.tag_name}}
-                            <span class="badge right">{{ tag.num_instances }}</span>
+                            <span ng-hide="tag.editing">{{tag.tag_name}}</span>
+		                    <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing" class="edit-tag">
+		                        <input ng-model="tag.tag_name" ng-blur="doneEditing('userList', tag)"
+		                               ng-focus="tag == editedItem"
+		                               id="editUserListInputBox" type="text"
+		                               class="form-control">
+		                    </form>
                         </a>
 
-                        <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing">
-                            <input ng-model="tag.tag_name" ng-blur="doneEditing('userList', tag)"
-                                   ng-focus="tag.editing"
-                                   id="editUserListInputBox" type="text"
-                                   class="form-control">
-                        </form>
-
-                        <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>
+                        <!--<a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>-->
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
-                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag); deleteLocalTag('userList',tag)"  ><i
+
+                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"  ><i
+                            <!--; deleteLocalTag('userList',tag)-->
                                 class="fa fa-times"></i></a>
                     </li>
                 </ul>

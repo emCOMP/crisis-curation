@@ -8,7 +8,7 @@
  * Representation:
  * TAGS is an object mapping tagIDs to tag objects that contain info about that tag
  * TAGS = { tagId1: { tag_name: "Foo", "color": "#FFF", ...},
- tagId2: { tag_name: "Bar", "color": "#000", ...}}
+ * tagId2: { tag_name: "Bar", "color": "#000", ...}}
  */
 
 var Tags = function (spec, $http) {
@@ -22,7 +22,7 @@ var Tags = function (spec, $http) {
     var tagInstanceRequestData = spec.tagInstanceRequestData;
 
     // Update our tag list to be current with database
-    function updateTags() {
+    function updateTags(editedItem) {
         $http.get(WEBSERVER + URL.getTags).success(function (response) {
             if (response.tags == null) {
                 console.error("Getting tags unsuccessful");
@@ -30,8 +30,20 @@ var Tags = function (spec, $http) {
                 responseTagIds = [];
                 for (var i in response.tags) {
                     var tag = response.tags[i];
-                    TAGS[tag._id.$oid] = tag;
-                    responseTagIds.push(tag._id.$oid);
+	          	    if(!TAGS[tag._id.$oid]) {
+		               TAGS[tag._id.$oid] = tag;
+				    } else {
+						// update fields
+						var t = TAGS[tag._id.$oid];
+						t.color = tag.color;
+						t.num_instances = tag.num_instances;
+						t.created_by = tag.created_by;
+						// do not update the tag name if the user is editing it
+					    if(!editedItem) {
+							t.tag_name = tag.tag_name;
+						}
+					}
+				    responseTagIds.push(tag._id.$oid);
                 }
                 // remove any tags from view that no longer exist
                 for (tagId in TAGS) {
@@ -137,6 +149,9 @@ var Tags = function (spec, $http) {
                 if (tweet[TAG_ARRAY_NAME] == undefined) {
                     tweet[TAG_ARRAY_NAME] = [];
                 }
+                if (tweet[TAG_ARRAY_NAME + "_authors"] == undefined) {
+                    tweet[TAG_ARRAY_NAME + "_authors"] = {};
+                }
 
                 var index = tweet[TAG_ARRAY_NAME].indexOf(tag_instance.tag_id);
                 // Check if tag is active or not.  Add or remove accordingly.
@@ -144,6 +159,7 @@ var Tags = function (spec, $http) {
                     // Try to add tag.
                     if (index < 0) {
                         tweet[TAG_ARRAY_NAME].push(tag_instance.tag_id);
+
                     }
                 } else {
                     // Try to remove tag.
@@ -151,6 +167,7 @@ var Tags = function (spec, $http) {
                         tweet[TAG_ARRAY_NAME].splice(index, 1);
                     }
                 }
+                tweet[TAG_ARRAY_NAME + "_authors"][tag_instance.tag_id] = tag_instance.created_by;
             }
             // force update of the columns for the altered tweets, since
             // updating their tags may change which colums they belong to
@@ -372,28 +389,6 @@ function setUpNewTagPopover($compile, $scope, buttonID, popupType) {
         $(".popover").remove();
     };
 }
-
-var editer = angular.module('editer', []);
-//Credit for ngBlur and ngFocus to https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
-editer.directive('ngBlur', function () {
-    return function (scope, elem, attrs) {
-        elem.bind('blur', function () {
-            scope.$apply(attrs.ngBlur);
-        });
-    };
-});
-
-editer.directive('ngFocus', function ($timeout) {
-    return function (scope, elem, attrs) {
-        scope.$watch(attrs.ngFocus, function (newval) {
-            if (newval) {
-                $timeout(function () {
-                    elem[0].focus();
-                }, 0, false);
-            }
-        });
-    };
-});
 
 
 
