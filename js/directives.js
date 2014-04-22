@@ -18,6 +18,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.editTagPopOverOpen = false;
         $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
+	getClients($http, $scope);
 
 
         ////////////////////////

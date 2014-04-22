@@ -6,7 +6,9 @@
  * Representation: $scope.tweets holds the current tweets being displayed
  *                 Each tweet object in this list holds a copy of its tags & user tags, like so:
  *
- * $scope.tweets = [ { tags: [tagId1, tagId2..], user_tags: [tagId1, tagId2..], colname: [] } , ... ]
+ * $scope.tweets = [ { tags: [tagId1, tagId2..], user_tags: [tagId1, tagId2..], colname: [], 
+		       tags_authors :{ tagId1: authorId, tagId2: authorId}, user_tags_authors: {} }, ... ]
+ * 
  */
 
 RECENT_ID = null;

@@ -47,3 +47,19 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 		$modalInstance.close(userName);
 	};
 };
+
+// Add a list of clients 
+// $scope.clients = { clientID: { Name: "clientName", _id: {} }}
+function getClients($http, $scope) {
+	$http.get(WEBSERVER + '/clients').success(function(response) {
+		if(!response.clients) { return; }
+
+		var clients = {}
+		for(var i in response.clients) {
+			var client = response.clients[i];
+			clients[client._id.$oid] = client;
+		}
+		$scope.clients = clients;
+	});
+
+}

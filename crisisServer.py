@@ -240,7 +240,7 @@ def clients():
 
 class TagsModel:
 	def getTags(self):
-		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tweets': 1}))
+		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, '_id': 1,'created_by': 1}))
 		return '{"tags":' + dumps(all_tags) + '}'
 
 	def newTag(self):
@@ -394,7 +394,7 @@ class TweetTagsModel(TagsModel):
 		return { '_id' : objectid.ObjectId(tagged_item_id) }
 
 	def getTags(self):
-		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, 'css_class': 1, '_id': 1, 'tagged_item_ids': 1}))
+		all_tags = list(self.tags.find({'active': True}, {'tag_name': 1, 'color': 1, 'tagged_item_ids': 1, 'created_by': 1}))
 		for tag in all_tags:
 		    tag["num_instances"] = len(tag["tagged_item_ids"])
 		    del tag["tagged_item_ids"] # no need to send embedded tweets

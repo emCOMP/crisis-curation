@@ -21,7 +21,7 @@
         <div ng-show="showTags">
             <div ng-repeat="tag in TAGS.tags" >
                 <label>
-                    <input type="checkbox"f ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
+                    <input type="checkbox"f ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0" ng-click="TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showTags = !$parent.showTags"> <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}} 
                 </label>
             </div>
             <a href="#" ng-click="showCreateNewTag=(!showCreateNewTag)">Create new tag</a>
@@ -44,14 +44,14 @@
         <!-- List of tags -->
         <div class="tweet-tags pull-right">
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}}" class="fa fa-circle tweet-tag" style="color: {{TAGS.tags[tag].color}};"></i>
+            <i ng-show="TAGS.tags[tag]" ng-repeat="tag in tweet.tags" tooltip="{{TAGS.tags[tag].tag_name}} by {{clients[tweet.tags_authors[tag]].Name}}" class="fa fa-circle tweet-tag" style="color: {{TAGS.tags[tag].color}};"></i>
         </div>
 
         <br />
         <!-- List of user list tags-->
         <div class="user-tags pull-right">
             <!-- ng-show: only show dot if this tag exists -->
-            <i ng-show="USER_TAGS.tags[tag]" ng-repeat="tag in tweet.user_tags" tooltip="{{USER_TAGS.tags[tag].tag_name}}" class="fa fa-stop user-tag" style="color: {{USER_TAGS.tags[tag].color}};"></i>
+            <i ng-show="USER_TAGS.tags[tag]" ng-repeat="tag in tweet.user_tags" tooltip="{{USER_TAGS.tags[tag].tag_name}} by {{clients[tweet.user_tags_authors[tag]].Name}}" class="fa fa-stop user-tag" style="color: {{USER_TAGS.tags[tag].color}};"></i>
 	   </div>
     </div>
 </div>
