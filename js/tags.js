@@ -103,7 +103,7 @@ var Tags = function (spec, $http) {
     // Deletes a tag.  This will remove all the tag instances for this tag.
     function deleteTag(tag) {
         // TODO prompt user to confirm deletion
-        $http.post(WEBSERVER + URL.deleteTag, {"created_by": USER, "tag_id": tag._id.$oid, });
+        $http.post(WEBSERVER + URL.deleteTag, {"created_by": USER, "tag_id": tag._id.$oid });
         // TODO verify deletion success before deleting from view
         delete(TAGS[tag._id.$oid]);
         //hidepop();
