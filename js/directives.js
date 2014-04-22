@@ -101,7 +101,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             // Make new column based on search
             $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': searchTemplate(), 'showDropdown': true, 'started': false};
             var el = $compile("<column-stream col-id=" + newcolId + " ></column-stream>")($scope);
+            $(el).addClass("newColumn").css("display", "none");
             $(".content").append(el);
+            $(el).fadeIn("slow");
+            $(".content").scrollLeft($(".content").width());
+            setTimeout(function() {
+                $(el).removeClass("newColumn");
+                $(".content").scrollLeft($(".content").width());
+            }, 500);
         };
 
         // saves a column's search
@@ -127,7 +134,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
             $scope.CURRENT_COLS[$scope.colNum] = {'colId': $scope.colNum, 'search': search, 'showDropdown': false, 'started': true};
             var el = $compile("<column-stream col-id=" + $scope.colNum + " ></column-stream>")($scope);
+            $(el).addClass("newColumn").css("display", "none");
             $(".content").append(el);
+            $(el).fadeIn("slow");
+            $(".content").scrollLeft($(".content").width());
+            setTimeout(function() {
+                $(el).removeClass("newColumn");
+                $(".content").scrollLeft($(".content").width());
+            }, 500);
             $scope.colNum = $scope.colNum + 1;
 
             // force update of 'columns' of existing tweets

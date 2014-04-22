@@ -64,7 +64,7 @@
 
             <!--Form for add tags-->
             <div ng-hide="tagsIsCollapse">
-                <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName); TAGS.tag.newTagName = '' " role='form'>
+                <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName, false); TAGS.tag.newTagName = '' " role='form'>
                     <div class='form-group'>
                         <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
                            ng-model="TAGS.tag.color"></i>
@@ -109,7 +109,7 @@
 
             <!--Form to add user lists-->
             <div ng-hide="UserlistIsCollapse">
-                <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName); USER_TAGS.tag.newTagName = ''"
+                <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName, false); USER_TAGS.tag.newTagName = ''"
                       role='form'>
                     <div class='form-group'>
                         <i class="fa fa-stop" style="color: {{USER_TAGS.tag.color}};" colorpicker class="span2"
