@@ -22,7 +22,7 @@ var Tags = function (spec, $http) {
     var tagInstanceRequestData = spec.tagInstanceRequestData;
 
     // Update our tag list to be current with database
-    function updateTags() {
+    function updateTags(editedItem) {
         $http.get(WEBSERVER + URL.getTags).success(function (response) {
             if (response.tags == null) {
                 console.error("Getting tags unsuccessful");
@@ -30,8 +30,19 @@ var Tags = function (spec, $http) {
                 responseTagIds = [];
                 for (var i in response.tags) {
                     var tag = response.tags[i];
-                    TAGS[tag._id.$oid] = tag;
-                    responseTagIds.push(tag._id.$oid);
+	          	    if(!TAGS[tag._id.$oid]) {
+		               TAGS[tag._id.$oid] = tag;
+				    } else {
+						// update fields
+						var t = TAGS[tag._id.$oid];
+						t.color = tag.color;
+						t.num_instances = tag.num_instances;
+						// do not update the tag name if the user is editing it
+					    if(!editedItem) {
+							t.tag_name = tag.tag_name;
+						}
+					}
+				    responseTagIds.push(tag._id.$oid);
                 }
                 // remove any tags from view that no longer exist
                 for (tagId in TAGS) {
