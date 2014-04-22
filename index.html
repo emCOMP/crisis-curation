@@ -82,12 +82,13 @@
                         <a href="#" ng-dblclick="startEditing(tag);">
                             <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
-		                    <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing" class="edit-tag">
-		                        <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
-		                               ng-focus="tag == editedItem"
-		                               id="editTagInputBox" type="text"
-		                               class="form-control">
-		                    </form>
+
+                            <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing" class="edit-tag">
+                                <input ng-model="tag.tag_name" ng-blur="doneEditing('tag', tag)"
+                                       ng-focus="tag == editedItem"
+                                       id="editTagInputBox" type="text"
+                                       class="form-control">
+                            </form>
                             <span class="badge right">{{ tag.num_instances }}</span>
                         </a>
 
@@ -130,21 +131,23 @@
                         <a href="#" ng-dblclick="startEditing(tag);">
                             <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
-		                    <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing" class="edit-tag">
-		                        <input ng-model="tag.tag_name" ng-blur="doneEditing('userList', tag)"
-		                               ng-focus="tag == editedItem"
-		                               id="editUserListInputBox" type="text"
-		                               class="form-control">
-		                    </form>
+
+                            <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing" class="edit-tag">
+                                <input ng-model="tag.tag_name" ng-blur="doneEditing('userList', tag)"
+                                       ng-focus="tag == editedItem"
+                                       id="editUserListInputBox" type="text"
+                                       class="form-control">
+                            </form>
                         </a>
 
                         <!--<a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>-->
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
 
-                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"  ><i
-                            <!--; deleteLocalTag('userList',tag)-->
+                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
                                 class="fa fa-times"></i></a>
+                        <!--; deleteLocalTag('userList',tag)-->
+
                     </li>
                 </ul>
             </div>
