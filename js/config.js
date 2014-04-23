@@ -1,2 +1,2 @@
-WEBSERVER = "http://localhost:8080";
+WEBSERVER = "http://128.208.219.182:8080";
 MAX_TWEETS_PER_COLUMN = 50;
