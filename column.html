@@ -9,7 +9,8 @@
         <!-- Column title, Search terms-->
         <h4 class="dropdown">{{CURRENT_COLS[colId].search.text || "All"}}
           <!-- Play/Pause Button -->
-          <a><i class="fa fa-play pull-left play-pause-button" ng-click="togglePause(colId)"></i></a>
+          <a><i class="fa fa-play pull-left play-button" style="opacity: 0.3;" ng-click="unpauseColumn(colId)"></i></a>
+          <a><i class="fa fa-pause pull-left pause-button" ng-click="pauseColumn(colId)"></i></a>
           <!-- Caret button: expands search filter menu -->
           <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
         </h4>

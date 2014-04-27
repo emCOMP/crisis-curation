@@ -46,27 +46,36 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.unpauseColumn = function (colId) {
+            if ($scope.PAUSED_COL.colId != colId) {
+                return;
+            }
             $scope.PAUSED_COL = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
-            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
+            //$("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
             $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
 
-            // Toggle icon
-            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
-            pausePlayIcon.removeClass("fa-pause");
-            pausePlayIcon.addClass("fa-play");
+            // Toggle icons
+            var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
+            var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
+            playIcon.css("opacity", 0.3);
+            pauseIcon.css("opacity", 1.0);
         }
 
         $scope.pauseColumn = function (colId) {
-            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", "0.5");
+            if ($scope.PAUSED_COL.colId === colId) {
+                return;
+            }
+            console.log("I'm in the 'pause column state'");
+            //$("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", "0.5");
             $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
             $scope.PAUSED_COL = {'colId': colId, 'recentTweet': RECENT_ID, 'queued': 0};
 
-            // Toggle icon
-            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
-            pausePlayIcon.removeClass("fa-play");
-            pausePlayIcon.addClass("fa-pause");
-        }
+            // Toggle icons
+            var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
+            var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
+            pauseIcon.css("opacity", 0.3);
+            playIcon.css("opacity", 1.0);
+        } 
 
 
         $scope.editTagPopover = function (tag) {
