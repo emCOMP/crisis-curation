@@ -12,7 +12,7 @@
           <a><i class="fa fa-play pull-left play-button" style="opacity: 0.3;" ng-click="unpauseColumn(colId)"></i></a>
           <a><i class="fa fa-pause pull-left pause-button" ng-click="pauseColumn(colId)"></i></a>
           <!-- Caret button: expands search filter menu -->
-          <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
+          <a ng-hide="colId == 0"><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
         </h4>
 
 
