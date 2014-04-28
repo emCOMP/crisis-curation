@@ -4,13 +4,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Controller
     /////////////////////////////////////////////////
     .controller('Ctrl', function ($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
-        //$route.reloadOnSearch = false;
-
         // Set up datastructures
         $scope.CURRENT_COLS = [];
         $scope.CURRENT_COLS[0] = columnTemplate(0);
         $scope.showCreateNewTag = false;
-        $scope.PAUSED_COL = {'colId': null, 'recentTweet': null, 'queued': 0};
+        $scope.PAUSED_COLS = {};
+        // format: {
+        //          colId: {'recentTweet': 234902342, 'queued': 23},
+        //          colId2: {'recentTweet': 234214231, 'queued': 54}
+        //         }
 
         $scope.TAGS = TweetTags($http);
         $scope.USER_TAGS = UserTags($http);
@@ -33,40 +35,39 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             getUser($http, $modal, localStorageService);
         }
 
-        $scope.togglePause = function (colId) {
-            if ($scope.PAUSED_COL.colId === colId) {
-                // already paused, unpause
-                $scope.unpauseColumn(colId);
-            } else {
-                // pause it
-                $scope.pauseColumn(colId);
-            }
-
-
+        $scope.isPausedColumn = function(colId) {
+            return (colId in $scope.PAUSED_COLS);
         }
 
         $scope.unpauseColumn = function (colId) {
-            $scope.PAUSED_COL = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
-            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
+            if (!$scope.isPausedColumn(colId)) {
+                return;
+            }
+            delete $scope.PAUSED_COLS[colId];
             $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
 
-            // Toggle icon
-            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
-            pausePlayIcon.removeClass("fa-pause");
-            pausePlayIcon.addClass("fa-play");
+            // Toggle icons
+            var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
+            var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
+            playIcon.css("opacity", 0.3);
+            pauseIcon.css("opacity", 1.0);
         }
 
         $scope.pauseColumn = function (colId) {
-            $("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", "0.5");
-            $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
-            $scope.PAUSED_COL = {'colId': colId, 'recentTweet': RECENT_ID, 'queued': 0};
+            if ($scope.PAUSED_COLS.colId === colId) {
+                return;
+            }
 
-            // Toggle icon
-            var pausePlayIcon = $("column-stream[col-id=" + colId + "]").find(".play-pause-button");
-            pausePlayIcon.removeClass("fa-play");
-            pausePlayIcon.addClass("fa-pause");
-        }
+            $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
+            $scope.PAUSED_COLS[colId] = {'recentTweet': RECENT_ID, 'queued': 0};
+
+            // Toggle icons
+            var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
+            var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
+            pauseIcon.css("opacity", 0.3);
+            playIcon.css("opacity", 1.0);
+        } 
 
 
         $scope.editTagPopover = function (tag) {
@@ -78,10 +79,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.editTagPopoverSetup = function (tagname) {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
                 var element = document.getElementById("editTagInputBox");
-                var val = tagname;//$scope.newTagName;
-
-
-                element.setSelectionRange(val.length, val.length);
+                element.setSelectionRange(tagname.length, tagname.length);
                 element.focus();
                 $scope.editTagPopOverOpen = true;
             }
@@ -181,7 +179,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (type == 'tag') {
                 if (tag.tag_name != "" && tag.tag_name != null) {
                     $scope.TAGS.editTagText(tag);
-//                    $scope.displayedTags[tag]['tag_name'] = tag.tag_name;
                 }
             } else {
                 $scope.USER_TAGS.editTagText(tag);
@@ -190,7 +187,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
 
-//Modal function call
+        // Modal function call
         re = function (userListName) {
 
             var modalInstance = $modal.open({
@@ -198,21 +195,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 controller: ModalInstanceCtrl,
                 resolve: {
                     userList: function () {
-//                        use line below when implemented getUserList
-                        //return ModalInstanceCtrl.$scope.getUserList(userListName);
+                        // use line below when implemented getUserList
+                        // return ModalInstanceCtrl.$scope.getUserList(userListName);
                         return userListName;
                     }
 
                 }
             });
-
-//            modalInstance.result.then(function (selectedItem) {
-//                $scope.selected = selectedItem;
-//            }, function () {
-//                $log.info('Modal dismissed at: ' + new Date());
-//            });
         };
-//Modal controller
+        // Modal controller
         var ModalInstanceCtrl = function ($scope, $modalInstance, userList) {
 
             $scope.users = ['user1', 'user2', 'user3'];
@@ -269,10 +260,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         }, 1 * 1000);
 
-//        // Set up new tag popover, tag edit popovers
-//        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
-//        setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
-//        setUpTagEditPopovers();
+        // Set up new tag popover, tag edit popovers
+        // setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
+        // setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
+        // setUpTagEditPopovers();
     })
 
 
@@ -311,14 +302,14 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 element.on("click", function (e) {
                     if (e.srcElement.id == "TagTweetButton") {
                         // if not paused, pause it!
-                        if (!scope.$parent.PAUSED_COL.colId) {
+                        if (!scope.isPausedColumn(scope.colId)) {
                             scope.pauseColumn(scope.colId);
                         }
                     }
                 });
                 $(element).find(".tweet-stream").bind("scroll", function () {
                     if ($($(element).find(".tweet-stream")).scrollTop() > 0) {
-                        if (scope.$parent.PAUSED_COL.colId == null) {
+                        if (!scope.isPausedColumn(scope.colId)) {
                             scope.pauseColumn(scope.colId);
                         }
                     } else {
@@ -426,7 +417,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     })
 
 
-	//Credit for ngBlur and ngFocus to https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
+	//Credit for ngBlur and ngFocus to 
+    // https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
 	.directive('ngBlur', function() {
 	  return function( scope, elem, attrs ) {
 		elem.bind('blur', function() {
@@ -472,10 +464,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 var count = 0;
                 for (var i = 0; i < items.length; i++) {
                     if (items[i].columns.indexOf(colId) != -1) { // this tweet should be in my column
-                        if (colId != scope.PAUSED_COL.colId) {  //the column is not being paused
+                        if (!scope.isPausedColumn(colId)) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
-                        } else if (colId == scope.PAUSED_COL.colId &&  // the column is paused
-                            items[i].id <= scope.PAUSED_COL.recentTweet) {  // enforce "pausing"
+                        } else if (scope.isPausedColumn(colId) &&  // the column is paused
+                            items[i].id <= scope.PAUSED_COLS[colId].recentTweet) {  // enforce "pausing"
                             arrayToReturn.push(items[i]);
                         } else {
                             // Column paused, tweet is being filtered
@@ -483,8 +475,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         }
                     }
                 }
-                if (colId == scope.PAUSED_COL.colId) {
-                    scope.PAUSED_COL.queued = count;
+                if (scope.isPausedColumn(colId) ) {
+                    scope.PAUSED_COLS[colId].queued = count;
                 }
             }
             // limit number of tweets in a column
@@ -496,6 +488,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     });
 
 
+//////////////////////////////////////////
+// One off JS Functions
+//////////////////////////////////////////
+
+// Pull current crisis information from the database
 function getCurrentCrisis($http, $scope) {
     $http.get(WEBSERVER + '/eventTitle').success(function (response) {
         $scope.currentCrisis = response;
