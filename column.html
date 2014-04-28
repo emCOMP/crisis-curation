@@ -30,20 +30,20 @@
                         </select>
                         <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
                         <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
-                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
-                             <li ng-repeat="tag in TAGS.tags">
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
+                             <div ng-repeat="tag in TAGS.tags">
                                   <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
                                   <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                                   {{tag.tag_name}}
-                             </li>
-                        </ul>
-                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
-                              <li ng-repeat="tag in USER_TAGS.tags">
+                             </div>
+                        </div>
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
+                              <div ng-repeat="tag in USER_TAGS.tags">
                                   <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
-                                  <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                  <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                                   {{tag.tag_name}}
-                              </li>
-                        </ul>
+                              </div>
+                        </div>
                    </div>
                <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
               </button>
