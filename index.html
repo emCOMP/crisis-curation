@@ -104,7 +104,7 @@
 
                         <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
                                 >Search</a>
-                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="checkDeletable(tag, 'tags')"><i
                                 class="fa fa-times"></i></a>
 
                     </li>
@@ -160,7 +160,7 @@
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
 
-                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="checkDeletable(tag, 'user_tags')"><i
                                 class="fa fa-times"></i></a>
                         <!--; deleteLocalTag('userList',tag)-->
 

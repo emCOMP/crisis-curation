@@ -20,7 +20,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.editTagPopOverOpen = false;
         $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
-	getClients($http, $scope);
+        getClients($http, $scope);
 
 
         ////////////////////////
@@ -35,7 +35,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             getUser($http, $modal, localStorageService);
         }
 
-        $scope.isPausedColumn = function(colId) {
+        $scope.isPausedColumn = function (colId) {
             return (colId in $scope.PAUSED_COLS);
         }
 
@@ -67,7 +67,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
             pauseIcon.css("opacity", 0.3);
             playIcon.css("opacity", 1.0);
-        } 
+        }
 
 
         $scope.editTagPopover = function (tag) {
@@ -102,7 +102,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $(".content").append(el);
             $(el).fadeIn("slow");
             $(".content").scrollLeft($(".content").width());
-            setTimeout(function() {
+            setTimeout(function () {
                 $(el).removeClass("newColumn");
                 $(".content").scrollLeft($(".content").width());
             }, 500);
@@ -135,7 +135,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $(".content").append(el);
             $(el).fadeIn("slow");
             $(".content").scrollLeft($(".content").width());
-            setTimeout(function() {
+            setTimeout(function () {
                 $(el).removeClass("newColumn");
                 $(".content").scrollLeft($(".content").width());
             }, 500);
@@ -187,12 +187,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
 
-        // Modal function call
-        re = function (userListName) {
+        // open user list modal function call
+        $scope.openUserListModal = function (userListName) {
 
             var modalInstance = $modal.open({
                 templateUrl: 'user-list-modal.html',
-                controller: ModalInstanceCtrl,
+                controller: openUserListModalInstanceCtrl,
                 resolve: {
                     userList: function () {
                         // use line below when implemented getUserList
@@ -203,8 +203,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 }
             });
         };
-        // Modal controller
-        var ModalInstanceCtrl = function ($scope, $modalInstance, userList) {
+        // open user list modal controller
+        var openUserListModalInstanceCtrl = function ($scope, $modalInstance, userList) {
 
             $scope.users = ['user1', 'user2', 'user3'];
 
@@ -228,6 +228,60 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             };
         };
 
+
+        $scope.checkDeletable = function (tag, type) {
+
+            // threshold for deleting tag
+            if (tag.num_instances < 15) {
+                if (type == "tags") {
+                    $scope.TAGS.deleteTag(tag);
+                } else {
+                    $scope.USER_TAGS.deleteTag(tag);
+                }
+            } else {
+                $scope.sureToDeleteModal(tag, type);
+            }
+        }
+
+
+        // open user list modal function call
+        $scope.sureToDeleteModal = function (tag, type) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'sure-to-delete-modal.html',
+                controller: sureToDeleteModalInstanceCtrl,
+                resolve: {
+                    params: function () {
+                        var params = {};
+                        params['tag'] = tag;
+                        if (type == "tags") {
+                            params['TAGS'] = $scope.TAGS;
+                            params['isUserTags'] = false;
+                        } else {
+                            params['TAGS'] = $scope.USER_TAGS;
+                            params['isUserTags'] = true;
+                        }
+                        return params;
+                    }
+                }
+            });
+        };
+        // open user list modal controller
+        var sureToDeleteModalInstanceCtrl = function ($scope, $modalInstance, params) {
+
+            $scope.TAGS = params['TAGS'];
+            $scope.tag = params['tag'];
+            $scope.isUserTags = params['isUserTags'];
+
+            $scope.deleteTag = function () {
+                $scope.TAGS.deleteTag($scope.tag);
+                $modalInstance.dismiss('cancel');
+            }
+
+            $scope.close = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        };
 
         $scope.tagsIsCollapse = false;
         $scope.UserlistIsCollapse = false;
@@ -417,27 +471,27 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     })
 
 
-	//Credit for ngBlur and ngFocus to 
+    //Credit for ngBlur and ngFocus to
     // https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
-	.directive('ngBlur', function() {
-	  return function( scope, elem, attrs ) {
-		elem.bind('blur', function() {
-		  scope.$apply(attrs.ngBlur);
-		});
-	  };
-	})
+    .directive('ngBlur', function () {
+        return function (scope, elem, attrs) {
+            elem.bind('blur', function () {
+                scope.$apply(attrs.ngBlur);
+            });
+        };
+    })
 
-	.directive('ngFocus', function( $timeout ) {
-	  return function( scope, elem, attrs ) {
-		scope.$watch(attrs.ngFocus, function( newval ) {
-		  if ( newval ) {
-		    $timeout(function() {
-		      elem[0].focus();
-		    }, 0, false);
-		  }
-		});
-	  };
-	})
+    .directive('ngFocus', function ($timeout) {
+        return function (scope, elem, attrs) {
+            scope.$watch(attrs.ngFocus, function (newval) {
+                if (newval) {
+                    $timeout(function () {
+                        elem[0].focus();
+                    }, 0, false);
+                }
+            });
+        };
+    })
 
 
     ////////////////////////////////////////////
@@ -475,7 +529,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                         }
                     }
                 }
-                if (scope.isPausedColumn(colId) ) {
+                if (scope.isPausedColumn(colId)) {
                     scope.PAUSED_COLS[colId].queued = count;
                 }
             }
