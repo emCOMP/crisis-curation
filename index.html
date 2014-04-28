@@ -76,11 +76,19 @@
                     </div>
                 </form>
 
-                <!--<div ng-app="editer">-->
+
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
                     <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+
+
+                        <!--enable edit tag-->
                         <a href="#" ng-dblclick="startEditing(tag);">
-                            <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+
+                            <!--color picker-->
+                            <i class="fa fa-circle" style="color: {{tag.color}};" colorpicker
+                               ng-model="TAGS.tags[tag._id.$oid].color"
+                               ng-change="TAGS.editTagColor(tag, TAGS.tags[tag._id.$oid].color)"></i>
+
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
 
                             <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing" class="edit-tag">
@@ -97,11 +105,11 @@
                                 >Search</a>
                         <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
                                 class="fa fa-times"></i></a>
-                        <!--</div>-->
+
                     </li>
                 </ul>
             </div>
-            <!--</div>-->
+
         </div>
 
 
@@ -128,8 +136,15 @@
 
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
                     <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
+
+                        <!--enable edit tag-->
                         <a href="#" ng-dblclick="startEditing(tag);">
-                            <i class="fa fa-stop" style="color:{{tag.color}};"></i>
+
+                            <!--color picker-->
+                            <i class="fa fa-stop" style="color: {{tag.color}};" colorpicker
+                               ng-model="USER_TAGS.tags[tag._id.$oid].color"
+                               ng-change="USER_TAGS.editTagColor(tag, USER_TAGS.tags[tag._id.$oid].color)"></i>
+
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
 
                             <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing" class="edit-tag">
