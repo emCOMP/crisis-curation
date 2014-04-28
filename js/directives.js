@@ -4,8 +4,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     // Controller
     /////////////////////////////////////////////////
     .controller('Ctrl', function ($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
-        //$route.reloadOnSearch = false;
-
         // Set up datastructures
         $scope.CURRENT_COLS = [];
         $scope.CURRENT_COLS[0] = columnTemplate(0);
@@ -38,10 +36,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.isPausedColumn = function(colId) {
-            if ((colId in $scope.PAUSED_COLS) ) {
-            console.log("column ", colId);
-            console.log("is paused? ", (colId in $scope.PAUSED_COLS));
-        }
             return (colId in $scope.PAUSED_COLS);
         }
 
@@ -49,8 +43,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (!$scope.isPausedColumn(colId)) {
                 return;
             }
-            delete $scope.PAUSED_COLS[colId]; // = {'colId': undefined, 'recentTweet': undefined, 'queued': 0};
-            //$("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", 1.0);
+            delete $scope.PAUSED_COLS[colId];
             $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
 
@@ -65,7 +58,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if ($scope.PAUSED_COLS.colId === colId) {
                 return;
             }
-            //$("column-stream[col-id=" + colId + "]").find(".tweet-header").css("opacity", "0.5");
+
             $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
             $scope.PAUSED_COLS[colId] = {'recentTweet': RECENT_ID, 'queued': 0};
 
@@ -86,10 +79,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.editTagPopoverSetup = function (tagname) {
             if (!$scope.editTagPopOverOpen && document.getElementById("editTagInputBox")) {
                 var element = document.getElementById("editTagInputBox");
-                var val = tagname;//$scope.newTagName;
-
-
-                element.setSelectionRange(val.length, val.length);
+                element.setSelectionRange(tagname.length, tagname.length);
                 element.focus();
                 $scope.editTagPopOverOpen = true;
             }
@@ -189,7 +179,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (type == 'tag') {
                 if (tag.tag_name != "" && tag.tag_name != null) {
                     $scope.TAGS.editTagText(tag);
-//                    $scope.displayedTags[tag]['tag_name'] = tag.tag_name;
                 }
             } else {
                 $scope.USER_TAGS.editTagText(tag);
@@ -198,7 +187,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
 
-//Modal function call
+        // Modal function call
         re = function (userListName) {
 
             var modalInstance = $modal.open({
@@ -206,21 +195,15 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 controller: ModalInstanceCtrl,
                 resolve: {
                     userList: function () {
-//                        use line below when implemented getUserList
-                        //return ModalInstanceCtrl.$scope.getUserList(userListName);
+                        // use line below when implemented getUserList
+                        // return ModalInstanceCtrl.$scope.getUserList(userListName);
                         return userListName;
                     }
 
                 }
             });
-
-//            modalInstance.result.then(function (selectedItem) {
-//                $scope.selected = selectedItem;
-//            }, function () {
-//                $log.info('Modal dismissed at: ' + new Date());
-//            });
         };
-//Modal controller
+        // Modal controller
         var ModalInstanceCtrl = function ($scope, $modalInstance, userList) {
 
             $scope.users = ['user1', 'user2', 'user3'];
@@ -277,10 +260,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         }, 1 * 1000);
 
-//        // Set up new tag popover, tag edit popovers
-//        setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
-//        setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
-//        setUpTagEditPopovers();
+        // Set up new tag popover, tag edit popovers
+        // setUpNewTagPopover($compile, $scope, "#newTagButton", "new-tag-popup");
+        // setUpNewTagPopover($compile, $scope, "#newUserTagButton", "new-user-tag-popup");
+        // setUpTagEditPopovers();
     })
 
 
@@ -434,7 +417,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     })
 
 
-	//Credit for ngBlur and ngFocus to https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
+	//Credit for ngBlur and ngFocus to 
+    // https://github.com/addyosmani/todomvc/blob/master/architecture-examples/angularjs/js/directives/
 	.directive('ngBlur', function() {
 	  return function( scope, elem, attrs ) {
 		elem.bind('blur', function() {
@@ -504,6 +488,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     });
 
 
+//////////////////////////////////////////
+// One off JS Functions
+//////////////////////////////////////////
+
+// Pull current crisis information from the database
 function getCurrentCrisis($http, $scope) {
     $http.get(WEBSERVER + '/eventTitle').success(function (response) {
         $scope.currentCrisis = response;
