@@ -64,7 +64,7 @@
 
 
             <!--Form for add tags-->
-            <div ng-hide="tagsIsCollapse">
+            <div collapse="tagsIsCollapse">
                 <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName, false); TAGS.tag.newTagName = '' " role='form'>
                     <div class='form-group'>
                         <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
@@ -119,7 +119,7 @@
             <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
 
             <!--Form to add user lists-->
-            <div ng-hide="UserlistIsCollapse">
+            <div collapse="UserlistIsCollapse">
                 <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName, false); USER_TAGS.tag.newTagName = ''"
                       role='form'>
                     <div class='form-group'>
@@ -173,7 +173,7 @@
         <div class="collab">
             <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators (2)</p></a>
 
-            <div ng-hide="CollabIsCollapse">
+            <div collapse="CollabIsCollapse">
                 <ul class="nav nav-pills nav-stacked" id="collab-list">
                     <li><a>[name1] - [status]</a></li>
                     <li><a>[name2] - [status]</a></li>
