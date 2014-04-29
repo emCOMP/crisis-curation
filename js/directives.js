@@ -5,6 +5,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     /////////////////////////////////////////////////
     .controller('Ctrl', function ($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
         // Set up datastructures
+	$scope.tweetz = {};
         $scope.CURRENT_COLS = [];
         $scope.CURRENT_COLS[0] = columnTemplate(0);
         $scope.showCreateNewTag = false;
@@ -395,9 +396,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             templateUrl: 'tweet.html',
             link: function (scope, element, attrs) {
                 attrs.$observe('tweet', function (tweet) {
-                    if (scope.$parent) {
+					scope.tweet = scope.$parent.$parent.$parent.tweetz[scope.tweet];
+                   /* if (scope.$parent) {
                         scope.tweet = scope.$parent.tweet;
-                    }
+                    }*/
                 });
                 ;
             }
@@ -485,7 +487,50 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
             return arrayToReturn;
         }
-    });
+    })
+
+
+	.filter('orderByTime', function() {
+		return function(items, colId, scope) {
+			// sort tweets
+			var filtered = [];
+			angular.forEach(items, function(item) {
+			  filtered.push(item);
+			  
+			});
+			filtered.sort(function (a, b) {
+			  return scope.tweetz[b].unix_time - scope.tweetz[a].unix_time;
+			});
+
+			// trim, if necessary
+			var colTweets = filtered;
+			if(colTweets.length > 40) {
+				// remove this col from tweets' column array
+				console.log("length of scope.tweetz is : " +  Object.keys(scope.tweetz).length);
+				console.log(scope.tweetz);
+				for(var i = 20; i < colTweets.length; i++) {
+					var tweet = scope.tweetz[colTweets[i]];
+					if(tweet.columns) {
+						var index = tweet.columns.indexOf(parseInt(colId));
+						if(index >= 0) {
+							console.log("splicin");
+							tweet.columns.splice(index, 1);
+						}
+						if(tweet.columns.length == 0) {
+								console.log("deleting tweet, it has no cols");
+								delete scope.tweetz[tweet._id.$oid];	
+						}
+					}
+				}	
+				console.log("length of scope.tweetz is : " +  Object.keys(scope.tweetz).length);
+				console.log(scope.tweetz);
+				// murder tweets
+				filtered = filtered.slice(0, 20);
+				scope.CURRENT_COLS[colId].tweets = filtered;		
+			}
+			return filtered;
+		}
+	});
 
 
 //////////////////////////////////////////
@@ -523,6 +568,7 @@ function columnTemplate(colId) {
     return {'colId': colId,
         'search': searchTemplate(),
         'showDropdown': false,
+		'tweets' : [], /* list of tweet ids of tweets that belong in this column */
         'started': true};
 }
 
