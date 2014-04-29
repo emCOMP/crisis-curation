@@ -97,7 +97,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 
         $scope.createColumn = function (newcolId) {
             // Make new column based on search
-            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': searchTemplate(), 'showDropdown': true, 'started': false};
+            $scope.CURRENT_COLS[newcolId] = {'colId': newcolId, 'search': searchTemplate(), 'showDropdown': true, 'started': false, 'tweets': []};
             var el = $compile("<column-stream col-id=" + newcolId + " ></column-stream>")($scope);
             $(el).addClass("newColumn").css("display", "none");
             $(".content").append(el);
@@ -118,6 +118,27 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             // force update of 'columns' of existing tweets
             $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+
+			// make a request to get more tweets to fill this column
+			$http.post(WEBSERVER + '/tweets/colId/', {'col':  $scope.CURRENT_COLS[colId]})
+				 .success(function(response) {
+					console.log("back in time:");
+					console.log(response);
+					// add these tweets to our original tweet list
+					// and add the tweet ids to this column's list of tweets
+					for(var i in response.tweets){
+						console.log("ho");
+						tweet = response.tweets[i];
+						var colTweets = $scope.CURRENT_COLS[colId].tweets;
+						if(colTweets.indexOf(tweet._id.$oid) < 0 ) {
+						console.log("hi");
+							colTweets.push(tweet._id.$oid);
+						}
+						if(!$scope.tweetz[tweet._id.$oid]){
+							$scope.tweetz[tweet._id.$oid] = tweet;
+						}
+					}
+				  });
         }
 
         // Create a column that filters by the given tag
@@ -141,6 +162,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 $(".content").scrollLeft($(".content").width());
             }, 500);
             $scope.colNum = $scope.colNum + 1;
+
+			// TODO request tweets to fill this column
 
             // force update of 'columns' of existing tweets
             $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);

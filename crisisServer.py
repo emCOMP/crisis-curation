@@ -131,6 +131,37 @@ def tweetsBefore(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
+# returns tweets to fill a new column
+@post('/tweets/colId/')
+def tweetsByColumn():
+	col = json.loads(request.body.read())["col"]
+	search = col['search']
+	searchType = col['search']['searchType'].decode('utf-8')
+
+	tweet_list = tweets.find().sort("id", pymongo.ASCENDING)
+	result = []
+	for tweet in tweet_list:
+		tweet["columns"] = []
+		if(searchType   == 'text'):
+			searchText = col['search']['text'].decode('utf-8')
+			if not findWholeWord(searchText)(tweet["text"]):
+				continue
+		elif(searchType == 'users'):
+			if not tweetedByUser(search, tweet): # TODO allow filtering by multiple users
+				continue
+		elif(searchType == 'tags'):
+			if not containsTags(search, tweet):
+				continue
+		elif(searchType == 'user_tags'):
+			# filter by User Tags
+			if not containsUserTags(search, tweet):
+				continue
+		tweet["columns"].append(col["colId"])
+		result.append(tweet)
+		if(len(result) > 70): # TODO replace with constant
+			break
+	return '{"tweets": ' + dumps(result) + ' }'
+
 # Creates a new column search term to filter tweets by
 @post('/newcolumn')
 def newColumn():
