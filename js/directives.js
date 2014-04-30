@@ -1,4 +1,4 @@
-angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment', 'ngRoute'])
+angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpicker.module', 'angularMoment', 'ngRoute', 'ngSanitize'])
 
     /////////////////////////////////////////////////
     // Controller

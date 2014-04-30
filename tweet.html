@@ -15,7 +15,7 @@
         <p class="timestamp">
             <small>{{tweet.created_at.split("+")[0]}}</small>
         </p>
-        <p class="tweet-text">{{tweet.text}}</p>
+        <p class="tweet-text" ng-bind-html="tweet.text | linky"></p>
     </div>
 
     <!-- Tweet options-->
