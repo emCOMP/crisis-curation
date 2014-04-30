@@ -29,7 +29,7 @@
             <div ng-repeat="tag in TAGS.tags">
                 <label>
                     <input type="checkbox" f ng-checked="tweet.tags.indexOf(tag._id.$oid) >= 0"
-                           ng-click="TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showTags = !$parent.showTags">
+                           ng-click="TAGS.applyTag(tag, tweet, $event.target.checked, tweetz, CURRENT_COLS); $parent.showTags = !$parent.showTags">
                     <i class="fa fa-circle" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                 </label>
             </div>
@@ -46,7 +46,7 @@
             <div ng-repeat="tag in USER_TAGS.tags">
                 <label>
                     <input type="checkbox" ng-checked="tweet.user_tags.indexOf(tag._id.$oid) >= 0"
-                           ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked, tweet, CURRENT_COLS); $parent.showUserTags = !$parent.showUserTags">
+                           ng-click="USER_TAGS.applyTag(tag, tweet, $event.target.checked, tweetz, CURRENT_COLS); $parent.showUserTags = !$parent.showUserTags">
                     <i class="fa fa-stop" style="color: {{tag.color}}"></i> {{tag.tag_name}}
                 </label>
             </div>

@@ -130,7 +130,6 @@ var Tags = function (spec, $http) {
                 $http.post(WEBSERVER + URL.deleteInstance, newTagObj);
             }
         }
-
         // update columns since changing this tag may affect which cols this tweet belongs to
         updateColumns([tweet], all_tweets, CURRENT_COLS);
         // TODO: if they try to apply a tag that doesn't exist (ie, someone deletes
@@ -175,57 +174,81 @@ var Tags = function (spec, $http) {
         }
     }
 
-    // Update the columns arrays for the given tweets
-    function updateColumns(tweets_to_update, all_tweets, CURRENT_COLS) {
-        var filterName = (TAG_ARRAY_NAME == 'tags') ? 'tags' : 'userTags';
-        for (var i = 0; i < tweets_to_update.length; i++) {
-            var tweet = tweets_to_update[i];
-            // check if this tweet belongs in any of our cols
-            for (var colIndex in CURRENT_COLS) {
-                var belongsInColumn = true;
-                var col = CURRENT_COLS[colIndex];
-                // Check if the tag filter is set for this column. If so, this is a tag search.
-                if (col.search.searchType == TAG_ARRAY_NAME) {
-                    var tags = col.search[filterName]
-                    addCols(tweet, col, tags);
-                } else if (col.search.searchType == 'text') {
-                    if (tweet.text.indexOf(col.search.text) >= 0) {
-                        if (tweet["columns"].indexOf(col.colId) < 0) {
-                            tweet["columns"].push(col.colId);
-                        }
-                    }
-                } else if (col.search.searchType == 'users') {
-                    var userSearch = col.search.users;
-                    if (userSearch.length > 0 && userSearch[0] == '@') {
-                        userSearch = userSearch.substring(1);
-                    }
-                    if (tweet.user.screen_name == userSearch) {
-                        if (tweet["columns"].indexOf(col.colId) < 0) {
-                            tweet["columns"].push(col.colId);
-                        }
-                    }
-                }
-            }
-        }
-    }
+	// Update the columns arrays for the given tweets
+	function updateColumns(tweets_to_update, all_tweets, CURRENT_COLS) {
+		// var filterName = (TAG_ARRAY_NAME == 'tags') ? 'tags' : 'userTags';
+		for (var i = 0; i < tweets_to_update.length; i++) {
+		    var tweet = tweets_to_update[i];
+		    // check if this tweet belongs in any of our cols
+		    for (var colIndex in CURRENT_COLS) {
+		        var col = CURRENT_COLS[colIndex];
+		        var tweetBelongsInCol = tweetBelongsInColumn(tweet, col);
+		        // update columns array for tweet, and tweet array for column
+		        if(tweetBelongsInCol) {
+		            // add
+		            if (tweet["columns"].indexOf(col.colId) < 0) {
+		                tweet["columns"].push(col.colId);
+		            }
+		            if (col.tweets.indexOf(tweet._id.$oid) < 0) {
+		                col.tweets.push(tweet._id.$oid);
+		            }
+		        } else {
+		            // remove
+		            var colIndex = tweet["columns"].indexOf(col.colId);
+		            if (colIndex >= 0) {
+		                tweet["columns"].splice(colIndex, 1);
+		            }
+		            var tweetIndex = col.tweets.indexOf(tweet._id.$oid);
+		            if (tweetIndex >= 0) {
+		                col.tweets.splice(tweetIndex, 1);
+		            }
+		        }
+		    }
+		}
+	}
+
+	// Returns whether the given tweet belongs in the given column
+	function tweetBelongsInColumn(tweet, col) {
+		var tweetBelongsInCol = false;
+		// Check if the tag filter is set for this column. If so, this is a tag search.
+		if (col.search.searchType == 'tags') {
+		    var search_tags = col.search['tags']
+		    tweetBelongsInCol = addCols(tweet, col,  search_tags, 'tags');
+		} else if (col.search.searchType == 'user_tags') {
+		    var  search_tags = col.search['userTags']
+		    tweetBelongsInCol = addCols(tweet, col,  search_tags, 'user_tags');
+		} else if (col.search.searchType == 'text') {
+		    if (tweet.text.indexOf(col.search.text) >= 0) {
+		        tweetBelongsInCol = true;
+		    }
+		} else if (col.search.searchType == 'users') {
+		    var userSearch = col.search.users;
+		    if (userSearch.length > 0 && userSearch[0] == '@') {
+		        userSearch = userSearch.substring(1);
+		    }
+		    if (tweet.user.screen_name == userSearch) {
+		        tweetBelongsInCol = true;
+		    }
+		}
+		return tweetBelongsInCol;
+	}
 
     // Adds columns to tweet based on its tags.  If the tweet has any of
-    // the tags in 'column_tags',  the corresponding column is added to the tweet's column array.
-    function addCols(tweet, col, column_tags) {
+    // the tags in 'search_tags',  the corresponding column is added to the tweet's column array.
+    function addCols(tweet, col, search_tags, searchType) {
         // Treating tag search as an 'OR' search
-        for (var tagId in column_tags) {
-            if (column_tags[tagId]) {
-                if (!tweet[TAG_ARRAY_NAME]) {
-                    tweet[TAG_ARRAY_NAME] = [];
+        for (var tagId in  search_tags) {
+            if (search_tags[tagId]) {
+                if (!tweet[searchType]) {
+                    tweet[searchType] = [];
                 }
-                if (tweet[TAG_ARRAY_NAME].indexOf(tagId) > -1) {
+                if (tweet[searchType].indexOf(tagId) > -1) {
                     // tweet contains this column's tag, so add this column to the tweet
-                    if (tweet["columns"].indexOf(col.colId) < 0) {
-                        tweet["columns"].push(col.colId);
-                    }
+                    return true;
                 }
             }
         }
+		return false;
     }
 
     function editTagText(tag) {
