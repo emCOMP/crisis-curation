@@ -182,7 +182,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             for(var i = 0; i < colTweets.length; i++) {
                 var tweetId = colTweets[i];
                 var tweet = $scope.tweets[tweetId];
-                if(tweet.columns.length < 1 || (tweet.columns.length == 1 && tweet.columns[0] == colId)) {
+                if(tweet && tweet.columns.length < 1 || (tweet.columns.length == 1 && tweet.columns[0] == colId)) {
                     console.log("deleting tweet, it has no cols");
                     delete $scope.tweets[tweetId];
                 }
