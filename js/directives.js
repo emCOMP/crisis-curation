@@ -116,8 +116,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.CURRENT_COLS[colId].showDropdown = false;
 
             // force update of 'columns' of existing tweets
-            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            //$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+           // $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
 
 			// make a request to get more tweets to fill this column
 			fillColumnWithTweets(colId);
@@ -170,8 +170,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.colNum = $scope.colNum + 1;
 
             // force update of 'columns' of existing tweets
-            $scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
-            $scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            //$scope.TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
+            //$scope.USER_TAGS.updateColumns($scope.tweets, $scope.tweets, $scope.CURRENT_COLS);
         }
 
         $scope.deleteColumn = function (colId) {

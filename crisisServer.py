@@ -158,9 +158,8 @@ def tweetsByColumn():
 				continue
 		tweet["columns"].append(col["colId"])
 		result.append(tweet)
-		if(len(result) > 70): # TODO replace with constant
-			break
-	result = sorted(result, key=lambda k: k['id'])
+	result = sorted(result, key=lambda k: k['id'], reverse=True)
+	result = result[:70] # TODO replace with constant
 	return '{"tweets": ' + dumps(result) + ' }'
 
 # Creates a new column search term to filter tweets by
