@@ -5,7 +5,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
     /////////////////////////////////////////////////
     .controller('Ctrl', function ($http, $scope, $interval, $compile, $filter, $modal, $route, $location, localStorageService) {
         // Set up datastructures
-	$scope.tweetz = {};
+        $scope.tweets = {};
         $scope.CURRENT_COLS = [];
         $scope.CURRENT_COLS[0] = columnTemplate(0);
         $scope.showCreateNewTag = false;
@@ -123,11 +123,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			fillColumnWithTweets(colId);
         }
 
-		function fillColumnWithTweets(colId) {	
-
+		function fillColumnWithTweets(colId) {
 			$http.post(WEBSERVER + '/tweets/colId/', {'col':  $scope.CURRENT_COLS[colId]})
 				 .success(function(response) {
-					console.log(response);
 					// add these tweets to our original tweet list
 					// and add the tweet ids to this column's list of tweets
 					for(var i in response.tweets){
@@ -136,8 +134,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 						if(colTweets.indexOf(tweet._id.$oid) < 0 ) {
 							colTweets.push(tweet._id.$oid);
 						}
-						if(!$scope.tweetz[tweet._id.$oid]){
-							$scope.tweetz[tweet._id.$oid] = tweet;
+						if(!$scope.tweets[tweet._id.$oid]){
+							$scope.tweets[tweet._id.$oid] = tweet;
 						}
 					}
 				  });
@@ -178,10 +176,24 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (colId == 0) {
                 return;
             } // don't let them delete the first column
+
+            // check if any of this col's tweets can be removed
+            var colTweets = $scope.CURRENT_COLS[colId].tweets;
+            for(var i = 0; i < colTweets.length; i++) {
+                var tweetId = colTweets[i];
+                var tweet = $scope.tweets[tweetId];
+                if(tweet.columns.length < 1 || (tweet.columns.length == 1 && tweet.columns[0] == colId)) {
+                    console.log("deleting tweet, it has no cols");
+                    delete $scope.tweets[tweetId];
+                }
+            }
+
             delete $scope.CURRENT_COLS[colId]
             $("column-stream[col-id=" + colId + "]").remove();
             var data = {'user': USER, 'colId': colId};
             $http.post(WEBSERVER + '/deletecolumn', data);
+
+
         }
 
         $scope.deleteLocalTag = function (type, tag) {
@@ -335,9 +347,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Start timer to constantly pull from DB
         $interval(function () {
             $scope.TAGS.updateTags($scope.editedItem);
-            $scope.TAGS.updateTagInstances($scope.tweetz, $scope.CURRENT_COLS);
+            $scope.TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateTags($scope.editedItem);
-            $scope.USER_TAGS.updateTagInstances($scope.tweetz, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             getTweets($http, $scope);
 
         }, 1 * 1000);
@@ -477,7 +489,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             templateUrl: 'tweet.html',
             link: function (scope, element, attrs) {
                 attrs.$observe('tweet', function (tweet) {
-					scope.tweet = scope.$parent.$parent.$parent.tweetz[scope.tweet];
+					scope.tweet = scope.$parent.$parent.$parent.tweets[scope.tweet];
                    /* if (scope.$parent) {
                         scope.tweet = scope.$parent.tweet;
                     }*/
@@ -575,36 +587,31 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 		return function(items, colId, scope) {
 			// sort tweets
 			var filtered = [];
-			angular.forEach(items, function(item) {
-			  filtered.push(item);
-			  
+			angular.forEach(items, function(item) {	  
+			  if(scope.tweets[item]) { filtered.push(item); }
 			});
 			filtered.sort(function (a, b) {
-			  return scope.tweetz[b].unix_time - scope.tweetz[a].unix_time;
+			  return scope.tweets[b].unix_time - scope.tweets[a].unix_time;
 			});
 
 			// trim, if necessary
 			var colTweets = filtered;
 			if(colTweets.length > 40) {
 				// remove this col from tweets' column array
-				console.log("length of scope.tweetz is : " +  Object.keys(scope.tweetz).length);
-				console.log(scope.tweetz);
 				for(var i = 20; i < colTweets.length; i++) {
-					var tweet = scope.tweetz[colTweets[i]];
+					var tweet = scope.tweets[colTweets[i]];
 					if(tweet.columns) {
 						var index = tweet.columns.indexOf(parseInt(colId));
 						if(index >= 0) {
-							console.log("splicin");
 							tweet.columns.splice(index, 1);
 						}
+						// Delete this tweet, it has no columns
 						if(tweet.columns.length == 0) {
 								console.log("deleting tweet, it has no cols");
-								delete scope.tweetz[tweet._id.$oid];	
+								delete scope.tweets[tweet._id.$oid];	
 						}
 					}
 				}	
-				console.log("length of scope.tweetz is : " +  Object.keys(scope.tweetz).length);
-				console.log(scope.tweetz);
 				// murder tweets
 				filtered = filtered.slice(0, 20);
 				scope.CURRENT_COLS[colId].tweets = filtered;		
