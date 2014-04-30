@@ -144,8 +144,8 @@ var Tags = function (spec, $http) {
             var tag_instance = response.tag_instances[i];
             // Add/Remove tag from tweet's list of tags
             tweets = spec.getTweets(tag_instance, all_tweets);
-            for (var tweet_index in tweets) {
-                var tweet = all_tweets[tweet_index];
+            for (var i in tweets) {
+                var tweet = all_tweets[tweets[i]._id.$oid];
                 if (tweet[TAG_ARRAY_NAME] == undefined) {
                     tweet[TAG_ARRAY_NAME] = [];
                 }
@@ -264,8 +264,9 @@ var TweetTags = function ($http) {
     function getTweets(tag_instance, all_tweets) {
         var tweet_id = tag_instance.tagged_item_id;
         var tweet = [];
-        for (i in all_tweets) {
-            var t = all_tweets[i];
+        var keys = Object.keys(all_tweets)
+        for (var i in keys) {
+            var t = all_tweets[keys[i]];
             if (t._id.$oid == tweet_id) {
                 tweet.push(t)
                 break;
@@ -309,11 +310,15 @@ var UserTags = function ($http) {
     // For User tags, this can be any number of tweets: any tweets authored by the tagged user ID
     function getTweets(tag_instance, all_tweets) {
         var tweets = [];
-        for (i in all_tweets) {
-            var t = all_tweets[i];
-            if (t.user.id == tag_instance.tagged_item_id) {
-                tweets.push(t);
-            }
+        var keys = Object.keys(all_tweets)
+        for (var i in keys) {
+           var key = keys[i];
+           var t = all_tweets[key];
+           if(t && t.user) {
+               if (t.user.id == tag_instance.tagged_item_id) {
+                   tweets.push(t);
+               }
+           }
         }
         return tweets;
     }

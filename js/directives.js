@@ -335,9 +335,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Start timer to constantly pull from DB
         $interval(function () {
             $scope.TAGS.updateTags($scope.editedItem);
-            $scope.TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
+            $scope.TAGS.updateTagInstances($scope.tweetz, $scope.CURRENT_COLS);
             $scope.USER_TAGS.updateTags($scope.editedItem);
-            $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
+            $scope.USER_TAGS.updateTagInstances($scope.tweetz, $scope.CURRENT_COLS);
             getTweets($http, $scope);
 
         }, 1 * 1000);
