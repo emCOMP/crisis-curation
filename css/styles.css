@@ -152,6 +152,9 @@ a {
 .left-menu-title .fa-plus:hover {
   text-decoration: none;
 }
+#collab-list {
+  text-align: center;
+}
 #user-info {
   border-bottom: 1px solid #e1e8ed;
   padding: 5px 0 5px 15px;

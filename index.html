@@ -175,9 +175,8 @@
             <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators (2)</p></a>
 
             <div collapse="CollabIsCollapse">
-                <ul class="nav nav-pills nav-stacked" id="collab-list">
-                    <li><a>[name1] - [status]</a></li>
-                    <li><a>[name2] - [status]</a></li>
+                <ul ng-repeat="user in clients" class="nav nav-pills nav-stacked" id="collab-list">
+                    <li><a>{{user.Name}} - active</a></li>
                 </ul>
             </div>
         </div>
