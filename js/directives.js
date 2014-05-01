@@ -351,6 +351,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $scope.USER_TAGS.updateTags($scope.editedItem);
             $scope.USER_TAGS.updateTagInstances($scope.tweets, $scope.CURRENT_COLS);
             getTweets($http, $scope);
+            getClients($http, $scope);
 
         }, 1 * 1000);
 
