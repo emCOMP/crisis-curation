@@ -32,8 +32,11 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.logout = function () {
+            delete $scope.clients[localStorage['ls.current_user']];
             destroyUser(localStorageService);
+            //add a function to delete this client in the server
             getUser($http, $modal, localStorageService);
+            getClients($http, $scope);
         }
 
         $scope.isPausedColumn = function (colId) {
