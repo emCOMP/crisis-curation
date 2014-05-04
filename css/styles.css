@@ -81,6 +81,14 @@ a {
   right: 5px;
   top: 11px;
 }
+.left-menu .looksCollapsable {
+  right: 0;
+  color: #8899a6;
+}
+.left-menu .fa.pull-right {
+  margin-right: 5px;
+  margin-top: 2px;
+}
 .modal-dialog {
   width: 300px;
 }

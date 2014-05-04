@@ -61,7 +61,12 @@
 
         <!--Tags-->
         <div class="tag-list">
-            <a href="#" ng-click="collapseTag()"><p class="left-menu-title">Tags</p></a>
+            <a href="#" ng-click="collapseTag()"><p class="left-menu-title ">Tags
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="tagsIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!tagsIsCollapse"></i>
+                </span>
+            </p></a>
 
 
             <!--Form for add tags-->
@@ -117,7 +122,12 @@
 
         <!--User list-->
         <div class="user-list">
-            <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
+            <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="UserlistIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!UserlistIsCollapse"></i>
+                </span>
+            </p></a>
 
             <!--Form to add user lists-->
             <div collapse="UserlistIsCollapse">
@@ -172,7 +182,12 @@
 
         <!-- Collaborator List -->
         <div class="collab">
-            <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators</p></a>
+            <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="CollabIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!CollabIsCollapse"></i>
+                </span>
+            </p></a>
 
             <div collapse="CollabIsCollapse">
                 <ul ng-repeat="user in clients" class="nav nav-pills nav-stacked" id="collab-list">
