@@ -55,7 +55,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
             var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
             playIcon.css("opacity", 0.3);
+            playIcon.parent().css("cursor", "default");
+            console.log("playIcon.parent: ", playIcon.parent());
             pauseIcon.css("opacity", 1.0);
+            pauseIcon.parent().css("cursor", "pointer");
         }
 
         $scope.pauseColumn = function (colId) {
@@ -70,7 +73,9 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
             var pauseIcon = $("column-stream[col-id=" + colId + "]").find(".pause-button");
             pauseIcon.css("opacity", 0.3);
+            pauseIcon.parent().css("cursor", "default");
             playIcon.css("opacity", 1.0);
+            playIcon.parent().css("cursor", "pointer");
         }
 
 
