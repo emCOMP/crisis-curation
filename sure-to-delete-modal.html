@@ -1,0 +1,11 @@
+<div class="modal-body">
+    <h4 ng-show="!isUserTags">Are you sure to delete <i class="fa fa-circle" style="color:{{tag.color}};"></i> {{
+        tag.tag_name }} ?</h4>
+
+    <h4 ng-show="isUserTags">Are you sure to delete <i class="fa fa-stop" style="color:{{tag.color}};"></i> {{
+        tag.tag_name }} ?</h4>
+</div>
+<div class="modal-footer" style="border-top: none">
+    <button class="btn btn-danger" ng-click="deleteTag()">Yes, delete it</button>
+    <button class="btn btn-primary" ng-click="close()">Cancel</button>
+</div>

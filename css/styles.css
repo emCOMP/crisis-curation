@@ -81,6 +81,14 @@ a {
   right: 5px;
   top: 11px;
 }
+.left-menu .looksCollapsable {
+  right: 0;
+  color: #8899a6;
+}
+.left-menu .fa.pull-right {
+  margin-right: 5px;
+  margin-top: 2px;
+}
 .modal-dialog {
   width: 300px;
 }
@@ -151,6 +159,9 @@ a {
 }
 .left-menu-title .fa-plus:hover {
   text-decoration: none;
+}
+#collab-list {
+  text-align: center;
 }
 #user-info {
   border-bottom: 1px solid #e1e8ed;
@@ -226,7 +237,7 @@ a {
   border: 3px solid lightgray;
 }
 .dropdown-menu {
-  width: 320px;
+  width: 130px;
   margin: 13px 0 0 -11px;
   -webkit-border-radius: 0px 0px 5px 5px;
   border-radius: 0px 0px 5px 5px;

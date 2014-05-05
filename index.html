@@ -24,6 +24,7 @@
     <script type="text/javascript" src="js/angular-local-storage.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript" src="js/angular-moment.js"></script>
+    <script type="text/javascript" src="js/angular-sanitize.js"></script>
 
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/tweets.js"></script>
@@ -48,7 +49,8 @@
         <!-- Add Column button-->
         <div class="add-column-area">
             <form class="add-column">
-                <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()">Add Column
+                <button class="btn btn-primary add-column btn-block btn-huge" ng-click="newColumnSearch()"><i
+                        class="fa fa-search"></i>Add Column
                 </button>
             </form>
         </div>
@@ -59,11 +61,16 @@
 
         <!--Tags-->
         <div class="tag-list">
-            <a href="#" ng-click="collapseTag()"><p class="left-menu-title">Tags</p></a>
+            <a href="#" ng-click="collapseTag()"><p class="left-menu-title ">Tags
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="tagsIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!tagsIsCollapse"></i>
+                </span>
+            </p></a>
 
 
             <!--Form for add tags-->
-            <div ng-hide="tagsIsCollapse">
+            <div collapse="tagsIsCollapse">
                 <form ng-submit="TAGS.saveTag(TAGS.tag.newTagName, false); TAGS.tag.newTagName = '' " role='form'>
                     <div class='form-group'>
                         <i class="fa fa-circle" style="color: {{TAGS.tag.color}};" colorpicker class="span2" type="text"
@@ -76,11 +83,19 @@
                     </div>
                 </form>
 
-                <!--<div ng-app="editer">-->
+
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-tag-list">
                     <li ng-repeat="tag in TAGS.tags" tag-id="{{tag._id.$oid}}">
+
+
+                        <!--enable edit tag-->
                         <a href="#" ng-dblclick="startEditing(tag);">
-                            <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+
+                            <!--color picker-->
+                            <i class="fa fa-circle" style="color: {{tag.color}};" colorpicker
+                               ng-model="TAGS.tags[tag._id.$oid].color"
+                               ng-change="TAGS.editTagColor(tag, TAGS.tags[tag._id.$oid].color)"></i>
+
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
 
                             <form ng-submit="doneEditing('tag',tag)" ng-show="tag.editing" class="edit-tag">
@@ -95,22 +110,27 @@
 
                         <a class="modify-tag right-23" href="#" ng-click="newSearchByTagColumn(tag, 'tags')"
                                 >Search</a>
-                        <a class="modify-tag" href="#" ng-click="TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="checkDeletable(tag, 'tags')"><i
                                 class="fa fa-times"></i></a>
-                        <!--</div>-->
+
                     </li>
                 </ul>
             </div>
-            <!--</div>-->
+
         </div>
 
 
         <!--User list-->
         <div class="user-list">
-            <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists</p></a>
+            <a href="#" ng-click="collapseUserlist()"><p class="left-menu-title">User Lists
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="UserlistIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!UserlistIsCollapse"></i>
+                </span>
+            </p></a>
 
             <!--Form to add user lists-->
-            <div ng-hide="UserlistIsCollapse">
+            <div collapse="UserlistIsCollapse">
                 <form ng-submit="USER_TAGS.saveTag(USER_TAGS.tag.newTagName, false); USER_TAGS.tag.newTagName = ''"
                       role='form'>
                     <div class='form-group'>
@@ -128,8 +148,15 @@
 
                 <ul class="nav nav-pills nav-stacked dropdown-relative" id="id-user-list">
                     <li ng-repeat="tag in USER_TAGS.tags" tag-id="{{tag._id.$oid}}">
+
+                        <!--enable edit tag-->
                         <a href="#" ng-dblclick="startEditing(tag);">
-                            <i class="fa fa-stop" style="color:{{tag.color}};"></i>
+
+                            <!--color picker-->
+                            <i class="fa fa-stop" style="color: {{tag.color}};" colorpicker
+                               ng-model="USER_TAGS.tags[tag._id.$oid].color"
+                               ng-change="USER_TAGS.editTagColor(tag, USER_TAGS.tags[tag._id.$oid].color)"></i>
+
                             <span ng-hide="tag.editing">{{tag.tag_name}}</span>
 
                             <form ng-submit="doneEditing('userList',tag)" ng-show="tag.editing" class="edit-tag">
@@ -140,11 +167,11 @@
                             </form>
                         </a>
 
-                        <!--<a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>-->
+                        <a class="modify-tag right-80" href="#" ng-click="openUserListModal(tag)">See List</a>
                         <a class="modify-tag right-23" href="#"
                            ng-click="newSearchByTagColumn(tag, 'user_tags')">Search</a>
 
-                        <a class="modify-tag" href="#" ng-click="USER_TAGS.deleteTag(tag)"><i
+                        <a class="modify-tag" href="#" ng-click="checkDeletable(tag, 'user_tags')"><i
                                 class="fa fa-times"></i></a>
                         <!--; deleteLocalTag('userList',tag)-->
 
@@ -155,12 +182,16 @@
 
         <!-- Collaborator List -->
         <div class="collab">
-            <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators (2)</p></a>
+            <a href="#" ng-click="collapseCollab()"><p class="left-menu-title">Collaborators
+                <span class="looksCollapsable">
+                    <i class="pull-right fa fa-chevron-right" ng-show="CollabIsCollapse"></i>
+                    <i class="pull-right fa fa-chevron-down" ng-show="!CollabIsCollapse"></i>
+                </span>
+            </p></a>
 
-            <div ng-hide="CollabIsCollapse">
-                <ul class="nav nav-pills nav-stacked" id="collab-list">
-                    <li><a>[name1] - [status]</a></li>
-                    <li><a>[name2] - [status]</a></li>
+            <div collapse="CollabIsCollapse">
+                <ul ng-repeat="user in clients" class="nav nav-pills nav-stacked" id="collab-list">
+                    <li><a>{{user.Name}} - active</a></li>
                 </ul>
             </div>
         </div>

@@ -6,7 +6,7 @@
  * Representation: $scope.tweets holds the current tweets being displayed
  *                 Each tweet object in this list holds a copy of its tags & user tags, like so:
  *
- * $scope.tweets = [ { tags: [tagId1, tagId2..], user_tags: [tagId1, tagId2..], colname: [], 
+ * $scope.tweets = [ { tags: [tagId1, tagId2..], user_tags: [tagId1, tagId2..], columns: [], 
 		       tags_authors :{ tagId1: authorId, tagId2: authorId}, user_tags_authors: {} }, ... ]
  * 
  */
@@ -22,7 +22,21 @@ function getTweets($http, $scope) {
 		$http.post(WEBSERVER + '/tweets/1', {'cols':  cols}).success(function(response) {
 		    if (response.tweets.length != 0) {
 			    RECENT_ID = response.tweets[0].id_str;
-			    $scope.tweets = response.tweets;
+				for(var i in response.tweets) {
+					var tweet = response.tweets[i];
+					$scope.tweets[tweet._id.$oid] = tweet;	
+					// remove this tweet if its column array is empty.
+					if(tweet.columns.length < 1) {
+						console.log("deleting tweet, it has no cols");
+						delete response.tweets[i];					
+					}		
+					// add tweet to cols
+					for(var i in tweet.columns) {
+						var colId = tweet.columns[i];
+						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+					}	
+				}
 			    var first_update = response.created_at;
 			    $scope.TAGS.setLastUpdate(first_update);
 			    $scope.USER_TAGS.setLastUpdate(first_update);
@@ -34,11 +48,25 @@ function getTweets($http, $scope) {
 		    if (response.tweets.length != 0 && 
 		    	!(response.tweets.length == 1 && response.tweets[0].id_str == RECENT_ID)) {
 			    RECENT_ID = response.tweets[0].id_str;
-			    $scope.tweets = response.tweets.concat($scope.tweets);
-				if($scope.tweets.length > 160){
-			         $scope.tweets = $scope.tweets.slice(80);				
-			    }
+				// Loop over tweets in response, and set them in the tweets object.
+				for(var i in response.tweets) {
+					var tweet = response.tweets[i];
+					$scope.tweets[tweet._id.$oid] = tweet;	
+					// remove this tweet if its column array is empty.
+					if(tweet.columns.length < 1) {
+						console.log("deleting tweet, it has no cols");
+						delete response.tweets[i];					
+					}		
+					// add tweet to cols
+					for(var i in tweet.columns) {
+						var colId = tweet.columns[i];
+						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+					}			
+				}
 			 }
+			console.log("$scope.tweets.length: " + Object.keys($scope.tweets).length);
+			console.log($scope.CURRENT_COLS);
 		});
 	}    
 }

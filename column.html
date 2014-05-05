@@ -1,7 +1,7 @@
 <div class="column">
 <!-- Tweet stream column -->
 
-	<p ng-click="unpauseColumn(colId)" ng-show="PAUSED_COL.colId == colId && PAUSED_COL.queued" class="queued"><span>{{PAUSED_COL.queued}} New Tweets</span></p>
+	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].queued" class="queued"><span>{{PAUSED_COLS[colId].queued}} New Tweets</span></p>
 
     <!-- Column Header -->
     <div class="tweet-header">
@@ -9,9 +9,10 @@
         <!-- Column title, Search terms-->
         <h4 class="dropdown">{{CURRENT_COLS[colId].search.text || "All"}}
           <!-- Play/Pause Button -->
-          <a><i class="fa fa-play pull-left play-pause-button" ng-click="togglePause(colId)"></i></a>
+          <a style="cursor: default;"><i class="fa fa-play pull-left play-button" style="opacity: 0.3;" ng-click="unpauseColumn(colId)"></i></a>
+          <a><i class="fa fa-pause pull-left pause-button" ng-click="pauseColumn(colId)"></i></a>
           <!-- Caret button: expands search filter menu -->
-          <a ><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
+          <a ng-hide="colId == 0"><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
         </h4>
 
 
@@ -25,24 +26,24 @@
                              <option value="text">Text</option>
                              <option value="users">User</option>
                              <option value="tags">Tags</option>
-                             <option value="user_tags">User Tags</option>
+                             <option value="user_tags">User Lists</option>
                         </select>
                         <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
                         <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
-                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
-                             <li ng-repeat="tag in TAGS.tags">
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
+                             <div ng-repeat="tag in TAGS.tags">
                                   <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
                                   <i class="fa fa-circle" style="color:{{tag.color}};"></i>
                                   {{tag.tag_name}}
-                             </li>
-                        </ul>
-                        <ul ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
-                              <li ng-repeat="tag in USER_TAGS.tags">
+                             </div>
+                        </div>
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
+                              <div ng-repeat="tag in USER_TAGS.tags">
                                   <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
-                                  <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                  <i class="fa fa-stop" style="color:{{tag.color}};"></i>
                                   {{tag.tag_name}}
-                              </li>
-                        </ul>
+                              </div>
+                        </div>
                    </div>
                <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
               </button>
@@ -54,6 +55,6 @@
 
     <!-- Tweet stream, check tweet.html -->
     <div class="tweet-stream" ng-style="style()" resize>
-            <tweet ng-animate=" 'animate' " ng-repeat="tweet in tweets | columnSpecific:colId:this" >{{tweet}}</tweet>
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" >{{tweetz[tweet]}}</tweet>
     </div>
 </div>

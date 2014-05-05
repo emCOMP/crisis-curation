@@ -131,6 +131,37 @@ def tweetsBefore(tweetID):
 	else:
 		return '{"error": { "message": "Tweet id does not exist"}}'
 
+# returns tweets to fill a new column
+@post('/tweets/colId/')
+def tweetsByColumn():
+	col = json.loads(request.body.read())["col"]
+	search = col['search']
+	searchType = col['search']['searchType'].decode('utf-8')
+
+	tweet_list = tweets.find()
+	result = []
+	for tweet in tweet_list:
+		tweet["columns"] = []
+		if(searchType   == 'text'):
+			searchText = col['search']['text'].decode('utf-8')
+			if not findWholeWord(searchText)(tweet["text"]):
+				continue
+		elif(searchType == 'users'):
+			if not tweetedByUser(search, tweet): # TODO allow filtering by multiple users
+				continue
+		elif(searchType == 'tags'):
+			if not containsTags(search, tweet):
+				continue
+		elif(searchType == 'user_tags'):
+			# filter by User Tags
+			if not containsUserTags(search, tweet):
+				continue
+		tweet["columns"].append(col["colId"])
+		result.append(tweet)
+	result = sorted(result, key=lambda k: k['id'], reverse=True)
+	result = result[:70] # TODO replace with constant
+	return '{"tweets": ' + dumps(result) + ' }'
+
 # Creates a new column search term to filter tweets by
 @post('/newcolumn')
 def newColumn():
@@ -302,7 +333,7 @@ class TagsModel:
 	def addEmbeddedData(self, tag_id, tagged_item_id):
 		# add tag to list of tagged tweets' tags	
 		tweets.update(self.taggedTweets(tagged_item_id), 
-					 {'$push' : { self.embedded_array_name :  tag_id } })
+					 {'$push' : { self.embedded_array_name :  tag_id } }, multi=True)
 		# add tagged item to list of this tag's tagged items
 		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, 
 					     {'$push' : { 'tagged_item_ids' : tagged_item_id} } )
@@ -313,7 +344,7 @@ class TagsModel:
 		if(tag.count() > 0):
 		    for tagged_item_id in tag[0]["tagged_item_ids"]:
 				tweets.update(self.taggedTweets(tagged_item_id), 
-							  {'$pull': { self.embedded_array_name : tagged_item_id}})	
+							  {'$pull': { self.embedded_array_name : tagged_item_id}}, multi=True)	
 
 		# clear this tag's list of tagged items
 		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, {'tagged_item_ids' : [] } )
@@ -324,18 +355,12 @@ class TagsModel:
 		tag_id = json.loads(request.body.read())["tag_id"]
 		tagged_item_id = json.loads(request.body.read())["tagged_item_id"]
 
-		# Tag instance exists, and is active. Nothing to do.
-		tag_instance = self.tag_instances.find({'tag_id': tag_id, 'tagged_item_id': tagged_item_id, 'active': True})
-		if(tag_instance.count() > 0):
-		    return
-
 		tag_instance_id = None
-		# Tag instance exists, but is inactive. Activate.
-		tag_instance = self.tag_instances.find({'tag_id': tag_id, 'tagged_item_id': tagged_item_id, 'active': False})
+		# Tag instance exists. Update.
+		tag_instance = self.tag_instances.find({'tagged_item_id': tagged_item_id })
 		if(tag_instance.count() > 0):
-		    tag_instance_id = tag_instance[0]["_id"]
-		    self.tag_instances.update({'tag_id': tag_id, 'tagged_item_id': tagged_item_id},
-		                         {'$set' : {'created_at' : currentTime(), 
+		    self.tag_instances.update({'tagged_item_id': tagged_item_id},
+		                         {'$set' : {'tag_id': tag_id,'created_at' : currentTime(), 
 		                                    'created_by': created_by, 'active': True } })	
 		else:
 			# Tag instance does not exist.  Create.
@@ -366,7 +391,7 @@ class TagsModel:
 
 		# update embedded lists in tweets, tag
 		tweets.update(self.taggedTweets(tagged_item_id),
-			          {'$pull' : { self.embedded_array_name :  tag_id } })
+			          {'$pull' : { self.embedded_array_name :  tag_id } }, multi=True)
 		self.tags.update({'_id' : objectid.ObjectId(tag_id)}, 
 	                     {'$pull' : { 'tagged_item_ids' : tagged_item_id} } )
 
