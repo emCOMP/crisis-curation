@@ -34,7 +34,8 @@ function getTweets($http, $scope) {
 					for(var i in tweet.columns) {
 						var colId = tweet.columns[i];
 						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
-						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);	
+						$scope.PAUSED_COLS[colId].queued.push(tweet._id.$oid);				
 					}	
 				}
 			    var first_update = response.created_at;
@@ -61,7 +62,8 @@ function getTweets($http, $scope) {
 					for(var i in tweet.columns) {
 						var colId = tweet.columns[i];
 						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
-						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);	
+						$scope.PAUSED_COLS[colId].queued.push(tweet._id.$oid);				
 					}			
 				}
 			 }

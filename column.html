@@ -1,7 +1,7 @@
 <div class="column">
 <!-- Tweet stream column -->
 
-	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].queued" class="queued"><span>{{PAUSED_COLS[colId].queued}} New Tweets</span></p>
+	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].count" class="queued"><span>{{PAUSED_COLS[colId].count}} New Tweets</span></p>
 
     <!-- Column Header -->
     <div class="tweet-header">

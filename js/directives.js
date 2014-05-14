@@ -7,12 +7,12 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         // Set up datastructures
         $scope.tweets = {};
         $scope.CURRENT_COLS = [];
-        $scope.CURRENT_COLS[0] = columnTemplate(0);
-        $scope.showCreateNewTag = false;
         $scope.PAUSED_COLS = {};
+        $scope.CURRENT_COLS[0] = columnTemplate(0, $scope.PAUSED_COLS);
+        $scope.showCreateNewTag = false;
         // format: {
-        //          colId: {'recentTweet': 234902342, 'queued': 23},
-        //          colId2: {'recentTweet': 234214231, 'queued': 54}
+        //          colId: {'recentTweet': 234902342, 'queued': [], 'count': 0, 'paused': false},
+        //          colId2: {'recentTweet': 234214231, 'queued': [], 'count': 0, 'paused'L true}
         //         }
 
         $scope.TAGS = TweetTags($http);
@@ -40,7 +40,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.isPausedColumn = function (colId) {
-            return (colId in $scope.PAUSED_COLS);
+           return $scope.PAUSED_COLS[colId].paused;
         }
 
         $scope.unpauseColumn = function (colId) {
@@ -59,6 +59,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             console.log("playIcon.parent: ", playIcon.parent());
             pauseIcon.css("opacity", 1.0);
             pauseIcon.parent().css("cursor", "pointer");
+
+            $scope.CURRENT_COLS[colId].tweets = $scope.PAUSED_COLS[colId].queued; 
+            $scope.PAUSED_COLS[colId].count = 0;
+            $scope.PAUSED_COLS.colId.paused = false;
         }
 
         $scope.pauseColumn = function (colId) {
@@ -67,7 +71,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
 
             $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
-            $scope.PAUSED_COLS[colId] = {'recentTweet': RECENT_ID, 'queued': 0};
+            $scope.PAUSED_COLS.colId.paused = true;
+            $scope.PAUSED_COLS.recentTweet = $scope.PAUSED_COLS.tweets[0].id;
 
             // Toggle icons
             var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
@@ -111,6 +116,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $(".content").append(el);
             $(el).fadeIn("slow");
             $(".content").scrollLeft($(".content").width());
+            $scope.PAUSED_COLS[colId] = {'recentTweet': RECENT_ID, 'queued': [], 'count': 0, 'paused': true};
             setTimeout(function () {
                 $(el).removeClass("newColumn");
                 $(".content").scrollLeft($(".content").width());
@@ -565,22 +571,22 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
                 return arrayToReturn;
             }
             if (items) {
-                var count = 0;
+                var queuedTweets = [];
                 for (var i = 0; i < items.length; i++) {
                     if (items[i].columns.indexOf(colId) != -1) { // this tweet should be in my column
                         if (!scope.isPausedColumn(colId)) {  //the column is not being paused
                             arrayToReturn.push(items[i]);
                         } else if (scope.isPausedColumn(colId) &&  // the column is paused
-                            items[i].id <= scope.PAUSED_COLS[colId].recentTweet) {  // enforce "pausing"
+                                items[i].id <= scope.PAUSED_COLS[colId].recentTweet) {  // enforce "pausing"
                             arrayToReturn.push(items[i]);
                         } else {
                             // Column paused, tweet is being filtered
-                            count++;
+                            queued.push(items[i]);
                         }
                     }
                 }
                 if (scope.isPausedColumn(colId)) {
-                    scope.PAUSED_COLS[colId].queued = count;
+                    scope.PAUSED_COLS[colId].queued = queued;
                 }
             }
             // limit number of tweets in a column
@@ -595,40 +601,54 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 	.filter('orderByTime', function() {
 		return function(items, colId, scope) {
 			// sort tweets
-			var filtered = [];
+            var filtered = [];
 			angular.forEach(items, function(item) {	  
 			  if(scope.tweets[item]) { filtered.push(item); }
 			});
 			filtered.sort(function (a, b) {
 			  return scope.tweets[b].unix_time - scope.tweets[a].unix_time;
 			});
-
-			// trim, if necessary
-			var colTweets = filtered;
-			if(colTweets.length > 40) {
-				// remove this col from tweets' column array
-				for(var i = 20; i < colTweets.length; i++) {
-					var tweet = scope.tweets[colTweets[i]];
-					if(tweet.columns) {
-						var index = tweet.columns.indexOf(parseInt(colId));
-						if(index >= 0) {
-							tweet.columns.splice(index, 1);
-						}
-						// Delete this tweet, it has no columns
-						if(tweet.columns.length == 0) {
-								console.log("deleting tweet, it has no cols");
-								delete scope.tweets[tweet._id.$oid];	
-						}
-					}
-				}	
-				// murder tweets
-				filtered = filtered.slice(0, 20);
-				scope.CURRENT_COLS[colId].tweets = filtered;		
-			}
-			return filtered;
+            removeExcessTweets(scope.PAUSED_COLS[colId].queued, colId, scope);
+            if (!scope.isPausedColumn(colId)) {
+                // trim, if necessary
+    		    scope.CURRENT_COLS[colId].tweets = removeExcessTweets(filtered,  colId , scope);
+                return filtered;
+            } else {
+                return scope.CURRENT_COLS[colId].tweets;
+            }	
 		}
 	});
 
+
+function removeExcessTweets(tweetsArray, colId, scope) {
+    if(tweetsArray.length > 40) {
+        // remove this col from tweets' column array
+        var pausedCount = 0;
+        for(var i = 20; i < tweetsArray.length; i++) {
+            var tweet = scope.tweets[tweetsArray[i]];
+            if(tweet.columns) {
+                var index = tweet.columns.indexOf(parseInt(colId));
+                if(index >= 0) {
+                    tweet.columns.splice(index, 1);
+                }
+                // Delete this tweet, it has no columns
+                if(!scope.isPausedColumn(colId) && tweet.columns.length == 0) {
+                        console.log("deleting tweet, it has no cols");
+                        delete scope.tweets[tweet._id.$oid];    
+                }
+
+                if (scope.isPausedColumn(colId) &&  // the column is paused
+                                tweetsArray[i].id <= scope.PAUSED_COLS[colId].recentTweet) {
+                    pausedCount++;
+                }
+            }
+        }   
+        // murder tweets
+        tweetsArray = tweetsArray.slice(0, 20);
+        scope.PAUSED_COLS[colId].count = pausedCount;
+    }
+    return tweetsArray;
+}
 
 //////////////////////////////////////////
 // One off JS Functions
@@ -661,7 +681,8 @@ function getUsersColumns($http, $scope, $location) {
 }
 
 // Template for unfiltered column
-function columnTemplate(colId) {
+function columnTemplate(colId, PAUSED_COLS) {
+    PAUSED_COLS[colId] = {'recentTweet': -1, 'queued': [], 'count': 0, 'paused': true};
     return {'colId': colId,
         'search': searchTemplate(),
         'showDropdown': false,
