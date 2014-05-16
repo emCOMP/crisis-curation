@@ -39,6 +39,9 @@ html, body {
 column-stream {
   margin-left: 5px;
   margin-top: 5px;
+  -webkit-flex: none;
+  flex: none;
+  width: @column-width;
 }
 
 .left-menu {
@@ -72,12 +75,6 @@ body {
   display: -ms-flexbox;   /* MID: IE 10 */
   display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
   display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
-}
-
-column-stream {
-  -webkit-flex: none;
-          flex: none;
-  width: @column-width;
 }
 
 /*

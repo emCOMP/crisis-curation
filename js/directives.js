@@ -22,6 +22,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         $scope.editTagPopOverOpen = false;
         $scope.colNum = 1; // TODO initialize this to (max stored col num) + 1
         getClients($http, $scope);
+        $scope.withoutCollaborateTools = false;
 
 
         ////////////////////////
@@ -424,6 +425,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
     })
 
+
     // Template for a dynamically resizing window
     // Makes the window take up as much height as it can, and a width of 320px
     .directive('resize', function () {
@@ -507,6 +509,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             }
         };
     })
+
 
     // Stop search refinement dropdown from closing
     .directive('stopEvent', function () {

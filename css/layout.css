@@ -22,6 +22,9 @@ body {
 column-stream {
   margin-left: 5px;
   margin-top: 5px;
+  -webkit-flex: none;
+  flex: none;
+  width: 320px;
 }
 .left-menu {
   margin: 5px;
@@ -57,11 +60,6 @@ body {
   /* NEW, Chrome 21–28, Safari 6.1+ */
   display: flex;
   /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
-}
-column-stream {
-  -webkit-flex: none;
-  flex: none;
-  width: 320px;
 }
 /*
 If you find any browser-compatibility issues with using Flexbox,
