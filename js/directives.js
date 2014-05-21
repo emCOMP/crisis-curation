@@ -47,6 +47,8 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             if (!$scope.isPausedColumn(colId)) {
                 return;
             }
+            $scope.PAUSED_COLS[colId].count = 0;
+            $scope.PAUSED_COLS[colId].paused = false;
             $("column-stream[col-id=" + colId + "]").removeClass("pausedColumn");
             $($("column-stream[col-id=" + colId + "]").find(".tweet-stream")).scrollTop(0);
 
@@ -62,7 +64,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				}
 			}
 			$scope.PAUSED_COLS[colId].snapshot = [];
-			
 
             // Toggle icons
             var playIcon = $("column-stream[col-id=" + colId + "]").find(".play-button");
@@ -72,10 +73,6 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             pauseIcon.css("opacity", 1.0);
             pauseIcon.parent().css("cursor", "pointer");
 
-            // Use .slice() to make a distinct deep copy here.
-            $scope.CURRENT_COLS[colId].tweets = $scope.PAUSED_COLS[colId].queued.slice();
-            $scope.PAUSED_COLS[colId].count = 0;
-            $scope.PAUSED_COLS[colId].paused = false;
         }
 
         $scope.pauseColumn = function (colId) {
@@ -86,14 +83,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			// take a snapshot
 			$scope.PAUSED_COLS[colId].snapshot = [];
 			for(var i = 0; i < $scope.CURRENT_COLS[colId].tweets.length; i++) {
-console.log("jfdsalk");
 				var tweetId = $scope.CURRENT_COLS[colId].tweets[i];
 				$scope.PAUSED_COLS[colId].snapshot.push(tweetId);	
 				$scope.tweets[tweetId].columns.push(-1 * (colId + 1)); // add a fake column to prevent these tweets from getting deleted
 			}
-
-console.log("puausing col, here is the snapshot");
-console.log($scope.PAUSED_COLS[colId].snapshot);
 
             $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
             $scope.PAUSED_COLS[colId].paused = true;
@@ -607,33 +600,19 @@ console.log($scope.PAUSED_COLS[colId].snapshot);
 
 
 function removeExcessTweets(tweetsArray, colId, scope) {
-console.log(tweetsArray.length);
-		console.log("deleting, " + tweetsArray.length);
         // remove this col from tweets' column array
        // var pausedCount = 0;
         for(var i = 20; i < tweetsArray.length; i++) {
             var tweet = scope.tweets[tweetsArray[i]];
-            if (!tweet) {
-                // WTF am I here :C
-               // console.log(scope.tweets);
-               // console.log(tweetsArray[i]);
-               // console.log(scope.tweets[tweetsArray[i]]);
-            } else if(tweet.columns) {
+            if(tweet.columns) {
                 var index = tweet.columns.indexOf(parseInt(colId));
                 if(index >= 0) {
                     tweet.columns.splice(index, 1);
                 }
                 // Delete this tweet, it has no columns
                 if(tweet.columns.length == 0) {
-					console.log("deleting has no cols");
-					//console.log(tweet.columns);
                    delete scope.tweets[tweet._id.$oid];    
                 }
-
-               /* if (scope.isPausedColumn(colId) &&  // the column is paused
-                                tweetsArray[i].id <= scope.PAUSED_COLS[colId].recentTweet) {
-                    pausedCount++;
-                }*/
             }
         }   
        // scope.PAUSED_COLS[colId].count = pausedCount;

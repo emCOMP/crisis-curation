@@ -27,7 +27,6 @@ function getTweets($http, $scope) {
 					$scope.tweets[tweet._id.$oid] = tweet;	
 					// remove this tweet if its column array is empty.
 					if(tweet.columns.length < 1) {
-						console.log("deleting tweet, it has no cols");
 						delete response.tweets[i];					
 					}		
 					// add tweet to cols
@@ -54,7 +53,6 @@ function getTweets($http, $scope) {
 					$scope.tweets[tweet._id.$oid] = tweet;	
 					// remove this tweet if its column array is empty.
 					if(tweet.columns.length < 1) {
-						console.log("deleting tweet, it has no cols");
 						delete response.tweets[i];					
 					}		
 					// add tweet to cols
@@ -65,11 +63,6 @@ function getTweets($http, $scope) {
 					}			
 				}
 			 }
-			console.log("$scope.tweets.length: " + Object.keys($scope.tweets).length);
-			console.log("col 1 tweets.length: " + $scope.CURRENT_COLS[0].tweets.length);
-			//console.log("col 1 tweets.length: " + $scope.CURRENT_COLS[0].tweets);
-			//console.log($scope.PAUSED_COLS);
-			console.log($scope.tweets);
 		});
 	}    
 }
