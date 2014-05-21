@@ -40,7 +40,10 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         }
 
         $scope.isPausedColumn = function (colId) {
-           return $scope.PAUSED_COLS[colId].paused;
+            if (!$scope.PAUSED_COLS[colId]) {
+                return false;
+            } 
+            return $scope.PAUSED_COLS[colId].paused;
         }
 
         $scope.unpauseColumn = function (colId) {
@@ -134,7 +137,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
             $(".content").append(el);
             $(el).fadeIn("slow");
             $(".content").scrollLeft($(".content").width());
-            $scope.PAUSED_COLS[colId] = {'recentTweet': -1, 'snapshot':[], 'count': 0, 'paused': false};
+            $scope.PAUSED_COLS[newcolId] = {'recentTweet': -1, 'snapshot':[], 'count': 0, 'paused': false};
             setTimeout(function () {
                 $(el).removeClass("newColumn");
                 $(".content").scrollLeft($(".content").width());
