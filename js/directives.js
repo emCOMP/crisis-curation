@@ -62,7 +62,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 				var tweet = $scope.tweets[tweetId];
 
 				// ok i know this sucks but we can't do zero based so yeah it's like two's complement
-				var index = tweet.columns.indexOf(-1 * (colId + 1)); 
+				var index = tweet.columns.indexOf(-1 * (parseInt(colId) + 1)); 
 				if(index >= 0) {
 					tweet.columns.splice(index, 1);
 				}
@@ -89,7 +89,7 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
 			for(var i = 0; i < $scope.CURRENT_COLS[colId].tweets.length; i++) {
 				var tweetId = $scope.CURRENT_COLS[colId].tweets[i];
 				$scope.PAUSED_COLS[colId].snapshot.push(tweetId);	
-				$scope.tweets[tweetId].columns.push(-1 * (colId + 1)); // add a fake column to prevent these tweets from getting deleted
+				$scope.tweets[tweetId].columns.push(-1 * (parseInt(colId) + 1)); // add a fake column to prevent these tweets from getting deleted
 			}
 
             $("column-stream[col-id=" + colId + "]").addClass("pausedColumn");
