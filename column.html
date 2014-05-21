@@ -1,8 +1,7 @@
 <div class="column">
     <!-- Tweet stream column -->
 
-    <p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].queued" class="queued">
-        <span>{{PAUSED_COLS[colId].queued}} New Tweets</span></p>
+	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].count" class="queued"><span>{{PAUSED_COLS[colId].count}} New Tweets</span></p>
 
     <!-- Column Header -->
     <div class="tweet-header">
@@ -90,8 +89,11 @@
 
     <!-- Tweet stream, check tweet.html -->
     <div class="tweet-stream" ng-style="style()" resize>
-        <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this">
-            {{tweetz[tweet]}}
-        </tweet>
+      <div ng-hide="isPausedColumn(colId)">
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" ></tweet>
+      </div>
+      <div ng-show="isPausedColumn(colId)">
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in PAUSED_COLS[colId].snapshot" ></tweet>
+      </div>
     </div>
 </div>
