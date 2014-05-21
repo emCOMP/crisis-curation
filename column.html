@@ -55,6 +55,7 @@
 
     <!-- Tweet stream, check tweet.html -->
     <div class="tweet-stream" ng-style="style()" resize>
-            <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" >{{tweetz[tweet]}}</tweet>
+            <tweet ng-animate=" 'animate' " ng-hide="isPausedColumn(colId)" ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" ></tweet>
+            <tweet ng-animate=" 'animate' " ng-show="isPausedColumn(colId)" ng-repeat="tweet in PAUSED_COLS[colId].snapshot" ></tweet>
     </div>
 </div>
