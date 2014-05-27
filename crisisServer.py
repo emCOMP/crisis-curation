@@ -591,4 +591,4 @@ userTags = UserTagsModel()
 
 # ---- Starting the Server ----
 
-run(host=SERVER_HOST, port=SERVER_PORT, debug=True)
+run(server ='paste', host=SERVER_HOST, port=SERVER_PORT, debug=True)
