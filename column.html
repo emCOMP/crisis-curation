@@ -1,60 +1,99 @@
 <div class="column">
-<!-- Tweet stream column -->
+    <!-- Tweet stream column -->
 
-	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].queued" class="queued"><span>{{PAUSED_COLS[colId].queued}} New Tweets</span></p>
+	<p ng-click="unpauseColumn(colId)" ng-show="isPausedColumn(colId) && PAUSED_COLS[colId].count" class="queued"><span>{{PAUSED_COLS[colId].count}} New Tweets</span></p>
 
     <!-- Column Header -->
     <div class="tweet-header">
 
         <!-- Column title, Search terms-->
-        <h4 class="dropdown">{{CURRENT_COLS[colId].search.text || "All"}}
-          <!-- Play/Pause Button -->
-          <a style="cursor: default;"><i class="fa fa-play pull-left play-button" style="opacity: 0.3;" ng-click="unpauseColumn(colId)"></i></a>
-          <a><i class="fa fa-pause pull-left pause-button" ng-click="pauseColumn(colId)"></i></a>
-          <!-- Caret button: expands search filter menu -->
-          <a ng-hide="colId == 0"><i class="fa fa-caret-down pull-right dropdown-link" ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
+        <h4 class="dropdown">{{CURRENT_COLS[colId].search.title || "All"}}
+            <!--CURRENT_COLS[colId].search.text-->
+            <!-- Play/Pause Button -->
+            <a style="cursor: default;"><i class="fa fa-play pull-left play-button" style="opacity: 0.3;"
+                                           ng-click="unpauseColumn(colId)"></i></a>
+            <a><i class="fa fa-pause pull-left pause-button" ng-click="pauseColumn(colId)"></i></a>
+            <!-- Caret button: expands search filter menu -->
+            <a ng-hide="colId == 0"><i class="fa fa-caret-down pull-right dropdown-link"
+                                       ng-click="CURRENT_COLS[colId].showDropdown=!CURRENT_COLS[colId].showDropdown"></i></a>
         </h4>
 
 
         <!-- Collapsible search filter menu -->
         <div ng-show="CURRENT_COLS[colId].showDropdown">
             <div ng-class="showColForm">
-              <form role="form" class="search-form">
-                  <div class="form-group filter">
-                          Search By:
-                        <select ng-model="CURRENT_COLS[colId].search.searchType">
-                             <option value="text">Text</option>
-                             <option value="users">User</option>
-                             <option value="tags">Tags</option>
-                             <option value="user_tags">User Lists</option>
-                        </select>
-                        <input type="text" placeholder="Text" ng-model="CURRENT_COLS[colId].search.text" ng-show="CURRENT_COLS[colId].search.searchType=='text'"/>
-                        <input type="text" placeholder="@User" ng-model="CURRENT_COLS[colId].search.users" ng-show="CURRENT_COLS[colId].search.searchType=='users'"/>
-                        <div ng-show="CURRENT_COLS[colId].search.searchType=='tags'">
-                             <div ng-repeat="tag in TAGS.tags">
-                                  <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
-                                  <i class="fa fa-circle" style="color:{{tag.color}};"></i>
-                                  {{tag.tag_name}}
-                             </div>
+                <form role="form" class="search-form">
+                    <div class="form-group filter">
+                        Search By:
+
+                        <div class="btn-group" style="margin-top: 6px;" ng-hide="withoutCollaborateTools">
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'text'">Text</label>
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'users'">User</label>
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'tags'">Tags</label>
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'user_tags'">User Lists</label>
                         </div>
-                        <div ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'">
-                              <div ng-repeat="tag in USER_TAGS.tags">
-                                  <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
-                                  <i class="fa fa-stop" style="color:{{tag.color}};"></i>
-                                  {{tag.tag_name}}
-                              </div>
+
+                        <div class="btn-group" style="margin-top: 6px;" ng-hide="!withoutCollaborateTools">
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'text'">Text</label>
+                            <label class="btn btn-default" ng-model="CURRENT_COLS[colId].search.searchType"
+                                   btn-radio="'users'">User</label>
                         </div>
-                   </div>
-               <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
-              </button>
-              <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i class="fa fa-trash-o"></i>Delete Column</button>
-            </form>
-          </div>
+
+                        <!--&lt;!&ndash;original design of filter selection&ndash;&gt;-->
+                        <!--<select ng-model="CURRENT_COLS[colId].search.searchType" ng-hide="withoutCollaborateTools">-->
+                        <!--<option value="text">Text</option>-->
+                        <!--<option value="users">User</option>-->
+                        <!--<option value="tags">Tags</option>-->
+                        <!--<option value="user_tags">User Lists</option>-->
+                        <!--</select>-->
+
+                        <!--<select ng-model="CURRENT_COLS[colId].search.searchType" ng-hide="!withoutCollaborateTools">-->
+                        <!--<option value="text">Text</option>-->
+                        <!--<option value="users">User</option>-->
+                        <!--</select>-->
+
+                        <input type="text" placeholder="Text" class="form-control ng-pristine ng-valid" ng-model="CURRENT_COLS[colId].search.text"
+                               ng-show="CURRENT_COLS[colId].search.searchType=='text'" style="width:88%; margin-top: 6px;"/>
+                        <input type="text" placeholder="@User" class="form-control ng-pristine ng-valid" ng-model="CURRENT_COLS[colId].search.users"
+                               ng-show="CURRENT_COLS[colId].search.searchType=='users'" style="width: 88%; margin-top: 6px;"/>
+
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='tags'" style="margin-top: 10px;">
+                            <div ng-repeat="tag in TAGS.tags">
+                                <input type="checkbox" ng-model="CURRENT_COLS[colId].search.tags[tag._id.$oid]"/>
+                                <i class="fa fa-circle" style="color:{{tag.color}};"></i>
+                                {{tag.tag_name}}
+                            </div>
+                        </div>
+                        <div ng-show="CURRENT_COLS[colId].search.searchType=='user_tags'" style="margin-top: 10px;">
+                            <div ng-repeat="tag in USER_TAGS.tags">
+                                <input type="checkbox" ng-model="CURRENT_COLS[colId].search.userTags[tag._id.$oid]"/>
+                                <i class="fa fa-stop" style="color:{{tag.color}};"></i>
+                                {{tag.tag_name}}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-half" ng-click="saveSearch(colId)"><i class="fa fa-search"></i>Search
+                    </button>
+                    <button class="btn btn-half btn-danger" ng-click="deleteColumn(colId)" ng-hide="colId == 0"><i
+                            class="fa fa-trash-o"></i>Delete Column
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- Tweet stream, check tweet.html -->
     <div class="tweet-stream" ng-style="style()" resize>
-            <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" >{{tweetz[tweet]}}</tweet>
+      <div ng-hide="isPausedColumn(colId)">
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" ></tweet>
+      </div>
+      <div ng-show="isPausedColumn(colId)">
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in PAUSED_COLS[colId].snapshot" ></tweet>
+      </div>
     </div>
 </div>

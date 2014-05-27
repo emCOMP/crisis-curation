@@ -12,14 +12,16 @@
                                   style="target-new: tab;"><strong>{{tweet.user.name}}</strong></a></span>
         <span class="username"><small>@{{tweet.user.screen_name}}</small></span>
 
+
+
         <p class="timestamp">
             <small>{{tweet.created_at.split("+")[0]}}</small>
         </p>
-        <p class="tweet-text" ng-bind-html="tweet.text | linky"></p>
+        <p class="tweet-text" ng-bind-html="tweet.text | linky:'_blank'"></p>
     </div>
 
     <!-- Tweet options-->
-    <div class="help-block">
+    <div class="help-block" ng-hide="withoutCollaborateTools">
 
         <!-- Tag tweet button -->
         <a href="#" id="TagTweetButton" type="button" class="btn btn-default btn-xs" ng-click="showTags =  !showTags">Tag

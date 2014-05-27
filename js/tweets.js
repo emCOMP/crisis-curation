@@ -27,14 +27,13 @@ function getTweets($http, $scope) {
 					$scope.tweets[tweet._id.$oid] = tweet;	
 					// remove this tweet if its column array is empty.
 					if(tweet.columns.length < 1) {
-						console.log("deleting tweet, it has no cols");
 						delete response.tweets[i];					
 					}		
 					// add tweet to cols
 					for(var i in tweet.columns) {
 						var colId = tweet.columns[i];
 						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
-						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);	
 					}	
 				}
 			    var first_update = response.created_at;
@@ -54,19 +53,16 @@ function getTweets($http, $scope) {
 					$scope.tweets[tweet._id.$oid] = tweet;	
 					// remove this tweet if its column array is empty.
 					if(tweet.columns.length < 1) {
-						console.log("deleting tweet, it has no cols");
 						delete response.tweets[i];					
 					}		
 					// add tweet to cols
 					for(var i in tweet.columns) {
 						var colId = tweet.columns[i];
 						if(!$scope.CURRENT_COLS[colId].tweets) { $scope.CURRENT_COLS[colId].tweets = []; }
-						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);					
+						$scope.CURRENT_COLS[colId].tweets.push(tweet._id.$oid);	
 					}			
 				}
 			 }
-			console.log("$scope.tweets.length: " + Object.keys($scope.tweets).length);
-			console.log($scope.CURRENT_COLS);
 		});
 	}    
 }
