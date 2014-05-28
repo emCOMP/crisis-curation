@@ -93,7 +93,7 @@
             <tweet ng-animate=" 'animate' " ng-repeat="tweet in CURRENT_COLS[colId].tweets | orderByTime:colId:this" ></tweet>
       </div>
       <div ng-show="isPausedColumn(colId)">
-            <tweet ng-animate=" 'animate' " ng-repeat="tweet in PAUSED_COLS[colId].snapshot" ></tweet>
+            <tweet ng-animate=" 'animate' " ng-repeat="tweet in PAUSED_COLS[colId].snapshot | pauseOrderByTime:colId:this" ></tweet>
       </div>
     </div>
 </div>

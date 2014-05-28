@@ -584,6 +584,20 @@ angular.module('twitterCrisis', ['ui.bootstrap', 'LocalStorageModule', 'colorpic
         };
     })
 
+    .filter('pauseOrderByTime', function() {
+        return function(items, colId, scope) {
+            var filtered = [];
+            // sort tweets
+            angular.forEach(items, function(item, index) {    
+              if(scope.tweets[item]) { filtered.push(item); }
+            });
+            filtered.sort(function (a, b) {
+              return scope.tweets[b].unix_time - scope.tweets[a].unix_time;
+            });
+            return filtered;
+        }
+    })
+
 	.filter('orderByTime', function() {
 		return function(items, colId, scope) {
 			var filtered = [];
