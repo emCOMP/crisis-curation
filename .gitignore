@@ -1,4 +1,9 @@
 fb
+#exlcuding seeding shell file and also chile related jsons
+seeded_start
+data/whole_chile.json
+data/partial_chile.json
+data/initial_200_chile.json
 
 # Get rid of emacs squiggle files
 *~
